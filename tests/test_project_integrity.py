@@ -98,6 +98,24 @@ def test_english_readme_contains_key_sections_and_language_switch():
     assert "```text\n## English Translation" not in text
 
 
+def test_contributing_is_bilingual_and_integrity_focused():
+    text = (ROOT / "CONTRIBUTING.md").read_text(encoding="utf-8")
+    required_phrases = [
+        "# Contributing / 贡献指南",
+        "[中文](#中文) | [English](#english)",
+        "## 中文",
+        "欢迎为 Academic Writing Assistant 做贡献",
+        "不接受的内容",
+        "虚构参考文献、数据集、实验结果或评价指标",
+        "## English",
+        "Thank you for considering a contribution",
+        "What We Do Not Accept",
+        "Fake references, datasets, experiments, or evaluation metrics",
+    ]
+    for phrase in required_phrases:
+        assert phrase in text
+
+
 def test_logo_assets_and_plugin_manifest_are_configured():
     assert (ROOT / "assets" / "logo" / "revision-compass.svg").exists()
     assert (ROOT / "assets" / "logo" / "revision-compass.png").exists()
