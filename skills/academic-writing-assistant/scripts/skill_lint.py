@@ -21,13 +21,33 @@ REQUIRED_REFERENCES = [
     "examples.md",
 ]
 
-REQUIRED_README_SECTIONS = [
+REQUIRED_ZH_README_SECTIONS = [
     "项目定位",
     "为什么需要",
     "核心功能",
     "支持的学术写作任务",
     "支持的研究领域",
     "安装",
+    "Codex 安装",
+    "Claude Code 安装",
+    "其他 Agent 安装",
+    "使用示例",
+    "学术诚信",
+    "路线图",
+    "贡献指南",
+    "许可证",
+]
+
+REQUIRED_EN_README_SECTIONS = [
+    "Positioning",
+    "Why This Skill",
+    "Core Features",
+    "Supported Writing Tasks",
+    "Supported Research Fields",
+    "Installation",
+    "Install for Codex",
+    "Install for Claude Code",
+    "Install for Other Agents",
     "Quick Examples",
     "Academic Integrity",
     "Roadmap",
@@ -68,9 +88,33 @@ def check(root: Path) -> List[str]:
         failures.append("Missing README.md")
     else:
         readme_text = readme.read_text(encoding="utf-8")
-        for section in REQUIRED_README_SECTIONS:
+        for section in REQUIRED_ZH_README_SECTIONS:
             if section not in readme_text:
                 failures.append(f"README.md missing section phrase: {section}")
+        if "**中文** | [English](README_EN.md)" not in readme_text:
+            failures.append("README.md is missing the Chinese-to-English language switch.")
+        if "![Revision Compass](assets/logo/revision-compass.svg)" not in readme_text:
+            failures.append("README.md is missing the Revision Compass logo.")
+
+    readme_en = root / "README_EN.md"
+    if not readme_en.exists():
+        failures.append("Missing README_EN.md")
+    else:
+        readme_en_text = readme_en.read_text(encoding="utf-8")
+        for section in REQUIRED_EN_README_SECTIONS:
+            if section not in readme_en_text:
+                failures.append(f"README_EN.md missing section phrase: {section}")
+        if "[中文](README.md) | **English**" not in readme_en_text:
+            failures.append("README_EN.md is missing the English-to-Chinese language switch.")
+        if "![Revision Compass](assets/logo/revision-compass.svg)" not in readme_en_text:
+            failures.append("README_EN.md is missing the Revision Compass logo.")
+
+    for logo_path in [
+        root / "assets" / "logo" / "revision-compass.svg",
+        root / "assets" / "logo" / "revision-compass.png",
+    ]:
+        if not logo_path.exists():
+            failures.append(f"Missing logo asset: {logo_path.relative_to(root)}")
 
     plugin_json = root / ".codex-plugin" / "plugin.json"
     if not plugin_json.exists():
@@ -80,6 +124,14 @@ def check(root: Path) -> List[str]:
             data = json.loads(plugin_json.read_text(encoding="utf-8"))
             if data.get("name") != "academic-writing-assistant":
                 failures.append("plugin.json name should be academic-writing-assistant.")
+            interface = data.get("interface", {})
+            if interface.get("logo") != "./assets/logo/revision-compass.png":
+                failures.append("plugin.json interface.logo should point to the Revision Compass logo.")
+            if interface.get("composerIcon") != "./assets/logo/revision-compass.png":
+                failures.append("plugin.json interface.composerIcon should point to the Revision Compass logo.")
+            serialized = json.dumps(data)
+            if "YOUR_GITHUB_USERNAME" in serialized or "[TODO" in serialized:
+                failures.append("plugin.json contains an unreplaced placeholder.")
         except json.JSONDecodeError as exc:
             failures.append(f"plugin.json is invalid JSON: {exc}")
 

@@ -1,89 +1,81 @@
+<div align="center">
+
+![Revision Compass](assets/logo/revision-compass.svg)
+
 # Academic Writing Assistant
 
-> A field-adaptive academic writing Skill for researchers who need clearer, more rigorous, and more trustworthy scholarly writing support.
+面向中英文学术论文的领域自适应写作 Skill。
 
-面向中文科研作者的学术写作 Skill，支持中文与英文论文的润色、翻译、扩写、合并、摘要/引言/相关工作/方法/实验部分撰写、审稿回复、标题优化与术语一致性检查。
+**中文** | [English](README_EN.md)
+
+</div>
 
 ## 项目定位
 
-`academic-writing-assistant` 不是一组零散 Prompt，而是一个可复用、可维护、可扩展的 Codex Skill / Plugin 项目。
+`academic-writing-assistant` 是一个面向中文科研作者的学术写作 Skill / Plugin 项目，用于在保持学术诚信和技术含义准确的前提下，辅助完成论文润色、翻译、扩写、合并、章节写作、审稿回复、标题优化和术语一致性检查。
 
-它的目标是帮助中文科研作者在不牺牲学术诚信的前提下，更高效地完成论文表达层面的工作：让句子更清楚，让逻辑更连贯，让术语更一致，让中英文表达更符合学术语境。
-
-适合：
-
-- 研究生、博士生、青年教师和科研作者；
-- 正在撰写中文论文、英文论文、SCI 论文或会议论文的作者；
-- 需要将中文研究内容翻译成英文论文表达的作者；
-- 需要组织摘要、引言、相关工作、方法、实验或审稿回复的作者；
-- 希望把学术写作支持做成结构化 Skill 的 AI agent 用户。
+它适合研究生、博士生、青年教师和科研作者，也适合希望把学术写作工作流沉淀为可复用 Skill 的 AI Agent 用户。
 
 ## 为什么需要
 
-很多学术写作提示词能处理单次任务，但很难稳定复用：
+中文科研作者经常需要在中文思路、英文投稿语言、领域术语和审稿沟通之间切换。普通提示词可以处理单次任务，但很难稳定地覆盖任务识别、领域适配、输出格式和学术诚信边界。
 
-- 用户需要自己判断该用哪个 Prompt；
-- 不同任务的输出格式不一致；
-- 缺少跨学科领域适配；
-- 容易把推测写成事实；
-- 容易编造文献、数据集、实验结果或贡献；
-- 难以覆盖从初稿、翻译、结构组织到审稿回复的完整流程。
-
-这个项目把常见学术写作需求拆成可路由的任务、可按需加载的参考文件、可检查的输出模板和轻量脚本，让 Skill 更像一个可维护的开源工具。
+这个项目把常见学术写作需求拆成可路由的任务、可按需加载的参考文件、可复用的输出模板和轻量检查脚本，帮助作者更清楚、更规范、更可信地表达研究内容。
 
 ## 核心功能
 
-| Capability | What it does |
+| 功能 | 说明 |
 |---|---|
-| Task routing | 自动识别润色、翻译、扩写、合并、章节写作、审稿回复等任务 |
-| Field adaptation | 根据领域调整写作重点、术语和谨慎程度 |
-| Academic polishing | 提升清晰度、逻辑、语法和学术语气，同时保持技术含义 |
-| CN/EN translation | 支持中英文学术翻译，附术语表和译法说明 |
-| Paper section drafting | 支持 Abstract、Introduction、Related Work、Method、Experiment、Discussion 等章节 |
-| Reviewer response | 起草礼貌、具体、非防御性的审稿回复 |
-| Title optimization | 生成多个克制、准确、可投稿的标题候选 |
-| Terminology consistency | 检查术语混用并建议统一表达 |
-| Integrity guardrails | 明确禁止虚构文献、数据集、实验结果和不受支持的结论 |
+| 任务路由 | 自动识别润色、翻译、扩写、合并、章节写作、审稿回复等任务 |
+| 领域适配 | 根据研究领域调整写作重点、术语和谨慎程度 |
+| 学术润色 | 提升清晰度、逻辑、语法和学术语气，同时保持技术含义 |
+| 中英文学术翻译 | 支持中译英和英译中，并提供术语表和译法说明 |
+| 论文各章节写作 | 支持摘要、引言、相关工作、方法、实验、讨论和未来工作 |
+| 审稿回复 | 起草礼貌、具体、非防御性的审稿回复和修改说明 |
+| 标题优化 | 生成多个克制、准确、适合投稿的标题候选 |
+| 术语一致性 | 检查术语混用并建议统一表达 |
+| 学术诚信护栏 | 明确禁止虚构文献、数据集、实验结果和不受支持的结论 |
 
 ## 支持的学术写作任务
 
-- Academic Polishing
-- Academic Expansion
-- Paragraph Merging
-- Chinese-to-English Academic Translation
-- English-to-Chinese Academic Translation
-- Abstract Writing
-- Introduction Writing
-- Related Work Organization
-- Method Section Writing
-- Experiment Section Writing
-- Discussion / Limitation / Future Work Writing
-- Reviewer Response Drafting
-- Title Optimization
-- Terminology Consistency Checking
-- Academic Naturalization
-- Prompt Optimization
+- 学术润色
+- 段落扩写
+- 段落合并
+- 中文到英文学术翻译
+- 英文到中文学术翻译
+- 摘要写作
+- 引言写作
+- 相关工作组织
+- 方法部分写作
+- 实验部分写作
+- 讨论、局限与未来工作写作
+- 审稿回复起草
+- 标题优化
+- 术语一致性检查
+- 学术自然化表达
+- 学术写作提示词优化
 
 ## 支持的研究领域
 
-| Field | Writing emphasis |
+| 领域 | 写作重点 |
 |---|---|
-| Computer Vision | 模型结构、特征表示、鲁棒性、泛化、消融实验 |
-| Artificial Intelligence | 推理、规划、表征学习、多模态、评估边界 |
-| Machine Learning | 优化目标、泛化能力、训练稳定性、模型复杂度 |
-| Medical Imaging | 临床相关性、数据异质性、可解释性、外部验证 |
-| Remote Sensing | 空间分辨率、尺度变化、多源融合、地理泛化 |
-| Natural Language Processing | 语义表征、上下文建模、预训练模型、数据偏差 |
-| Robotics | 感知、规划、控制、实时性、传感器融合 |
-| Data Mining | 模式发现、可扩展性、噪声鲁棒性、评估指标 |
-| Bioinformatics | 样本异质性、统计显著性、生物学解释 |
-| Materials Science | 实验条件、结构-性能关系、表征方法、可重复性 |
+| 计算机视觉 | 模型结构、特征表示、鲁棒性、泛化能力、消融实验 |
+| 人工智能 | 推理、规划、表征学习、多模态、评估边界 |
+| 机器学习 | 优化目标、泛化能力、训练稳定性、模型复杂度 |
+| 医学影像 | 临床相关性、数据异质性、可解释性、外部验证 |
+| 遥感 | 空间分辨率、尺度变化、多源融合、地理泛化 |
+| 自然语言处理 | 语义表征、上下文建模、预训练模型、数据偏差 |
+| 机器人 | 感知、规划、控制、实时性、传感器融合 |
+| 数据挖掘 | 模式发现、可扩展性、噪声鲁棒性、评估指标 |
+| 生物信息学 | 样本异质性、统计显著性、生物学解释 |
+| 材料科学 | 实验条件、结构-性能关系、表征方法、可重复性 |
 
 ## 目录结构
 
 ```text
 academic-writing-assistant/
 ├── .codex-plugin/plugin.json
+├── assets/logo/
 ├── skills/academic-writing-assistant/
 │   ├── SKILL.md
 │   ├── references/
@@ -93,28 +85,80 @@ academic-writing-assistant/
 ├── tests/
 ├── docs/
 ├── evals/
-├── AGENTS.md
-├── CONTRIBUTING.md
-├── ROADMAP.md
-├── CHANGELOG.md
+├── README.md
+├── README_EN.md
 └── LICENSE
 ```
 
-`SKILL.md` 只保留核心触发条件、原则和任务入口；复杂说明放在 `references/` 下，便于 agent 按需读取。
+`SKILL.md` 保留核心说明、触发条件、任务入口和质量要求；详细规则放在 `references/` 中，便于 Agent 按需读取。
 
 ## 安装
 
-### 方式一：作为 Skill 使用
+### Codex 安装
 
-将 `skills/academic-writing-assistant` 复制到你的 agent 环境支持的本地 skills 目录中，然后用 `$academic-writing-assistant` 或自然语言触发。
+克隆仓库：
 
-### 方式二：作为 Codex Plugin 使用
+```bash
+git clone https://github.com/LvvUP/academic-writing-assistant.git
+```
 
-本仓库包含 `.codex-plugin/plugin.json`，可在支持 Codex plugin 的环境中作为本地插件使用。插件 manifest 已指向 `LvvUP/academic-writing-assistant`。
+复制 Skill 到 Codex 本地 skills 目录：
 
-## Quick Examples
+```bash
+mkdir -p ~/.codex/skills
+cp -R academic-writing-assistant/skills/academic-writing-assistant ~/.codex/skills/
+```
 
-### 1. Academic polishing
+开启新的 Codex 会话后，可以使用：
+
+```text
+Use $academic-writing-assistant to polish this academic paragraph.
+```
+
+也可以用自然语言触发，例如：
+
+```text
+我是做医学影像分割的，请帮我把下面这段话润色成 SCI 论文风格。
+```
+
+如果你的 Codex 环境支持本地插件，也可以使用仓库中的 `.codex-plugin/plugin.json` 作为插件 manifest。
+
+### Claude Code 安装
+
+克隆仓库：
+
+```bash
+git clone https://github.com/LvvUP/academic-writing-assistant.git
+```
+
+复制 Skill 到 Claude Code 本地 skills 目录：
+
+```bash
+mkdir -p ~/.claude/skills
+cp -R academic-writing-assistant/skills/academic-writing-assistant ~/.claude/skills/
+```
+
+开启新的 Claude Code 会话后，可以使用：
+
+```text
+Use $academic-writing-assistant to translate this Chinese academic paragraph into English.
+```
+
+### 其他 Agent 安装
+
+如果你的 Agent 支持 Skill 目录机制，请复制整个目录：
+
+```text
+skills/academic-writing-assistant/
+```
+
+如果你的 Agent 不支持 Skill 机制，可以将 `skills/academic-writing-assistant/SKILL.md` 作为主指令，并在需要时加载 `references/` 中的任务路由、领域适配、写作流程、输出模板和质量检查文件。
+
+不要只复制 `scripts/`。脚本只能做辅助检查，真正的任务路由、领域适配和学术诚信规则都在 `SKILL.md` 与 `references/` 中。
+
+## 使用示例
+
+### 学术润色
 
 输入：
 
@@ -134,7 +178,7 @@ The proposed method helps reduce the annotation burden in medical image segmenta
 ## 主要修改说明
 
 1. 将口语化表达改为更正式的论文表达。
-2. 将“比较好”改为更克制的 evidence-bounded 表述。
+2. 将“比较好”改为更克制的证据边界表述。
 3. 保留“小病灶”这一医学影像重点，但避免夸大临床效果。
 
 ## 需确认内容
@@ -142,7 +186,7 @@ The proposed method helps reduce the annotation burden in medical image segmenta
 - 需要补充具体数据集、指标和实验结果，才能写出更强的性能结论。
 ```
 
-### 2. Chinese to English academic translation
+### 中译英
 
 输入：
 
@@ -173,7 +217,7 @@ To address the large scale variations and complex backgrounds in remote sensing 
 - No dataset, metric, or performance claim was added.
 ```
 
-### 3. Reviewer response
+### 审稿回复
 
 输入：
 
@@ -202,9 +246,9 @@ We will revise Section X to better explain the motivation and technical contribu
 [Please insert the method-specific novelty statement here.]
 ```
 
-## Script Usage
+## 脚本使用
 
-The helper scripts are optional and dependency-free.
+辅助脚本不依赖第三方库：
 
 ```bash
 python skills/academic-writing-assistant/scripts/terminology_checker.py examples/terminology-check.md
@@ -212,59 +256,59 @@ python skills/academic-writing-assistant/scripts/structure_checker.py --section 
 python skills/academic-writing-assistant/scripts/skill_lint.py .
 ```
 
-What they do:
+脚本说明：
 
-- `terminology_checker.py`: scans configured terminology variants and reports possible mixed usage.
-- `structure_checker.py`: checks whether a draft section contains expected structural elements.
-- `skill_lint.py`: checks repository-level Skill files, references, README sections, and basic integrity guardrails.
+- `terminology_checker.py`：扫描配置中的术语变体，报告可能的混用问题。
+- `structure_checker.py`：检查摘要、引言、方法、实验、讨论等章节是否包含基本结构要素。
+- `skill_lint.py`：检查仓库中的 Skill 文件、参考文件、README 结构和基本诚信护栏。
 
 ## 设计原则
 
-1. **Academic integrity first**: no fake citations, datasets, experiments, authors, years, or unsupported results.
-2. **Meaning preservation**: improve expression without changing technical meaning.
-3. **Field adaptation**: adapt terms and writing emphasis to the research field.
-4. **Progressive disclosure**: keep `SKILL.md` concise and move detailed rules into references.
-5. **Structured output**: use task-specific templates instead of unstructured rewrites.
-6. **Beginner-friendly**: explain changes, terminology choices, and missing information.
+1. 学术诚信优先：不编造文献、数据集、实验结果、作者、年份或不受支持的结论。
+2. 技术含义保真：改善表达，但不改变用户原文的技术含义。
+3. 领域自适应：根据研究领域调整术语、写作重点和谨慎程度。
+4. 渐进披露：让 `SKILL.md` 保持简洁，把复杂规则放入 `references/`。
+5. 结构化输出：不同任务使用不同输出模板。
+6. 新手友好：说明修改理由、术语选择和需补充信息。
 
-## Academic Integrity
+## 学术诚信
 
-This project is designed as an academic expression assistant, not a paper-writing shortcut.
+这个项目是学术表达辅助工具，不是论文代写或结果生成工具。
 
-It must not:
+它必须避免：
 
-- fabricate references, authors, years, venues, or paper titles;
-- fabricate datasets, experiments, metric values, or ablation findings;
-- exaggerate contribution, novelty, clinical relevance, or deployment readiness;
-- change the technical meaning of user-provided content;
-- provide rewriting whose purpose is to escape academic responsibility.
+- 虚构参考文献、作者、年份、期刊、会议或论文题目；
+- 虚构数据集、实验、指标数值或消融结论；
+- 夸大贡献、创新性、临床价值或部署能力；
+- 改变用户提供内容的技术含义；
+- 帮助规避学术诚信检查。
 
-When evidence is missing, the Skill should use placeholders or ask the user to provide the missing information.
+当证据不足时，Skill 应使用占位符或提示用户补充信息。
 
-## Roadmap
+## 路线图
 
-- **v0.1**: core Skill, task routing, field adaptation, integrity rules, README, examples, helper scripts.
-- **v0.2**: richer paper-section workflows, more title and prompt optimization examples.
-- **v0.3**: reviewer response, rebuttal, cover letter, and submission-style templates.
-- **v0.4**: deeper field packs for medical imaging, remote sensing, NLP, robotics, bioinformatics, and materials science.
-- **v1.0**: stable Skill schema, broader examples, manual evaluation set, and contributor workflow.
+- `v0.1`：核心 Skill、任务路由、领域适配、诚信规则、README、示例和辅助脚本。
+- `v0.2`：增强摘要、引言、相关工作、方法、实验和标题优化示例。
+- `v0.3`：增强审稿回复、rebuttal、response letter 和投稿表达模板。
+- `v0.4`：扩展医学影像、遥感、自然语言处理、机器人、生物信息学和材料科学领域包。
+- `v1.0`：稳定 Skill 结构、完整示例库、人工评估集和贡献流程。
 
-See [ROADMAP.md](ROADMAP.md) for the detailed plan.
+详见 [ROADMAP.md](ROADMAP.md)。
 
-## Contributing
+## 贡献指南
 
-Contributions are welcome, especially:
+欢迎贡献：
 
-- new field adaptation notes;
-- terminology map improvements;
-- safer output templates;
-- examples for real academic workflows using non-sensitive sample text;
-- tests for helper scripts and repository checks.
+- 新领域适配说明；
+- 术语表和术语混用规则；
+- 更安全的输出模板；
+- 不含敏感信息的学术写作示例；
+- 辅助脚本和测试。
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. Contributions that fabricate references, encourage unsupported claims, or weaken academic integrity guardrails will not be accepted.
+提交前请阅读 [CONTRIBUTING.md](CONTRIBUTING.md)。包含虚构文献、鼓励不受支持结论或削弱学术诚信护栏的贡献不会被接受。
 
-## License
+## 许可证
 
-MIT License. See [LICENSE](LICENSE).
+本项目使用 MIT License。详见 [LICENSE](LICENSE)。
 
-If this project helps you write clearer and more responsible academic papers, consider giving it a star. It helps more researchers discover the project.
+如果这个项目帮助你写出更清晰、更负责的学术论文，欢迎给它一个 Star，让更多科研作者发现它。

@@ -34,6 +34,8 @@
       "Translate this Chinese academic paragraph into English.",
       "Draft a polite reviewer response."
     ],
-    "brandColor": "#2563EB"
+    "brandColor": "#2563EB",
+    "composerIcon": "./assets/logo/revision-compass.png",
+    "logo": "./assets/logo/revision-compass.png"
   }
 }

@@ -1,0 +1,14 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Revision Compass</title>
+  <desc id="desc">A compact editorial mark combining page geometry, revision lines, and a confident acceptance tick.</desc>
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M27 25H43C47 25 50 28 50 32V71C46 67 40 65 33 65H27V25Z" stroke-width="3.6"/>
+    <path d="M73 25H57C53 25 50 28 50 32V71C54 67 60 65 67 65H73V25Z" stroke-width="3.6"/>
+    <path d="M35 40H44" stroke-width="2.7"/>
+    <path d="M35 51H43" stroke-width="2.7"/>
+    <path d="M57 40H66" stroke-width="2.7"/>
+    <path d="M57 51H63" stroke-width="2.7"/>
+    <path d="M39 78H56" stroke-width="4"/>
+    <path d="M58 73L65 80L78 61" stroke-width="4"/>
+  </g>
+</svg>
