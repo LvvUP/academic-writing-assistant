@@ -1,6 +1,6 @@
 <div align="center">
 
-![Revision Compass](assets/logo/revision-compass.svg)
+<img src="assets/logo/revision-compass.svg" alt="Revision Compass" width="120">
 
 # Academic Writing Assistant
 
@@ -96,49 +96,51 @@ academic-writing-assistant/
 
 ### Install for Codex
 
-Clone the repository:
+Send this prompt to Codex:
 
-```bash
-git clone https://github.com/LvvUP/academic-writing-assistant.git
+```text
+Install the Academic Writing Assistant Skill from https://github.com/LvvUP/academic-writing-assistant into my local Codex skills directory, then verify that $academic-writing-assistant can be invoked.
 ```
 
-Copy the Skill into your local Codex skills directory:
-
-```bash
-mkdir -p ~/.codex/skills
-cp -R academic-writing-assistant/skills/academic-writing-assistant ~/.codex/skills/
-```
-
-Start a new Codex session and invoke:
+After installation, start a new Codex session and invoke:
 
 ```text
 Use $academic-writing-assistant to polish this academic paragraph.
 ```
 
-You can also trigger it naturally:
+<details>
+<summary>Manual fallback</summary>
 
-```text
-I work on medical image segmentation. Please polish the following paragraph in SCI paper style.
+```bash
+git clone https://github.com/LvvUP/academic-writing-assistant.git
+mkdir -p ~/.codex/skills
+cp -R academic-writing-assistant/skills/academic-writing-assistant ~/.codex/skills/
 ```
 
 If your Codex environment supports local plugins, you can also use `.codex-plugin/plugin.json` as the plugin manifest.
 
+</details>
+
 ### Install for Claude Code
 
-Clone the repository:
+You can also ask Claude Code to install it for you:
+
+```text
+Install the Academic Writing Assistant Skill from https://github.com/LvvUP/academic-writing-assistant into my local Claude Code skills directory, then verify that $academic-writing-assistant can be invoked.
+```
+
+<details>
+<summary>Manual fallback</summary>
 
 ```bash
 git clone https://github.com/LvvUP/academic-writing-assistant.git
-```
-
-Copy the Skill into your local Claude Code skills directory:
-
-```bash
 mkdir -p ~/.claude/skills
 cp -R academic-writing-assistant/skills/academic-writing-assistant ~/.claude/skills/
 ```
 
-Start a new Claude Code session and invoke:
+</details>
+
+After installation, start a new Claude Code session and invoke:
 
 ```text
 Use $academic-writing-assistant to translate this Chinese academic paragraph into English.
@@ -150,6 +152,12 @@ If your agent supports a Skill directory, copy the whole directory:
 
 ```text
 skills/academic-writing-assistant/
+```
+
+If your agent can read GitHub repositories, you can also give it this link:
+
+```text
+https://github.com/LvvUP/academic-writing-assistant
 ```
 
 If your agent does not support Skills directly, use `skills/academic-writing-assistant/SKILL.md` as the main instruction and load files from `references/` when needed.

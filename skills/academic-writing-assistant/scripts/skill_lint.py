@@ -93,7 +93,7 @@ def check(root: Path) -> List[str]:
                 failures.append(f"README.md missing section phrase: {section}")
         if "**中文** | [English](README_EN.md)" not in readme_text:
             failures.append("README.md is missing the Chinese-to-English language switch.")
-        if "![Revision Compass](assets/logo/revision-compass.svg)" not in readme_text:
+        if '<img src="assets/logo/revision-compass.svg" alt="Revision Compass" width="120">' not in readme_text:
             failures.append("README.md is missing the Revision Compass logo.")
 
     readme_en = root / "README_EN.md"
@@ -106,7 +106,7 @@ def check(root: Path) -> List[str]:
                 failures.append(f"README_EN.md missing section phrase: {section}")
         if "[中文](README.md) | **English**" not in readme_en_text:
             failures.append("README_EN.md is missing the English-to-Chinese language switch.")
-        if "![Revision Compass](assets/logo/revision-compass.svg)" not in readme_en_text:
+        if '<img src="assets/logo/revision-compass.svg" alt="Revision Compass" width="120">' not in readme_en_text:
             failures.append("README_EN.md is missing the Revision Compass logo.")
 
     for logo_path in [

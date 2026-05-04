@@ -34,7 +34,7 @@ def test_chinese_readme_contains_key_sections_and_language_switch():
     text = (ROOT / "README.md").read_text(encoding="utf-8")
     required_phrases = [
         "# Academic Writing Assistant",
-        "![Revision Compass](assets/logo/revision-compass.svg)",
+        '<img src="assets/logo/revision-compass.svg" alt="Revision Compass" width="120">',
         "**中文** | [English](README_EN.md)",
         "项目定位",
         "为什么需要",
@@ -45,6 +45,8 @@ def test_chinese_readme_contains_key_sections_and_language_switch():
         "Codex 安装",
         "Claude Code 安装",
         "其他 Agent 安装",
+        "把这句话发给 Codex",
+        "手动安装备用",
         "使用示例",
         "学术诚信",
         "路线图",
@@ -60,7 +62,7 @@ def test_english_readme_contains_key_sections_and_language_switch():
     text = (ROOT / "README_EN.md").read_text(encoding="utf-8")
     required_phrases = [
         "# Academic Writing Assistant",
-        "![Revision Compass](assets/logo/revision-compass.svg)",
+        '<img src="assets/logo/revision-compass.svg" alt="Revision Compass" width="120">',
         "[中文](README.md) | **English**",
         "Positioning",
         "Why This Skill",
@@ -71,6 +73,8 @@ def test_english_readme_contains_key_sections_and_language_switch():
         "Install for Codex",
         "Install for Claude Code",
         "Install for Other Agents",
+        "Send this prompt to Codex",
+        "Manual fallback",
         "Quick Examples",
         "Academic Integrity",
         "Roadmap",

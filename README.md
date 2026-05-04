@@ -1,6 +1,6 @@
 <div align="center">
 
-![Revision Compass](assets/logo/revision-compass.svg)
+<img src="assets/logo/revision-compass.svg" alt="Revision Compass" width="120">
 
 # Academic Writing Assistant
 
@@ -96,49 +96,51 @@ academic-writing-assistant/
 
 ### Codex 安装
 
-克隆仓库：
+最简单的方式：把这句话发给 Codex，让它帮你完成安装。
 
-```bash
-git clone https://github.com/LvvUP/academic-writing-assistant.git
+```text
+请从 https://github.com/LvvUP/academic-writing-assistant 安装 Academic Writing Assistant Skill 到我的本地 Codex skills 目录，并验证 $academic-writing-assistant 可以被调用。
 ```
 
-复制 Skill 到 Codex 本地 skills 目录：
-
-```bash
-mkdir -p ~/.codex/skills
-cp -R academic-writing-assistant/skills/academic-writing-assistant ~/.codex/skills/
-```
-
-开启新的 Codex 会话后，可以使用：
+安装完成后，新开一个 Codex 会话即可使用：
 
 ```text
 Use $academic-writing-assistant to polish this academic paragraph.
 ```
 
-也可以用自然语言触发，例如：
+<details>
+<summary>手动安装备用</summary>
 
-```text
-我是做医学影像分割的，请帮我把下面这段话润色成 SCI 论文风格。
+```bash
+git clone https://github.com/LvvUP/academic-writing-assistant.git
+mkdir -p ~/.codex/skills
+cp -R academic-writing-assistant/skills/academic-writing-assistant ~/.codex/skills/
 ```
 
 如果你的 Codex 环境支持本地插件，也可以使用仓库中的 `.codex-plugin/plugin.json` 作为插件 manifest。
 
+</details>
+
 ### Claude Code 安装
 
-克隆仓库：
+同样可以让 Claude Code 自动安装。把这句话发给 Claude Code：
+
+```text
+请从 https://github.com/LvvUP/academic-writing-assistant 安装 Academic Writing Assistant Skill 到我的本地 Claude Code skills 目录，并验证 $academic-writing-assistant 可以被调用。
+```
+
+<details>
+<summary>手动安装备用</summary>
 
 ```bash
 git clone https://github.com/LvvUP/academic-writing-assistant.git
-```
-
-复制 Skill 到 Claude Code 本地 skills 目录：
-
-```bash
 mkdir -p ~/.claude/skills
 cp -R academic-writing-assistant/skills/academic-writing-assistant ~/.claude/skills/
 ```
 
-开启新的 Claude Code 会话后，可以使用：
+</details>
+
+安装完成后，新开一个 Claude Code 会话即可使用：
 
 ```text
 Use $academic-writing-assistant to translate this Chinese academic paragraph into English.
@@ -150,6 +152,12 @@ Use $academic-writing-assistant to translate this Chinese academic paragraph int
 
 ```text
 skills/academic-writing-assistant/
+```
+
+如果你的 Agent 可以读取 GitHub 仓库，也可以直接把这个链接交给它：
+
+```text
+https://github.com/LvvUP/academic-writing-assistant
 ```
 
 如果你的 Agent 不支持 Skill 机制，可以将 `skills/academic-writing-assistant/SKILL.md` 作为主指令，并在需要时加载 `references/` 中的任务路由、领域适配、写作流程、输出模板和质量检查文件。
