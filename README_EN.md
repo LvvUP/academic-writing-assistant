@@ -57,18 +57,22 @@ This project organizes common academic writing needs into routable tasks, modula
 
 ## Supported Research Fields
 
-| Field | Writing emphasis |
-|---|---|
-| Computer Vision | model architecture, feature representation, robustness, generalization, ablation studies |
-| Artificial Intelligence | reasoning, planning, representation learning, multimodality, evaluation boundaries |
-| Machine Learning | objectives, generalization, training stability, model complexity |
-| Medical Imaging | clinical relevance, data heterogeneity, interpretability, external validation |
-| Remote Sensing | spatial resolution, scale variation, multi-source fusion, geographic generalization |
-| Natural Language Processing | semantic representation, context modeling, pre-trained models, data bias |
-| Robotics | perception, planning, control, real-time performance, sensor fusion |
-| Data Mining | pattern discovery, scalability, noise robustness, evaluation metrics |
-| Bioinformatics | sample heterogeneity, statistical significance, biological interpretation |
-| Materials Science | experimental conditions, structure-property relationships, characterization, reproducibility |
+This Skill is designed to be broadly useful across academic fields. If your field is not listed below, it still uses a general academic writing workflow: identify the task, preserve technical meaning, keep evidence boundaries clear, maintain terminology consistency, and adapt to the research context you provide.
+
+The following are **Built-in Field Adapters**, not a limit on what the Skill can support:
+
+- **Computer Vision**: model architecture, feature representation, robustness, generalization, ablation studies.
+- **Artificial Intelligence**: reasoning, planning, representation learning, multimodality, evaluation boundaries.
+- **Machine Learning**: objectives, generalization, training stability, model complexity.
+- **Medical Imaging**: clinical relevance, data heterogeneity, interpretability, external validation.
+- **Remote Sensing**: spatial resolution, scale variation, multi-source fusion, geographic generalization.
+- **Natural Language Processing**: semantic representation, context modeling, pre-trained models, data bias.
+- **Robotics**: perception, planning, control, real-time performance, sensor fusion.
+- **Data Mining**: pattern discovery, scalability, noise robustness, evaluation metrics.
+- **Bioinformatics**: sample heterogeneity, statistical significance, biological interpretation.
+- **Materials Science**: experimental conditions, structure-property relationships, characterization, reproducibility.
+
+Other disciplines can use it as well. Provide your field, target venue style, key terms, or method background when asking. If important information is missing, the Skill should use placeholders or ask for clarification rather than inventing field-specific facts.
 
 ## Repository Structure
 
@@ -176,23 +180,23 @@ I work on medical image segmentation. Please polish the following paragraph in S
 Our method can reduce the problem of difficult annotation, and the segmentation results are relatively good. It is also helpful for small lesions.
 ```
 
-Expected output structure:
+Example output:
+
+#### Revised Text
 
 ```text
-## Revised Text
-
 The proposed method helps reduce the annotation burden in medical image segmentation and shows potential for improving the delineation of small lesions under the evaluated setting.
+```
 
-## Key Revision Notes
+#### Key Revision Notes
 
 1. Replaced informal phrasing with academic expression.
 2. Rewrote "relatively good" as an evidence-bounded claim.
 3. Preserved the small-lesion focus while avoiding unsupported clinical overclaiming.
 
-## Needs Confirmation
+#### Needs Confirmation
 
 - Dataset names, metrics, and quantitative results are needed for stronger performance claims.
-```
 
 ### Chinese-to-English translation
 
@@ -204,26 +208,26 @@ Please translate the following Chinese paragraph into academic English suitable 
 针对遥感图像中目标尺度变化大、背景复杂的问题，本文提出一种多尺度特征融合方法。
 ```
 
-Expected output structure:
+Example output:
+
+#### English Translation
 
 ```text
-## English Translation
-
 To address the large scale variations and complex backgrounds in remote sensing images, this study proposes a multi-scale feature fusion method.
+```
 
-## Terminology Choices
+#### Terminology Choices
 
-| 中文术语 | English Term | Note |
+| Chinese Term | English Term | Note |
 |---|---|---|
 | 遥感图像 | remote sensing images | Standard term in remote sensing papers |
 | 目标尺度变化 | scale variations | Keeps the technical meaning concise |
 | 多尺度特征融合 | multi-scale feature fusion | Common expression in vision-related papers |
 
-## Translation Notes
+#### Translation Notes
 
 - The translation preserves the problem-method logic.
 - No dataset, metric, or performance claim was added.
-```
 
 ### Reviewer response
 
@@ -234,25 +238,23 @@ Please help me respond to this reviewer comment politely and professionally:
 Reviewer: The novelty of this method is unclear.
 ```
 
-Expected output structure:
+Example output:
 
-```text
-## Reviewer Comment Summary
+#### Reviewer Comment Summary
 
 The reviewer asks for a clearer explanation of the method's novelty.
 
-## Response Draft
+#### Response Draft
 
 Thank you for this constructive comment. We agree that the novelty of the proposed method should be described more explicitly. To address this concern, we propose revising the Introduction and Method sections to clarify the key design differences from existing approaches.
 
-## Manuscript Revision Statement
+#### Manuscript Revision Statement
 
 We will revise Section X to better explain the motivation and technical contribution of the proposed design.
 
-## Suggested Revised Text
+#### Suggested Revised Text
 
 [Please insert the method-specific novelty statement here.]
-```
 
 ## Script Usage
 

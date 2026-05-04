@@ -41,6 +41,9 @@ def test_chinese_readme_contains_key_sections_and_language_switch():
         "核心功能",
         "支持的学术写作任务",
         "支持的研究领域",
+        "内置领域适配预设",
+        "不是支持范围上限",
+        "通用学术写作流程",
         "安装",
         "Codex 安装",
         "Claude Code 安装",
@@ -48,6 +51,7 @@ def test_chinese_readme_contains_key_sections_and_language_switch():
         "把这句话发给 Codex",
         "手动安装备用",
         "使用示例",
+        "输出示例",
         "学术诚信",
         "路线图",
         "贡献指南",
@@ -56,6 +60,8 @@ def test_chinese_readme_contains_key_sections_and_language_switch():
     for phrase in required_phrases:
         assert phrase in text
     assert "不是一组零散 Prompt，而是" not in text
+    assert "| 中文术语 | English Term | Note |" in text
+    assert "```text\n## English Translation" not in text
 
 
 def test_english_readme_contains_key_sections_and_language_switch():
@@ -69,6 +75,9 @@ def test_english_readme_contains_key_sections_and_language_switch():
         "Core Features",
         "Supported Writing Tasks",
         "Supported Research Fields",
+        "Built-in Field Adapters",
+        "not a limit",
+        "general academic writing workflow",
         "Installation",
         "Install for Codex",
         "Install for Claude Code",
@@ -76,6 +85,7 @@ def test_english_readme_contains_key_sections_and_language_switch():
         "Send this prompt to Codex",
         "Manual fallback",
         "Quick Examples",
+        "Example output",
         "Academic Integrity",
         "Roadmap",
         "Contributing",
@@ -84,6 +94,8 @@ def test_english_readme_contains_key_sections_and_language_switch():
     for phrase in required_phrases:
         assert phrase in text
     assert "项目定位" not in text
+    assert "| Chinese Term | English Term | Note |" in text
+    assert "```text\n## English Translation" not in text
 
 
 def test_logo_assets_and_plugin_manifest_are_configured():

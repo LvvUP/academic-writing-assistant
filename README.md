@@ -57,18 +57,22 @@
 
 ## 支持的研究领域
 
-| 领域 | 写作重点 |
-|---|---|
-| 计算机视觉 | 模型结构、特征表示、鲁棒性、泛化能力、消融实验 |
-| 人工智能 | 推理、规划、表征学习、多模态、评估边界 |
-| 机器学习 | 优化目标、泛化能力、训练稳定性、模型复杂度 |
-| 医学影像 | 临床相关性、数据异质性、可解释性、外部验证 |
-| 遥感 | 空间分辨率、尺度变化、多源融合、地理泛化 |
-| 自然语言处理 | 语义表征、上下文建模、预训练模型、数据偏差 |
-| 机器人 | 感知、规划、控制、实时性、传感器融合 |
-| 数据挖掘 | 模式发现、可扩展性、噪声鲁棒性、评估指标 |
-| 生物信息学 | 样本异质性、统计显著性、生物学解释 |
-| 材料科学 | 实验条件、结构-性能关系、表征方法、可重复性 |
+这个 Skill 具有通用学术写作能力。即使你的领域没有出现在下面的列表中，它也会使用通用学术写作流程：先识别任务、保留技术含义、控制证据边界、统一术语，再根据你提供的研究背景和术语进行适配。
+
+下面列出的是**内置领域适配预设**，不是支持范围上限：
+
+- **计算机视觉**：模型结构、特征表示、鲁棒性、泛化能力、消融实验。
+- **人工智能**：推理、规划、表征学习、多模态、评估边界。
+- **机器学习**：优化目标、泛化能力、训练稳定性、模型复杂度。
+- **医学影像**：临床相关性、数据异质性、可解释性、外部验证。
+- **遥感**：空间分辨率、尺度变化、多源融合、地理泛化。
+- **自然语言处理**：语义表征、上下文建模、预训练模型、数据偏差。
+- **机器人**：感知、规划、控制、实时性、传感器融合。
+- **数据挖掘**：模式发现、可扩展性、噪声鲁棒性、评估指标。
+- **生物信息学**：样本异质性、统计显著性、生物学解释。
+- **材料科学**：实验条件、结构-性能关系、表征方法、可重复性。
+
+其他学科也可以使用。你只需要在提问时补充研究领域、目标期刊/会议风格、核心术语或方法背景；如果信息不足，Skill 会使用占位符或提示你补充，而不是编造领域事实。
 
 ## 目录结构
 
@@ -176,23 +180,23 @@ https://github.com/LvvUP/academic-writing-assistant
 我们的方法可以减少标注困难的问题，而且分割结果比较好，对小病灶也有帮助。
 ```
 
-输出结构：
+输出示例：
+
+#### 润色后文本
 
 ```text
-## 润色后文本
-
 The proposed method helps reduce the annotation burden in medical image segmentation and shows potential for improving the delineation of small lesions under the evaluated setting.
+```
 
-## 主要修改说明
+#### 主要修改说明
 
 1. 将口语化表达改为更正式的论文表达。
 2. 将“比较好”改为更克制的证据边界表述。
 3. 保留“小病灶”这一医学影像重点，但避免夸大临床效果。
 
-## 需确认内容
+#### 需确认内容
 
 - 需要补充具体数据集、指标和实验结果，才能写出更强的性能结论。
-```
 
 ### 中译英
 
@@ -204,14 +208,15 @@ The proposed method helps reduce the annotation burden in medical image segmenta
 针对遥感图像中目标尺度变化大、背景复杂的问题，本文提出一种多尺度特征融合方法。
 ```
 
-输出结构：
+输出示例：
+
+#### English Translation
 
 ```text
-## English Translation
-
 To address the large scale variations and complex backgrounds in remote sensing images, this study proposes a multi-scale feature fusion method.
+```
 
-## Terminology Choices
+#### Terminology Choices
 
 | 中文术语 | English Term | Note |
 |---|---|---|
@@ -219,11 +224,10 @@ To address the large scale variations and complex backgrounds in remote sensing 
 | 目标尺度变化 | scale variations | Keeps the technical meaning concise |
 | 多尺度特征融合 | multi-scale feature fusion | Common expression in vision-related papers |
 
-## Translation Notes
+#### Translation Notes
 
 - The translation preserves the problem-method logic.
 - No dataset, metric, or performance claim was added.
-```
 
 ### 审稿回复
 
@@ -234,25 +238,23 @@ To address the large scale variations and complex backgrounds in remote sensing 
 Reviewer: The novelty of this method is unclear.
 ```
 
-输出结构：
+输出示例：
 
-```text
-## Reviewer Comment Summary
+#### Reviewer Comment Summary
 
 The reviewer asks for a clearer explanation of the method's novelty.
 
-## Response Draft
+#### Response Draft
 
 Thank you for this constructive comment. We agree that the novelty of the proposed method should be described more explicitly. To address this concern, we propose revising the Introduction and Method sections to clarify the key design differences from existing approaches.
 
-## Manuscript Revision Statement
+#### Manuscript Revision Statement
 
 We will revise Section X to better explain the motivation and technical contribution of the proposed design.
 
-## Suggested Revised Text
+#### Suggested Revised Text
 
 [Please insert the method-specific novelty statement here.]
-```
 
 ## 脚本使用
 
