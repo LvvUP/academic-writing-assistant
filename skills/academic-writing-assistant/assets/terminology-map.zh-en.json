@@ -1,0 +1,70 @@
+{
+  "computer_vision": [
+    {
+      "recommended_zh": "目标检测",
+      "variants_zh": ["目标检测", "对象检测"],
+      "en": "object detection",
+      "note": "中文计算机视觉论文中通常使用“目标检测”。"
+    },
+    {
+      "recommended_zh": "语义分割",
+      "variants_zh": ["语义分割", "语义划分"],
+      "en": "semantic segmentation",
+      "note": "建议统一为“语义分割”。"
+    },
+    {
+      "recommended_zh": "实例分割",
+      "variants_zh": ["实例分割", "实例划分"],
+      "en": "instance segmentation",
+      "note": "计算机视觉论文中建议使用“实例分割”。"
+    },
+    {
+      "recommended_zh": "鲁棒性",
+      "variants_zh": ["鲁棒性", "稳健性"],
+      "en": "robustness",
+      "note": "“鲁棒性”更常见；若全文已统一使用“稳健性”，也可保持一致。"
+    },
+    {
+      "recommended_zh": "泛化能力",
+      "variants_zh": ["泛化能力", "泛化性能"],
+      "en": "generalization ability",
+      "note": "二者可根据语境使用，但同一段落中不宜混用。"
+    }
+  ],
+  "medical_imaging": [
+    {
+      "recommended_zh": "病灶检测",
+      "variants_zh": ["病灶检测", "病变检测"],
+      "en": "lesion detection",
+      "note": "根据具体医学语境选择，但全文应保持一致。"
+    },
+    {
+      "recommended_zh": "医学图像分割",
+      "variants_zh": ["医学图像分割", "医学影像分割"],
+      "en": "medical image segmentation",
+      "note": "两种中文表达均可，建议在论文中统一。"
+    }
+  ],
+  "remote_sensing": [
+    {
+      "recommended_zh": "变化检测",
+      "variants_zh": ["变化检测", "变更检测"],
+      "en": "change detection",
+      "note": "遥感论文中通常使用“变化检测”。"
+    },
+    {
+      "recommended_zh": "遥感图像",
+      "variants_zh": ["遥感图像", "遥感影像"],
+      "en": "remote sensing image",
+      "note": "两种表达均常见，需结合期刊和全文风格统一。"
+    }
+  ],
+  "machine_learning": [
+    {
+      "recommended_zh": "优化目标",
+      "variants_zh": ["优化目标", "目标函数"],
+      "en": "optimization objective",
+      "note": "若强调训练目标可用“优化目标”，若强调数学函数可用“目标函数”。"
+    }
+  ]
+}

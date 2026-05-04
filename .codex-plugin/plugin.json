@@ -1,0 +1,39 @@
+{
+  "name": "academic-writing-assistant",
+  "version": "0.1.0",
+  "description": "A field-adaptive academic writing Skill for Chinese and English research papers.",
+  "author": {
+    "name": "Academic Writing Assistant contributors",
+    "url": "https://github.com/LvvUP"
+  },
+  "homepage": "https://github.com/LvvUP/academic-writing-assistant",
+  "repository": "https://github.com/LvvUP/academic-writing-assistant",
+  "license": "MIT",
+  "keywords": [
+    "academic-writing",
+    "research-paper",
+    "codex-skill",
+    "translation",
+    "polishing",
+    "chinese-academic-writing",
+    "reviewer-response"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Academic Writing Assistant",
+    "shortDescription": "Field-adaptive academic writing support for researchers.",
+    "longDescription": "A reusable Skill for Chinese-speaking researchers who need structured, field-adaptive, and academic-integrity-aware support for research paper writing, polishing, translation, expansion, merging, section drafting, reviewer response, title optimization, and terminology consistency.",
+    "developerName": "Academic Writing Assistant contributors",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Polish this paragraph for a computer vision paper.",
+      "Translate this Chinese academic paragraph into English.",
+      "Draft a polite reviewer response."
+    ],
+    "brandColor": "#2563EB"
+  }
+}

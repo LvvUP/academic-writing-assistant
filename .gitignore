@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# OS and editor files
+.DS_Store
+.idea/
+.vscode/
+
+# Local secrets and unpublished drafts
+.env
+.env.*
+secrets.*
+private/
+drafts/private/
+*.key
+*.pem
+

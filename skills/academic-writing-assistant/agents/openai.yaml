@@ -1,0 +1,6 @@
+interface:
+  display_name: "Academic Writing Assistant"
+  short_description: "Field-adaptive academic writing support"
+  default_prompt: "Use $academic-writing-assistant to polish this academic paragraph responsibly."
+policy:
+  allow_implicit_invocation: true
