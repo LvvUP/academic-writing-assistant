@@ -1,81 +1,121 @@
 # Field Adapter
 
-Adapt writing emphasis, terminology, and caution level to the research field. Never introduce field-specific claims that are not supported by the user's text.
+Fields differ less in vocabulary than in **what reviewers attack**. A remote sensing reviewer asks about geographic generalization; a clinical reviewer asks about external validation; a theory reviewer asks whether the assumptions were stated. Writing that anticipates the field's characteristic objection is the difference between a defensible paper and one that gets a major revision.
 
-## General Strategy
+Use the entries below to know what to watch for and what to flag. Never introduce a field-specific claim the user's text does not support — knowing what reviewers want is not permission to assert it on the author's behalf.
 
-1. Prefer explicit user field statements.
-2. If absent, infer from technical terms.
-3. If uncertain, use general academic style and state: "Field assumed from terminology: ...".
-4. Keep claims evidence-bounded, especially for clinical, deployment, and benchmark statements.
+## Contents
 
-## Computer Vision
+- [Working without a listed field](#working-without-a-listed-field)
+- [Computer vision](#computer-vision)
+- [Machine learning and AI](#machine-learning-and-ai)
+- [Natural language processing and LLMs](#natural-language-processing-and-llms)
+- [Medical imaging and clinical research](#medical-imaging-and-clinical-research)
+- [Remote sensing](#remote-sensing)
+- [Robotics](#robotics)
+- [Data mining and recommendation](#data-mining-and-recommendation)
+- [Bioinformatics](#bioinformatics)
+- [Materials science and chemistry](#materials-science-and-chemistry)
+- [Social sciences, education, management](#social-sciences-education-management)
 
-- Common tasks: image classification, object detection, semantic segmentation, instance segmentation, tracking, image generation, 3D reconstruction, multimodal perception.
-- Writing focus: model architecture, feature representation, spatial context, robustness, generalization, computational cost, ablation study, benchmark protocol.
-- Common terms: feature extraction, feature fusion, object detection, semantic segmentation, instance segmentation, attention mechanism, robustness, generalization ability, ablation study.
-- Avoid: claiming universal robustness, overstating SOTA, mixing "目标检测/对象检测", or adding benchmark names and numbers not provided.
+## Working without a listed field
 
-## Artificial Intelligence
+The list is a set of presets, not a boundary. For any unlisted field, the same procedure works:
 
-- Common tasks: reasoning, planning, representation learning, multimodal intelligence, decision making, agent systems.
-- Writing focus: problem formulation, learning or reasoning mechanism, evaluation setting, uncertainty, safety, human alignment when relevant.
-- Common terms: representation learning, reasoning, planning, knowledge representation, multimodal learning, alignment, inference.
-- Avoid: broad claims such as "human-level intelligence", unsupported safety claims, or vague "intelligent optimization" wording.
+1. Prefer the user's stated field. Otherwise infer from terminology and say so in one line.
+2. Ask what the field's characteristic reviewer objection is — usually one of: does it generalize beyond this sample, is the comparison fair, are the assumptions stated, is the effect causal, is it reproducible.
+3. Keep claims bounded to the evidence in front of you.
+4. Use the author's own terminology; when it is inconsistent, normalize to their dominant variant rather than importing conventions from a neighboring field.
 
-## Machine Learning
+Fields with distinct conventions worth asking about rather than guessing: pure mathematics (proof structure), law (citation systems), humanities (argumentative rather than IMRaD structure), qualitative social science (positionality, reflexivity).
 
-- Common tasks: supervised learning, self-supervised learning, transfer learning, domain adaptation, optimization, uncertainty estimation.
-- Writing focus: objective function, assumptions, generalization, optimization stability, model complexity, empirical validation, theoretical motivation if available.
-- Common terms: optimization objective, loss function, generalization, regularization, convergence, representation, overfitting, distribution shift.
-- Avoid: claiming proof without derivation, confusing correlation with causation, or using "significant" when no statistical test is given.
+## Computer vision
 
-## Medical Imaging
+**Reviewers attack:** unfair comparison (different backbone, different training budget, different input resolution), benchmark overfitting, missing ablations, claims of robustness with no corruption or distribution-shift testing, cherry-picked qualitative figures.
 
-- Common tasks: lesion detection, organ segmentation, disease classification, registration, reconstruction, report generation, survival or risk prediction.
-- Writing focus: clinical relevance, data heterogeneity, annotation cost, interpretability, external validation, privacy, ethics, scanner or protocol variation.
-- Common terms: lesion detection, organ segmentation, medical image segmentation, clinical relevance, external validation, annotation burden, interpretability.
-- Avoid: diagnostic claims without clinical validation, "can replace clinicians", invented cohorts, invented ethics approval, or overstated clinical deployment.
+**Watch for:** "state-of-the-art" without naming the comparison set or date; robustness claimed from clean-benchmark results; efficiency claims with no FLOPs, parameters, or measured latency; ablations that change two things at once.
 
-## Remote Sensing
+**Terminology:** feature extraction, feature fusion, object detection, semantic/instance segmentation, attention mechanism, backbone, ablation study, zero-shot, fine-tuning.
 
-- Common tasks: land-cover classification, object detection, change detection, semantic segmentation, hyperspectral analysis, multi-source fusion.
-- Writing focus: scale variation, spatial resolution, spectral information, complex background, domain shift, geographic generalization, sensor differences.
-- Common terms: remote sensing image, change detection, spatial resolution, spectral feature, multi-source data fusion, domain adaptation, geographic generalization.
-- Avoid: ignoring spatial scale, mixing "遥感图像/遥感影像" inconsistently, or claiming geographic transfer without evidence.
+## Machine learning and AI
 
-## Natural Language Processing
+**Reviewers attack:** unstated assumptions, generalization claims from a single dataset, missing seed variance and error bars, tuning the proposed method harder than the baselines, "theoretical justification" that does not connect to the algorithm actually implemented.
 
-- Common tasks: text classification, information extraction, machine translation, summarization, question answering, dialogue, retrieval-augmented generation.
-- Writing focus: semantic representation, context modeling, pre-trained language models, transfer learning, data bias, evaluation protocol, hallucination risk.
-- Common terms: contextual representation, pre-trained language model, tokenization, fine-tuning, prompting, retrieval, hallucination, domain adaptation.
-- Avoid: overstating semantic understanding, ignoring data leakage, or using "prove" for empirical benchmark results.
+**Watch for:** "prove" applied to empirical results; "converges" without conditions; "significant" without a test across seeds; conflating theoretical assumptions with experimental conditions; claims of general-purpose capability from narrow benchmarks.
+
+**Terminology:** objective function, generalization, regularization, convergence, distribution shift, sample complexity, inductive bias.
+
+## Natural language processing and LLMs
+
+**Reviewers attack:** data contamination (test data in pretraining), prompt sensitivity presented as model capability, single-run results from a stochastic system, evaluation by an LLM judge without human validation, unfair inference-budget comparisons.
+
+**Watch for:** claims of "understanding" or "reasoning" where the evidence is task performance; benchmark scores without decoding parameters, prompt, and version; missing contamination analysis for recent benchmarks; unstated model version — behavior shifts across releases, so a claim about "GPT-4" without a date is unreproducible.
+
+**Terminology:** in-context learning, chain-of-thought, instruction tuning, RLHF, retrieval-augmented generation, hallucination, contamination, prompt sensitivity.
+
+## Medical imaging and clinical research
+
+The most consequential field for claim discipline. Overclaiming is not just a reviewing problem here — it can influence clinical practice.
+
+**Reviewers attack:** single-center data with no external validation, patient-level versus image-level data leakage, missing demographic breakdown, no comparison against clinician performance, class imbalance masked by accuracy, absent ethics statement.
+
+**Watch for and flag every time:**
+
+- Diagnostic or prognostic claims without prospective clinical validation
+- "clinically applicable," "can assist diagnosis," "reduces workload" without a study measuring it
+- Any suggestion of replacing or matching clinicians without a reader study
+- Internal validation reported as if it were external
+- Correlation phrased as causation — especially frequent in Chinese-to-English translation of 导致
+- Missing ethics approval, consent, or data-governance statements
+
+**Terminology:** lesion detection, organ segmentation, external validation, inter-observer variability, sensitivity/specificity, DSC, AUC, retrospective/prospective, ground truth (prefer "reference standard" in clinical venues).
+
+## Remote sensing
+
+**Reviewers attack:** geographic generalization from one region, temporal generalization from one season, sensor transfer, spatial autocorrelation between train and test tiles, class imbalance across land-cover types.
+
+**Watch for:** performance claims that do not name the region, sensor, resolution, and acquisition period; "applicable to remote sensing images" as an unbounded claim; missing spatial resolution or band information; train/test splits that leak through spatially adjacent tiles — a common and often unnoticed flaw.
+
+**Terminology:** remote sensing image (统一 vs 遥感影像), change detection, spatial/spectral resolution, multi-source fusion, land cover classification, domain adaptation, ground sample distance.
 
 ## Robotics
 
-- Common tasks: perception, localization, mapping, planning, control, manipulation, navigation, human-robot interaction.
-- Writing focus: real-time performance, sensor fusion, physical constraints, safety, deployment robustness, simulation-to-real transfer, failure cases.
-- Common terms: perception, planning, control, SLAM, sensor fusion, trajectory optimization, real-time performance, sim-to-real transfer.
-- Avoid: claiming real-world reliability from simulation only, omitting latency constraints, or overstating safety without validation.
+**Reviewers attack:** simulation-only results presented as deployable, missing real-time and latency measurement, safety claims without failure analysis, small numbers of physical trials, unreported hardware.
 
-## Data Mining
+**Watch for:** sim-to-real gap unacknowledged; "real-time" without a latency figure and a requirement to compare it against; success rates with no trial count; safety claims from limited testing.
 
-- Common tasks: pattern discovery, clustering, anomaly detection, recommendation, graph mining, large-scale data analysis.
-- Writing focus: data distribution, noise robustness, scalability, interpretability, evaluation metrics, computational efficiency.
-- Common terms: pattern mining, anomaly detection, graph mining, scalability, data sparsity, noise robustness, recommendation.
-- Avoid: causal language for association mining, unverifiable business-impact claims, or unsupported scalability statements.
+**Terminology:** perception, SLAM, motion planning, trajectory optimization, sim-to-real transfer, sensor fusion, control frequency, success rate.
+
+## Data mining and recommendation
+
+**Reviewers attack:** offline metrics presented as business impact, causal language for associational findings, scalability claimed but not measured, popularity bias, temporal leakage in splits.
+
+**Watch for:** "increases user engagement" from an offline evaluation; "leads to" for correlational results; scalability claims without complexity analysis or a runtime curve; random splits where a temporal split is required.
+
+**Terminology:** pattern mining, anomaly detection, graph representation learning, cold start, implicit feedback, CTR, scalability, sparsity.
 
 ## Bioinformatics
 
-- Common tasks: gene expression analysis, sequence analysis, protein structure prediction, biomarker discovery, single-cell analysis, multi-omics integration.
-- Writing focus: sample heterogeneity, statistical significance, biological interpretation, reproducibility, validation cohort, batch effects.
-- Common terms: gene expression, biomarker, multi-omics, pathway analysis, batch effect, statistical significance, validation cohort.
-- Avoid: claiming biological mechanism without validation, inventing cohorts, or omitting uncertainty from small-sample results.
+**Reviewers attack:** multiple-testing correction, batch effects, small validation cohorts, biological interpretation unsupported by experiment, cross-validation without an independent cohort.
 
-## Materials Science
+**Watch for:** "significant" without a correction method named; biomarker claims from a single cohort; mechanistic claims from correlational omics; missing batch-effect handling; sample sizes too small for the claims made.
 
-- Common tasks: structure-property prediction, materials discovery, characterization analysis, synthesis optimization, microstructure modeling.
-- Writing focus: experimental conditions, characterization methods, structure-property relationship, reproducibility, mechanism explanation, uncertainty.
-- Common terms: structure-property relationship, characterization, microstructure, synthesis condition, phase composition, mechanical property, reproducibility.
-- Avoid: unsupported mechanism claims, missing experimental conditions, or claiming general material performance beyond tested conditions.
+**Terminology:** differential expression, batch effect, FDR correction, validation cohort, pathway enrichment, multi-omics integration, single-cell.
 
+## Materials science and chemistry
+
+**Reviewers attack:** incomplete synthesis conditions, characterization insufficient to support a structural claim, mechanisms proposed without direct evidence, no reproducibility information, performance outside tested conditions.
+
+**Watch for:** mechanism claims from indirect characterization; performance extrapolated beyond the tested temperature, pressure, or concentration range; missing synthesis parameters that make the work unreproducible; single-sample results with no repeats.
+
+**Terminology:** structure-property relationship, characterization, microstructure, phase composition, synthesis conditions, cyclic stability.
+
+## Social sciences, education, management
+
+**Reviewers attack:** causal claims from observational data, construct validity, sample representativeness, common method bias, missing preregistration, generalizing from one cultural context.
+
+**Watch for:** "affects," "leads to," "improves" from cross-sectional survey data — associational language is required unless the design supports causation; sample described without demographics or recruitment method; effect sizes omitted in favor of p-values; unacknowledged single-country or single-institution scope.
+
+**Terminology:** construct validity, mediation/moderation, common method variance, effect size, sampling frame, self-report bias.
+
+Note the structural difference: many venues in these fields use theoretical framing, hypotheses, and limitations sections that operate differently from IMRaD. Follow the author's structure rather than imposing a science-paper shape.

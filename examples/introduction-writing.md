@@ -11,35 +11,51 @@ Natural Language Processing
 ## User Input
 
 ```text
-请根据以下信息帮我组织 introduction 的写作思路：
-
-方向：面向专业领域问答的检索增强生成
-问题：模型容易生成没有依据的回答；专业术语和上下文依赖强
-方法：加入术语约束和证据重排模块
-贡献：希望强调回答可靠性和证据一致性
+帮我写引言。方向是中文医疗文本的实体识别。现有方法在通用领域效果好，
+但医疗领域标注数据少。我们用了一个基于提示的半监督方法。
 ```
 
 ## Expected Output
 
 ```markdown
-## Draft
+## Introduction Draft
 
-Domain-specific question answering requires models to generate responses that are not only fluent but also grounded in reliable evidence. This requirement is particularly important in specialized domains, where terminology is precise and answers often depend on context-specific knowledge. Although retrieval-augmented generation provides a practical way to incorporate external evidence, generated responses may still contain unsupported statements when retrieved passages are noisy or insufficiently aligned with the question.
+Named entity recognition underpins downstream clinical applications such as
+[请补充你面向的下游任务，例如结构化病历或临床决策支持]. While recent models
+perform strongly on general-domain Chinese text, clinical text differs in
+vocabulary, abbreviation conventions, and document structure
+[citation needed: 说明领域差异的工作].
 
-To address this issue, this study proposes a retrieval-augmented generation framework with terminology constraints and evidence reranking. The terminology constraints are designed to improve the consistency of domain-specific expressions, while the evidence reranking module aims to prioritize passages that are more relevant to the user's question. This design seeks to improve the reliability and evidence consistency of generated answers.
+The core obstacle is annotation. Clinical entity labeling requires domain
+expertise and is constrained by privacy regulations, so labeled corpora remain
+far smaller than their general-domain counterparts
+[citation needed: 报告标注成本或数据规模的工作]. Approaches that assume
+abundant supervision therefore transfer poorly to this setting.
 
-## Writing Logic
+This work addresses that gap with a prompt-based semi-supervised method that
+[请补充方法的核心机制：提示如何构造、无标注数据如何利用].
 
-- Establishes the broad importance of domain-specific question answering.
-- Identifies the reliability problem in retrieval-augmented generation.
-- Introduces the proposed modules as a response to that problem.
-- Avoids claiming improved performance before experimental results are provided.
+The contributions are:
+1. [请补充：你做了什么，而不是它有什么性质]
+2. [请补充]
+3. [请补充]
 
-## Missing Information
+## 写作逻辑
 
-- Target domain.
-- Dataset or evaluation benchmark.
-- Evaluation metrics for reliability and evidence consistency.
-- Quantitative results.
+- 重要性一句带过，不做教科书式综述
+- gap 具体到"标注稀缺"这一可辩护的技术原因，而非泛泛的"效果不好"
+- gap 必须与贡献对应——这是引言最常见的结构性失败
+
+## 缺失信息
+
+- 下游应用场景
+- 提示构造方式与无标注数据的使用机制
+- 参考文献（未提供，故使用 [citation needed] 而非编造引用）
+- 贡献点需由你提供：每条应是"做了什么"，而不是"具有新颖性"
 ```
 
+## 说明
+
+用户没有提供参考文献，因此引言中出现的是 `[citation needed]` 占位符而不是
+看起来合理的引用。这是相关工作与引言类任务的核心约束：虚构文献在格式上完全
+正常，极易被带进投稿稿件。

@@ -2,45 +2,39 @@
 
 ## v0.1: Foundation
 
-- Academic polishing.
-- Expansion and paragraph merging.
-- CN to EN and EN to CN academic translation.
-- Task routing.
-- Field adaptation.
-- Quality checklist.
-- README, examples, tests, and open-source files.
+- Task routing across polishing, expansion, merging, translation, and section writing.
+- Field adaptation across ten research areas.
+- Academic integrity rules and citation safety.
+- Quality checklist, output templates, README, examples, tests.
 
-## v0.2: Paper Writing Workflows
+## v0.2: Fidelity and submission workflow (current)
 
-- Abstract writing.
-- Introduction writing.
-- Related work organization.
-- Method section writing.
-- Experiment section writing.
-- Discussion, limitation, and future work writing.
-- Stronger title optimization templates.
+- Fidelity contract: locked zone, load-bearing language, free surface.
+- L1/L2/L3 change tiers and the auditable change ledger.
+- Journal response letters separated from conference rebuttals.
+- Submission package: cover letters, highlights, AI-use disclosure, CRediT.
+- LaTeX-aware editing with mechanical preservation checking.
+- Whole-draft consistency: terminology, abbreviations, symbols, tense, claims.
+- Deterministic scripts: `fidelity_check.py`, `manuscript_audit.py`.
+- Field adapters rewritten around what reviewers attack.
 
-## v0.3: Submission and Review
+## v0.3: Depth per discipline
 
-- Reviewer response drafting.
-- Rebuttal writing.
-- Response letter templates.
-- Cover letter support.
-- IEEE, CVPR, and general SCI style notes where responsibly scoped.
+- Reviewer attack patterns for more disciplines, including humanities and law.
+- Figure, table, and equation caption conventions.
+- Thesis chapter support, including Chinese degree-thesis structural norms.
+- Response-letter examples covering major revision and rejection appeals.
 
-## v0.4: Field Expansion
+## v0.4: Terminology and community field packs
 
-- Deeper medical imaging support.
-- Deeper remote sensing support.
-- Deeper NLP support.
-- Deeper robotics support.
-- Bioinformatics and materials science terminology expansion.
+- Expanded terminology maps with field-specific notes.
+- A contributor workflow for adding field packs.
+- Broader coverage in `structure_checker.py` keyword rules.
+- More end-to-end examples with real change ledgers.
 
-## v1.0: Stable Release
+## v1.0: Stable release
 
-- Stable Skill structure.
-- Expanded example library.
-- Manual evaluation suite.
-- Strong contributor workflow.
-- Better documentation for plugin packaging and local Skill installation.
-
+- Frozen Skill structure and reference layout.
+- Complete example library across all supported tasks.
+- Manual and automated evaluation suite.
+- Documented plugin packaging and installation across agents.

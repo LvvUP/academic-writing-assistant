@@ -1,37 +1,54 @@
 # AGENTS.md
 
-## Repository Purpose
+## Repository purpose
 
-This repository builds an Academic Writing Assistant Skill for Chinese and English academic paper writing, polishing, translation, section drafting, reviewer response, title optimization, and terminology consistency.
+An Academic Writing Assistant Skill for Chinese and English research
+manuscripts: polishing, translation, section drafting, reviewer responses and
+rebuttals, submission materials, and whole-draft consistency checking.
 
-## Working Rules for Codex
+## What this Skill is actually for
 
-- Preserve academic integrity rules in every Skill file.
-- Do not remove citation safety rules.
-- Do not introduce fake references, fake datasets, fake experimental numbers, or invented user metrics in examples.
-- Keep `SKILL.md` concise and place detailed rules under `references/`.
-- When adding examples, clearly mark placeholders and assumptions.
-- If modifying scripts, run `python -m pytest tests/` before finalizing.
-- If modifying README, keep installation, quick examples, roadmap, contribution guidance, and academic integrity sections.
+Not "make the prose flow better" -- models do that easily, and that is the
+danger: fluent prose quietly upgrades claims. The Skill exists to improve
+writing *without moving the boundary between what the evidence supports and
+what it does not*, and to make that boundary cheap for the author to audit.
 
-## Project Structure
+Any change that weakens the fidelity contract or the integrity boundaries
+defeats the purpose of the project.
 
-- `skills/academic-writing-assistant/`: core Skill.
-- `skills/academic-writing-assistant/references/`: detailed workflow references.
-- `skills/academic-writing-assistant/scripts/`: optional helper scripts.
-- `skills/academic-writing-assistant/assets/`: terminology maps and other reusable assets.
-- `examples/`: usage examples.
-- `evals/`: manual evaluation cases.
-- `docs/`: design, FAQ, scripts, and roadmap docs.
-- `tests/`: script and repository tests.
+## Working rules
 
-## Definition of Done
+- Preserve the fidelity contract in `SKILL.md`: the three zones (locked,
+  load-bearing, free surface) and the L1/L2/L3 change tiers.
+- Preserve citation safety and the fabrication prohibitions. These are not
+  decoration; they are what makes the output usable in a real submission.
+- Keep `SKILL.md` lean. Detailed rules belong in `references/`.
+- Explain *why* an instruction matters rather than stacking imperatives. The
+  model following these instructions has good judgment; give it the reasoning
+  and it will handle cases the rules did not anticipate.
+- Examples must not contain real citations, real unpublished results, or
+  private user data. Invented illustrative content must be obviously
+  illustrative.
+- Do not add claims about venue policies without a verifiable source. Publisher
+  and conference requirements change; where they differ by venue, say so and
+  point the author to the venue's own guide.
+- Run `python -m pytest tests/` after changing scripts or repository structure.
+- Keep the Revision Compass logo in both READMEs. The lint script and tests
+  enforce this.
 
-A change is complete when:
+## Structure
 
-1. The Skill remains usable and coherent.
-2. The README remains beginner-friendly.
-3. Academic integrity constraints are preserved.
-4. Tests pass if scripts or repository structure are changed.
-5. Examples do not contain fabricated real citations, unsupported results, or private user data.
+- `skills/academic-writing-assistant/SKILL.md` — core contract and routing.
+- `skills/academic-writing-assistant/references/` — detailed rules, loaded on demand.
+- `skills/academic-writing-assistant/scripts/` — deterministic checks.
+- `skills/academic-writing-assistant/assets/` — terminology maps.
+- `examples/`, `evals/`, `docs/`, `tests/` — usage, evaluation, documentation, verification.
 
+## Definition of done
+
+1. The Skill remains coherent and usable end to end.
+2. Both READMEs remain accurate and beginner-friendly, with the logo intact.
+3. The fidelity contract and integrity boundaries are preserved.
+4. `python -m pytest tests/` passes.
+5. `python skills/academic-writing-assistant/scripts/skill_lint.py .` passes.
+6. No fabricated citations, results, or venue policy claims anywhere in the repo.

@@ -19,11 +19,29 @@ REQUIRED_REFERENCES = [
     "output-templates.md",
     "quality-checklist.md",
     "examples.md",
+    "fidelity-protocol.md",
+    "citation-safety.md",
+    "reviewer-response.md",
+    "terminology.md",
+    "submission-package.md",
+    "latex-and-formats.md",
+    "consistency-pass.md",
+]
+
+REQUIRED_SCRIPTS = [
+    "fidelity_check.py",
+    "manuscript_audit.py",
+    "terminology_checker.py",
+    "structure_checker.py",
+    "skill_lint.py",
 ]
 
 REQUIRED_ZH_README_SECTIONS = [
     "项目定位",
-    "为什么需要",
+    "保真契约",
+    "锁定区",
+    "承重语言",
+    "自由表层",
     "核心功能",
     "支持的学术写作任务",
     "支持的研究领域",
@@ -44,8 +62,11 @@ REQUIRED_ZH_README_SECTIONS = [
 
 REQUIRED_EN_README_SECTIONS = [
     "Positioning",
-    "Why This Skill",
-    "Core Features",
+    "fidelity contract",
+    "Locked",
+    "Load-bearing",
+    "Free surface",
+    "Core features",
     "Supported Writing Tasks",
     "Supported Research Fields",
     "Built-in Field Adapters",
@@ -86,10 +107,22 @@ def check(root: Path) -> List[str]:
             failures.append("SKILL.md is missing description.")
         if "Never invent" not in text and "Never fabricate" not in text:
             failures.append("SKILL.md should include explicit fabrication guardrails.")
+        # The fidelity contract is the mechanism that keeps revisions honest;
+        # losing any of its three zones silently degrades the whole Skill.
+        for marker in ("Locked zone", "Load-bearing language", "Free surface"):
+            if marker not in text:
+                failures.append(f"SKILL.md is missing the fidelity zone: {marker}")
+        for tier in ("L1", "L2", "L3"):
+            if tier not in text:
+                failures.append(f"SKILL.md is missing the {tier} change tier.")
 
     for ref in REQUIRED_REFERENCES:
         if not (skill_dir / "references" / ref).exists():
             failures.append(f"Missing reference: {ref}")
+
+    for script in REQUIRED_SCRIPTS:
+        if not (skill_dir / "scripts" / script).exists():
+            failures.append(f"Missing script: {script}")
 
     readme = root / "README.md"
     if not readme.exists():
