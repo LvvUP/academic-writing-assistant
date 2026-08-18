@@ -19,18 +19,28 @@ Medical Imaging
 ## Expected Output
 
 ```markdown
-## 润色后文本
+## 修改后文本
 
-The proposed method helps alleviate the annotation burden in medical image segmentation and shows potential for improving the delineation of small lesions under the evaluated setting.
+The proposed method alleviates the annotation burden in medical image
+segmentation and improves the delineation of small lesions compared with the
+evaluated baselines. [请补充数据集、评价指标与具体数值]
 
-## 主要修改说明
+## 改动台账
 
-1. 将“减少标注困难的问题”改为更自然的 academic English 表达 “alleviate the annotation burden”。
-2. 将“分割结果比较好”改为更克制的 “shows potential for improving”，避免在缺少实验数据时夸大性能。
-3. 保留“小病灶”这一医学影像语境中的关键对象。
+L1（语法/冠词/时态）：共 3 处，未逐条列出。
 
-## 需确认内容
+| # | 原文 | 修改后 | 层级 | 原因 |
+|---|---|---|---|---|
+| 1 | 减少标注困难的问题 | alleviates the annotation burden | L2 | 名词化压缩，语义未变 |
+| 2 | 分割结果比较好 | improves the delineation ... compared with the evaluated baselines | L3 | "比较好"没有对照对象。英文论文中的性能表述需说明与谁比较，否则审稿人必然追问 |
 
-- 需要补充具体数据集、评价指标和实验结果，才能写出更强的性能结论。
+## 需确认
+
+- 使用了哪些数据集与评价指标（Dice / IoU / HD95）？
+- "现有方法"具体指哪些 baseline？
+- 标注负担的降低是否有量化口径（标注时长 / 像素量 / 样本数）？
 ```
 
+## 说明
+
+注意输出中**没有编造任何数值**来把句子补完整。缺失信息以醒目占位符呈现，L3 改动给出了理由，作者据此可以判断是否接受。

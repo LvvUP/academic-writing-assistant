@@ -1,34 +1,57 @@
 {
+  "_meta": {
+    "description": "Chinese terminology variants that should not be mixed within one manuscript. Each entry lists the variants, a recommended default, the standard English term, and a note explaining when the recommendation does not apply.",
+    "usage": "python scripts/terminology_checker.py draft.md",
+    "contributing": "Add entries with a real note explaining the field convention. Where both variants are genuinely standard, say so rather than picking arbitrarily -- the choice belongs to the author."
+  },
   "computer_vision": [
     {
       "recommended_zh": "目标检测",
       "variants_zh": ["目标检测", "对象检测"],
       "en": "object detection",
-      "note": "中文计算机视觉论文中通常使用“目标检测”。"
+      "note": "中文视觉论文通用“目标检测”；“对象检测”少见，建议统一。英文不用 target detection。"
     },
     {
       "recommended_zh": "语义分割",
       "variants_zh": ["语义分割", "语义划分"],
       "en": "semantic segmentation",
-      "note": "建议统一为“语义分割”。"
+      "note": "“语义划分”非标准表述，建议统一为“语义分割”。"
     },
     {
       "recommended_zh": "实例分割",
       "variants_zh": ["实例分割", "实例划分"],
       "en": "instance segmentation",
-      "note": "计算机视觉论文中建议使用“实例分割”。"
+      "note": "建议统一为“实例分割”。"
     },
     {
       "recommended_zh": "鲁棒性",
-      "variants_zh": ["鲁棒性", "稳健性"],
+      "variants_zh": ["鲁棒性", "稳健性", "健壮性"],
       "en": "robustness",
-      "note": "“鲁棒性”更常见；若全文已统一使用“稳健性”，也可保持一致。"
+      "note": "“鲁棒性”在工科论文中最常见；若全文已统一使用“稳健性”（统计学背景常见），保持一致即可。"
     },
     {
       "recommended_zh": "泛化能力",
-      "variants_zh": ["泛化能力", "泛化性能"],
-      "en": "generalization ability",
-      "note": "二者可根据语境使用，但同一段落中不宜混用。"
+      "variants_zh": ["泛化能力", "泛化性能", "推广能力"],
+      "en": "generalization",
+      "note": "同一段落内不宜混用。英文中常直接用 generalization，不必写 generalization ability。"
+    },
+    {
+      "recommended_zh": "特征融合",
+      "variants_zh": ["特征融合", "特征聚合", "特征整合"],
+      "en": "feature fusion",
+      "note": "若指同一模块应统一；若论文刻意区分融合与聚合，需在首次出现时定义清楚。英文不用 feature merging。"
+    },
+    {
+      "recommended_zh": "骨干网络",
+      "variants_zh": ["骨干网络", "主干网络"],
+      "en": "backbone",
+      "note": "两种表述均常见，全文统一即可。"
+    },
+    {
+      "recommended_zh": "消融实验",
+      "variants_zh": ["消融实验", "消融研究"],
+      "en": "ablation study",
+      "note": "英文固定搭配为 ablation study，不用 ablation experiment。"
     }
   ],
   "medical_imaging": [
@@ -36,13 +59,25 @@
       "recommended_zh": "病灶检测",
       "variants_zh": ["病灶检测", "病变检测"],
       "en": "lesion detection",
-      "note": "根据具体医学语境选择，但全文应保持一致。"
+      "note": "按具体医学语境选择（病灶偏局部病变，病变范围更广），全文须一致。"
     },
     {
       "recommended_zh": "医学图像分割",
       "variants_zh": ["医学图像分割", "医学影像分割"],
       "en": "medical image segmentation",
-      "note": "两种中文表达均可，建议在论文中统一。"
+      "note": "两种中文表达均标准；“影像”在临床期刊更常见，“图像”在工科期刊更常见。选定后全文统一。"
+    },
+    {
+      "recommended_zh": "外部验证",
+      "variants_zh": ["外部验证", "外部测试"],
+      "en": "external validation",
+      "note": "临床研究中“外部验证”是规范术语，与内部验证构成关键区分，不宜写成“外部测试”。"
+    },
+    {
+      "recommended_zh": "金标准",
+      "variants_zh": ["金标准", "标准答案"],
+      "en": "reference standard",
+      "note": "临床期刊多用“金标准 / reference standard”；工科论文常用“真值 / ground truth”。按目标期刊选择。"
     }
   ],
   "remote_sensing": [
@@ -50,21 +85,97 @@
       "recommended_zh": "变化检测",
       "variants_zh": ["变化检测", "变更检测"],
       "en": "change detection",
-      "note": "遥感论文中通常使用“变化检测”。"
+      "note": "遥感论文标准表述为“变化检测”。"
     },
     {
       "recommended_zh": "遥感图像",
       "variants_zh": ["遥感图像", "遥感影像"],
       "en": "remote sensing image",
-      "note": "两种表达均常见，需结合期刊和全文风格统一。"
+      "note": "两种表达均标准，测绘遥感期刊多用“影像”，需结合期刊风格全文统一。"
+    },
+    {
+      "recommended_zh": "空间分辨率",
+      "variants_zh": ["空间分辨率", "地面分辨率"],
+      "en": "spatial resolution",
+      "note": "若指地面采样距离，英文应写 ground sample distance (GSD)，与 spatial resolution 含义不完全相同。"
+    },
+    {
+      "recommended_zh": "多源数据融合",
+      "variants_zh": ["多源数据融合", "多源信息融合"],
+      "en": "multi-source data fusion",
+      "note": "全文统一即可。"
     }
   ],
   "machine_learning": [
     {
       "recommended_zh": "优化目标",
       "variants_zh": ["优化目标", "目标函数"],
-      "en": "optimization objective",
-      "note": "若强调训练目标可用“优化目标”，若强调数学函数可用“目标函数”。"
+      "en": "optimization objective / objective function",
+      "note": "若论文刻意区分训练目标与数学函数，保留区分并在首次出现时说明；否则统一。"
+    },
+    {
+      "recommended_zh": "过拟合",
+      "variants_zh": ["过拟合", "过度拟合"],
+      "en": "overfitting",
+      "note": "“过拟合”为标准术语。"
+    },
+    {
+      "recommended_zh": "微调",
+      "variants_zh": ["微调", "精调"],
+      "en": "fine-tuning",
+      "note": "“微调”为标准术语。"
+    },
+    {
+      "recommended_zh": "训练集",
+      "variants_zh": ["训练集", "训练数据集"],
+      "en": "training set",
+      "note": "全文统一即可，通常“训练集”更简洁。"
+    },
+    {
+      "recommended_zh": "分布偏移",
+      "variants_zh": ["分布偏移", "分布漂移"],
+      "en": "distribution shift",
+      "note": "全文统一；若同时讨论 concept drift，需明确区分。"
+    }
+  ],
+  "nlp": [
+    {
+      "recommended_zh": "预训练语言模型",
+      "variants_zh": ["预训练语言模型", "预训练模型"],
+      "en": "pre-trained language model",
+      "note": "若论文同时涉及视觉预训练模型，需保留“语言”以避免歧义。"
+    },
+    {
+      "recommended_zh": "大语言模型",
+      "variants_zh": ["大语言模型", "大型语言模型"],
+      "en": "large language model (LLM)",
+      "note": "两者均可，全文统一。"
+    },
+    {
+      "recommended_zh": "幻觉",
+      "variants_zh": ["幻觉", "臆造"],
+      "en": "hallucination",
+      "note": "“幻觉”为当前中文文献主流译法。"
+    }
+  ],
+  "general_academic": [
+    {
+      "recommended_zh": "本文",
+      "variants_zh": ["本文", "本研究"],
+      "en": "this paper / this study",
+      "note": "期刊论文中混用较常见但显得不整齐；建议全文以一种为主。学位论文通常用“本文”。"
+    },
+    {
+      "recommended_zh": "评价指标",
+      "variants_zh": ["评价指标", "评估指标"],
+      "en": "evaluation metric",
+      "note": "两者均可，全文统一。"
+    },
+    {
+      "recommended_zh": "对比实验",
+      "variants_zh": ["对比实验", "比较实验"],
+      "en": "comparative experiments",
+      "note": "全文统一即可。"
     }
   ]
 }

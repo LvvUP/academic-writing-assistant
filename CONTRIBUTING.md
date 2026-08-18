@@ -34,18 +34,30 @@
 - [ ] 新增术语条目包含简短说明。
 - [ ] `SKILL.md` 保持简洁；详细规则放在 `references/` 中。
 - [ ] `python -m pytest tests/` 可以通过。
+- [ ] `python skills/academic-writing-assistant/scripts/skill_lint.py .` 可以通过。
 - [ ] 如果行为、安装方式或文档结构发生变化，README 和相关文档已同步更新。
 
 ### 添加新的研究领域
 
 请在 `skills/academic-writing-assistant/references/field-adapter.md` 中添加对应领域小节，并至少说明：
 
-1. 常见任务；
-2. 写作重点；
-3. 常用术语；
-4. 需要避免的表述或结论。
+1. **该领域审稿人会攻击什么**——这是最有价值的部分。遥感审稿人问地理泛化，
+   临床审稿人问外部验证，NLP 审稿人问数据污染。知道会被问什么，比知道该领域
+   的词汇有用得多；
+2. 需要警惕的具体表述（哪些写法会引来质疑）；
+3. 常用术语。
 
-如有必要，可以同时在 `assets/terminology-map.zh-en.json` 中添加术语条目，并在 `examples/` 下补充安全示例。
+写这部分时请基于你在该领域投稿或审稿的实际经验。凭印象拼凑的"审稿人关注点"
+比没有更糟，因为它会误导作者把精力放在错误的地方。
+
+如有必要，可以同时在 `assets/terminology-map.zh-en.json` 中添加术语条目
+（每条需附说明），并在 `examples/` 下补充安全示例。
+
+### 修改保真契约
+
+`SKILL.md` 中的三区域（锁定区 / 承重语言 / 自由表层）与 L1/L2/L3 分级是整个
+Skill 的核心机制，测试与 lint 都会检查它们的存在。如果你认为某处需要调整，
+请在 PR 描述中说明理由——这部分改动会被仔细审阅。
 
 ## English
 
@@ -79,15 +91,31 @@ Before opening a PR:
 - [ ] New terminology entries include a short note.
 - [ ] `SKILL.md` remains concise; detailed rules live in `references/`.
 - [ ] `python -m pytest tests/` passes.
+- [ ] `python skills/academic-writing-assistant/scripts/skill_lint.py .` passes.
 - [ ] README and related docs are updated if behavior, installation, or documentation structure changes.
 
 ### Adding a New Research Field
 
 Add a field section to `skills/academic-writing-assistant/references/field-adapter.md` with:
 
-1. common tasks;
-2. writing focus;
-3. common terms;
-4. expressions or claims to avoid.
+1. **What reviewers in that field attack.** This is the most valuable part.
+   Remote sensing reviewers ask about geographic generalization, clinical
+   reviewers about external validation, NLP reviewers about data contamination.
+   Knowing what a field asks is far more actionable than knowing its vocabulary.
+2. Specific phrasings to watch for — what wording invites a reviewer question.
+3. Common terminology.
 
-If useful, also add terminology entries to `assets/terminology-map.zh-en.json` and a safe example under `examples/`.
+Write this from actual experience submitting to or reviewing for the field.
+Invented "reviewer concerns" are worse than none, because they send authors to
+spend effort in the wrong place.
+
+If useful, also add terminology entries to `assets/terminology-map.zh-en.json`
+(each needs an explanatory note) and a safe example under `examples/`.
+
+### Changing the fidelity contract
+
+The three zones (locked / load-bearing / free surface) and the L1/L2/L3 tiers in
+`SKILL.md` are the mechanism the whole Skill rests on, and both the tests and
+the lint script check that they are present. If you believe something there
+needs to change, explain the reasoning in the PR description — those changes get
+close review.

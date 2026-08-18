@@ -1,7 +1,7 @@
 {
   "name": "academic-writing-assistant",
-  "version": "0.1.0",
-  "description": "A field-adaptive academic writing Skill for Chinese and English research papers.",
+  "version": "0.2.0",
+  "description": "A fidelity-first academic writing Skill for Chinese and English research papers.",
   "author": {
     "name": "Academic Writing Assistant contributors",
     "url": "https://github.com/LvvUP"
@@ -13,16 +13,21 @@
     "academic-writing",
     "research-paper",
     "codex-skill",
+    "claude-skill",
     "translation",
     "polishing",
     "chinese-academic-writing",
-    "reviewer-response"
+    "reviewer-response",
+    "rebuttal",
+    "latex",
+    "manuscript",
+    "peer-review"
   ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Academic Writing Assistant",
-    "shortDescription": "Field-adaptive academic writing support for researchers.",
-    "longDescription": "A reusable Skill for Chinese-speaking researchers who need structured, field-adaptive, and academic-integrity-aware support for research paper writing, polishing, translation, expansion, merging, section drafting, reviewer response, title optimization, and terminology consistency.",
+    "shortDescription": "Fidelity-first academic writing support for researchers.",
+    "longDescription": "A reusable Skill for researchers writing in Chinese and English. It improves manuscripts without moving the boundary between what the evidence supports and what it does not: every edit is classified as surface, structure, or claim, and claim-level changes are never applied silently. Covers polishing, translation, section drafting, journal response letters and conference rebuttals, submission materials, LaTeX-aware editing, and whole-draft consistency checking.",
     "developerName": "Academic Writing Assistant contributors",
     "category": "Productivity",
     "capabilities": [
@@ -32,7 +37,8 @@
     "defaultPrompt": [
       "Polish this paragraph for a computer vision paper.",
       "Translate this Chinese academic paragraph into English.",
-      "Draft a polite reviewer response."
+      "Draft a rebuttal to this reviewer comment.",
+      "Check this draft for terminology and claim consistency."
     ],
     "brandColor": "#2563EB",
     "composerIcon": "./assets/logo/revision-compass.png",
