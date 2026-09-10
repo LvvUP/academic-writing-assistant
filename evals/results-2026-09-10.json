@@ -1,0 +1,532 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-10",
+  "status": "COMPLETED_WITH_RETAINED_PRIMARY_FAILURE_AND_PASSING_TARGETED_FIX_CONFIRMATION",
+  "evaluation_type": "Exploratory Skill-guided behavior evaluation; not native host end-to-end certification.",
+  "model": {
+    "name": "gpt-6-astra",
+    "reasoning_effort": "ultra",
+    "basis": "Recorded first turn_context for each actual executor session, inspected after collection.",
+    "exact_snapshot": null,
+    "temperature": null,
+    "seed": null
+  },
+  "source_versions": {
+    "baseline": {
+      "commit": "6af0be1916b6ce6452fee2d1ddf053f37584380d",
+      "skill_snapshot_sha256": "79238777ac8b6a8efc426f06452723d8be99364bac6aab5e2bbf95310700a4db"
+    },
+    "candidate_before_fix": {
+      "commit": null,
+      "skill_snapshot_sha256": "d156457448e668bd554dbaaaf5d662a43ffae1e79e8fd6f6b6055119d8573f6a",
+      "source_state": "Frozen uncommitted development snapshot before license/metadata/display updates."
+    },
+    "candidate_after_fix": {
+      "commit": null,
+      "skill_snapshot_sha256": "ed034721f12cc178c2ef469c3e55b134763f6e1d11f1a2b2dac76567d15c4a63",
+      "changed_skill_files": [
+        "references/writing-workflows.md"
+      ],
+      "source_state": "Frozen uncommitted development snapshot before license/metadata/display updates."
+    }
+  },
+  "snapshot_hash_method": "SHA256 of the UTF-8 JSON filename-to-file-SHA256 map, json.dumps(sort_keys=True) with default separators. Full frozen snapshots are retained locally; later license/metadata/documentation edits are outside these model runs.",
+  "input_sha256": {
+    "inputs.json": "7df102bf5b056eb0129a3871b50cec15c058150fe3c89887715b7612aff17877",
+    "schedule.json": "acd8009d13a1e3810f604c95f42a5d61249e4b0efdcdbb7d09c82d613a6e4ff5",
+    "rubric.json": "fd591d85fd3f1b35e58b4bf4717957296bdcd8b73db098482cddab1040c43a29"
+  },
+  "primary": {
+    "baseline": {
+      "denominator": 24,
+      "PASS": 24,
+      "FAIL": 0,
+      "INSUFFICIENT": 0,
+      "NOT_RUN": 0,
+      "observations": [
+        {
+          "id": "E01-R1",
+          "case_id": "E01",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E02-R1",
+          "case_id": "E02",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E03-R1",
+          "case_id": "E03",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E04-R1",
+          "case_id": "E04",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E05-R1",
+          "case_id": "E05",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E06-R1",
+          "case_id": "E06",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E07-R1",
+          "case_id": "E07",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E08-R1",
+          "case_id": "E08",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E09-R1",
+          "case_id": "E09",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E10-R1",
+          "case_id": "E10",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E11-R1",
+          "case_id": "E11",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E12-R1",
+          "case_id": "E12",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E13-R1",
+          "case_id": "E13",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E14-R1",
+          "case_id": "E14",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E15-R1",
+          "case_id": "E15",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E16-R1",
+          "case_id": "E16",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E17-R1",
+          "case_id": "E17",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E18-R1",
+          "case_id": "E18",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E19-R1",
+          "case_id": "E19",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E20-R1",
+          "case_id": "E20",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E04-R2",
+          "case_id": "E04",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E08-R2",
+          "case_id": "E08",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E09-R2",
+          "case_id": "E09",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E20-R2",
+          "case_id": "E20",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        }
+      ]
+    },
+    "candidate_before_fix": {
+      "denominator": 24,
+      "PASS": 23,
+      "FAIL": 1,
+      "INSUFFICIENT": 0,
+      "NOT_RUN": 0,
+      "observations": [
+        {
+          "id": "E01-R1",
+          "case_id": "E01",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E02-R1",
+          "case_id": "E02",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E03-R1",
+          "case_id": "E03",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E04-R1",
+          "case_id": "E04",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E05-R1",
+          "case_id": "E05",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E06-R1",
+          "case_id": "E06",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E07-R1",
+          "case_id": "E07",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E08-R1",
+          "case_id": "E08",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E09-R1",
+          "case_id": "E09",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E10-R1",
+          "case_id": "E10",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E11-R1",
+          "case_id": "E11",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E12-R1",
+          "case_id": "E12",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E13-R1",
+          "case_id": "E13",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E14-R1",
+          "case_id": "E14",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E15-R1",
+          "case_id": "E15",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E16-R1",
+          "case_id": "E16",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E17-R1",
+          "case_id": "E17",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E18-R1",
+          "case_id": "E18",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E19-R1",
+          "case_id": "E19",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E20-R1",
+          "case_id": "E20",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E04-R2",
+          "case_id": "E04",
+          "status": "FAIL",
+          "failed_criteria": [
+            "E04-1"
+          ],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E08-R2",
+          "case_id": "E08",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E09-R2",
+          "case_id": "E09",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E20-R2",
+          "case_id": "E20",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        }
+      ]
+    }
+  },
+  "isolated_confirmation": {
+    "baseline": {
+      "denominator": 2,
+      "PASS": 2,
+      "FAIL": 0,
+      "INSUFFICIENT": 0,
+      "NOT_RUN": 0,
+      "observations": [
+        {
+          "id": "E07-ISOLATED",
+          "case_id": "E07",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E15-ISOLATED",
+          "case_id": "E15",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        }
+      ]
+    },
+    "candidate_before_fix": {
+      "denominator": 2,
+      "PASS": 2,
+      "FAIL": 0,
+      "INSUFFICIENT": 0,
+      "NOT_RUN": 0,
+      "observations": [
+        {
+          "id": "E07-ISOLATED",
+          "case_id": "E07",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E15-ISOLATED",
+          "case_id": "E15",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        }
+      ]
+    }
+  },
+  "post_fix_paired_confirmation": {
+    "baseline": {
+      "denominator": 2,
+      "PASS": 2,
+      "FAIL": 0,
+      "INSUFFICIENT": 0,
+      "NOT_RUN": 0,
+      "observations": [
+        {
+          "id": "E04-CHECK-1",
+          "case_id": "E04",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E04-CHECK-2",
+          "case_id": "E04",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        }
+      ]
+    },
+    "candidate_after_fix": {
+      "denominator": 2,
+      "PASS": 2,
+      "FAIL": 0,
+      "INSUFFICIENT": 0,
+      "NOT_RUN": 0,
+      "observations": [
+        {
+          "id": "E04-CHECK-1",
+          "case_id": "E04",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        },
+        {
+          "id": "E04-CHECK-2",
+          "case_id": "E04",
+          "status": "PASS",
+          "failed_criteria": [],
+          "insufficient_criteria": []
+        }
+      ]
+    }
+  },
+  "primary_failure": {
+    "version": "candidate_before_fix",
+    "observation": "E04-R2",
+    "criterion": "E04-1",
+    "finding": "The abstract omitted the explicitly supplied incomplete-experiment state; no fabricated result was observed.",
+    "action": "Clarified retention of known incomplete status, distinct from unknown status or missing material; independent instruction/example review completed. Original FAIL retained. A separate fresh paired confirmation then passed 2/2 per version; this does not replace the failed primary observation."
+  },
+  "E14_whitespace_word_counts": {
+    "baseline": 43,
+    "candidate_before_fix": 40,
+    "limit": 45
+  },
+  "evidence_recovery": {
+    "initial_without_original_tool_traces": {
+      "baseline": {
+        "PASS": 15,
+        "FAIL": 0,
+        "INSUFFICIENT": 9
+      },
+      "candidate_before_fix": {
+        "PASS": 14,
+        "FAIL": 1,
+        "INSUFFICIENT": 9
+      }
+    },
+    "action": "Original tool requests, returns and command/web/file events were recovered from exactly identified evaluation sessions; the independent scorer inspected them and retained prior scores and adjudications locally. No rerun replaced those execution records."
+  },
+  "limitations": [
+    "Eight tasks share each primary executor context; repeats are not independent random samples.",
+    "Inputs were presented in fixed order, but internal answer-generation order is not enforced; one B02 executor reported preparing E15 first.",
+    "E06/E07 share source context and primary E15 may retain earlier resources; fresh isolated E07 and E15 are separate paired confirmations.",
+    "Scoring began with opaque group identities. Coordinator discussion of the identified candidate failure could reveal identity during later evidence adjudication; this is not a fully blinded study.",
+    "No protocol-summary hash was recorded before a linked-full-text wording typo was corrected; actual E06 input and dispatched instructions permitted only the abstract/metadata page.",
+    "The exact model snapshot, sampling temperature and seed are unavailable. Recorded tool events are not a complete OS syscall audit.",
+    "Core language behavior, native Skill discovery, script tests and native host execution are different evidence.",
+    "This small exploratory sample cannot establish statistical improvement or general performance guarantees.",
+    "Targeted post-fix confirmation uses four new single-request contexts and another independent blinded scorer. It has its own denominator and does not establish stability or superiority.",
+    "Later licensing, metadata, presentation and final-review fixes to numeric relations, input boundaries and manuscript hints postdate these frozen model runs. Later script changes were checked with deterministic regressions; the full model evaluation was not rerun on the final package."
+  ]
+}

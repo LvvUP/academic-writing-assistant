@@ -1,0 +1,12 @@
+# Development only; manuscript checks remain standard-library-only.
+# Update via Dependabot, then rerun Python 3.9/3.12 and package checks.
+pytest==8.4.2
+PyYAML==6.0.3
+iniconfig==2.1.0
+packaging==25.0
+pluggy==1.6.0
+Pygments==2.19.2
+exceptiongroup==1.3.0; python_version < "3.11"
+tomli==2.2.1; python_version < "3.11"
+typing_extensions==4.15.0; python_version < "3.11"
+colorama==0.4.6; sys_platform == "win32"

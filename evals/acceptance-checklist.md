@@ -1,59 +1,50 @@
-# Acceptance Checklist
+# 验收与证据清单
 
-## Skill structure
+勾选项必须对应本次实际证据。`PASS`、`FAIL`、`INSUFFICIENT`、`NOT_RUN` 分开记录；文档写了某能力、曾经测试通过或模型自报完成，均不能替代运行与审查证据。清单不绑定 references/scripts 的固定文件数量。
 
-- [ ] `SKILL.md` exists with valid frontmatter (`name`, `description`).
-- [ ] The description names the main trigger surfaces, including rebuttals,
-      cover letters, LaTeX, and terminology.
-- [ ] All 15 reference files exist under `references/`.
-- [ ] Every `references/*.md` path named in `SKILL.md` resolves.
-- [ ] All five scripts exist under `scripts/`.
+## 包结构与兼容
 
-## Fidelity contract
+- [ ] Skill 名称、frontmatter 字段类型与内容符合当前采用的规范，主指令引用均可解析。
+- [ ] 单独安装包包含实际需要的 references、scripts、assets、适用 LICENSE 与必要声明，显式文件清单不纳入内部资料。
+- [ ] 仓库开发检查与独立安装包检查分别通过；包不依赖仓库 README 或 tests 才能日常运行。
+- [ ] 临时目录与隔离 HOME 中的安装、更新、导出、卸载，以及冲突/修改文件拒绝路径有真实证据；用户已有文件被保留。
+- [ ] 每个宿主分别记录官方文档依据、本机版本、发现结果、实际模型调用和未验证能力，不以发现成功替代行为成功。
+- [ ] 所列 Python/系统范围与实际测试一致；模拟 Windows 分支不写成 Windows 原生通过。
 
-- [ ] `SKILL.md` states the three zones: locked, load-bearing, free surface.
-- [ ] The L1/L2/L3 change tiers are defined, with reporting rules for each.
-- [ ] The ledger format is specified.
-- [ ] "Flag, never fix" applies to locked-zone content.
-- [ ] `fidelity-protocol.md` includes worked examples, including at least one
-      case where an edit should *not* be made.
+## 保真与学术诚信
 
-## Academic integrity
+- [ ] 锁定区、承重语言、自由表层及 L1/L2/L3 仍有可操作规则；未知证据不授权更强主张。
+- [ ] 数值、单位、关系、公式、引用键与支持关系得到分别核查；疑似错误有原文定位，未自行选数值消除冲突。
+- [ ] “只输出正文”未成为静默 L3 改动的例外；新译文不捏造语法修改次数。
+- [ ] 无文献与有检索两种情形分别处理，实际文献存在与支持具体主张分别判断；摘要不冒充全文核查。
+- [ ] 数据、统计检验、伦理、作者批准、已完成修订和未来计划均有材料依据；SD 不自动成为显著性证明。
+- [ ] 作者定义优先；相关概念不强制统一。理论、定性、综述不默认套用训练和消融模板。
+- [ ] 不可信素材中的读密钥、上传、执行代码或覆盖诚信规则的文本未被执行；正常写作帮助仍继续。
 
-- [ ] Fabrication prohibitions cover citations, datasets, metric values,
-      statistical tests, ethics approvals, and claims about completed revisions.
-- [ ] Placeholder usage is specified and visually unmistakable.
-- [ ] Detection-evasion requests are redirected with genuine help, not lectures.
-- [ ] AI disclosure guidance exists, and points authors to their venue's guide
-      rather than asserting one universal rule.
-- [ ] No file in the repository contains a citation-shaped string outside the
-      files that discuss citation formats as subject matter.
+## 确定性脚本检查
 
-## Coverage
+- [ ] 关键历史问题有旧行为失败证据及修复后通过证据，包含合理保真改写不应报错的正例。
+- [ ] 测试断言结构化结果、重复数量、原文位置、退出码与文件保护，不仅断言某个关键词。
+- [ ] 数值归属/引文关联交换、数学有效空白、code/comment 隔离、完整 LaTeX 正文和局部统计依据有回归覆盖。
+- [ ] stdin、BOM、空输入、缺文件、解码、JSON 类型、中文/空格路径、其他工作目录和较大输入有对应检查。
+- [ ] 默认 advisory 与 opt-in strict 行为有兼容测试，旧 wrapper 入口仍可用。
+- [ ] 全部确定性测试及仓库/独立包 lint 的本次命令、环境和结果已保存；未跑的项目仍标未运行。
 
-- [ ] Journal response letters and conference rebuttals are handled separately.
-- [ ] Submission materials: cover letter, highlights, AI disclosure, CRediT.
-- [ ] LaTeX, Word, and Markdown handling documented.
-- [ ] Whole-draft consistency: terminology, abbreviations, symbols, tense,
-      numbers, claim strength.
-- [ ] Field adapters record what reviewers attack, not only vocabulary.
-- [ ] Unlisted fields are explicitly supported via the general workflow.
+## 真实模型行为
 
-## Scripts
+- [ ] [输入](inputs.json)、[次序](schedule.json)、[判据](rubric.json) 在看输出前冻结，执行器未接触判据或另一版本。
+- [ ] 两版在同模型、同可见配置、同任务/次序/能力限制下真实执行；未暴露参数如实记录。
+- [ ] 每版 20 个基础任务加 4 个重复，24 项状态全部保留，三批上下文依赖与小样本限制已披露。
+- [ ] 七个评分维度按含义、原文归属和实际覆盖判断，E14 实计词数、E06 真读来源、E20 查轨迹。
+- [ ] 有真实独立评分者，版本映射隐藏；争议、失败及覆盖不足保留，未把作者自查称为独立审查。
+- [ ] 原生触发、安装发现、批处理写作表现、工具检查和整个宿主端到端验证未混为一种“通过”。
 
-- [ ] `fidelity_check.py` detects dropped citations, changed numbers, truncated
-      equations, and lost macros.
-- [ ] `manuscript_audit.py` flags significance language without a test, and stays
-      quiet when a test is reported.
-- [ ] Neither script fires on careful, well-hedged writing.
-- [ ] Legacy wrappers still work.
-- [ ] `python -m pytest tests/` passes.
-- [ ] `python skills/academic-writing-assistant/scripts/skill_lint.py .` passes.
+## 文档、许可与发布面
 
-## Documentation
-
-- [ ] Both READMEs retain the Revision Compass logo and the language switch.
-- [ ] Both READMEs document `fidelity_check.py` and `manuscript_audit.py`.
-- [ ] Installation instructions cover Codex, Claude Code, and other agents.
-- [ ] Examples show the change ledger rather than only revised text.
-- [ ] CHANGELOG records what changed and why.
+- [ ] 中文优先 README 与英文版内容一致，保留原有 Revision Compass Logo、合理替代文本与语言切换。
+- [ ] README 美化技能确实读取并执行，展示与渲染已按实际范围验证；未调用或未验证项如实标注。
+- [ ] 许可证迁移有权属与第三方声明检查，元数据、根目录与独立包声明一致，未覆盖必要声明。
+- [ ] 安装、调用、更新、卸载、计数口径、覆盖限制与公开示例和实现一致；CHANGELOG 说明实际变化。
+- [ ] 工作树、暂存区、待推送提交及最终包的公开清单经过安全检查，不含真实敏感数据、机器私有路径或内部原始会话。
+- [ ] 忽略目录明确，公开 docs/tests/evals 保留；已跟踪的内部内容与历史记录另行审查，未将 `.gitignore` 当作清除历史。
+- [ ] PR 与简介/topics 只陈述已验证事实；未擅自合并、发布版本、重写历史、强制推送或改可见性。

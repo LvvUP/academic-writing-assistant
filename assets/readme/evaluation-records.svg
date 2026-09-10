@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="162" height="28" viewBox="0 0 162 28" role="img" aria-labelledby="title desc">
+  <title id="title">Evaluation records</title>
+  <desc id="desc">Read the actual model evaluation results, including failures and limitations. This badge makes no CI or native host certification claim.</desc>
+  <rect x="0.5" y="0.5" width="161" height="27" rx="5.5" fill="#FFFFFF" stroke="#D0D7DE"/>
+  <path d="M86 1H156A5 5 0 0 1 161 6V22A5 5 0 0 1 156 27H86Z" fill="#2563EB"/>
+  <g font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="11" text-anchor="middle">
+    <text x="43" y="18" fill="#1F2328">Evaluation</text>
+    <text x="123" y="18" fill="#FFFFFF" font-weight="600">records</text>
+  </g>
+</svg>

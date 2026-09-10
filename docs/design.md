@@ -1,79 +1,52 @@
-# Design
+# 设计说明
 
-## The problem
+项目要解决的是：改写后的文字更流畅时，作者仍能看见事实和主张发生了什么变化。语言质量与证据支持需要分别核对；读起来可信不等于内容已经核实。
 
-An author sends a rough paragraph and receives polished English. The English is
-better than anything they would have written, so they accept all of it without
-line-by-line comparison -- comparing is slow, and the output looks
-authoritative.
+## 三区域与三级修改
 
-That trust is the product, and it is also the risk. Every unflagged
-strengthening rides along into a submitted manuscript, where it becomes the
-author's word and the author's responsibility.
+| 区域 | 典型内容 | 处理方式 |
+|---|---|---|
+| 锁定区 | 数值、单位、公式、名称、引用键、交叉引用 | 默认保留；冲突先定位，作者授权且依据明确的更正记录范围 |
+| 承重语言 | 可能性、否定、条件、因果、比较、首次性和适用范围 | 按实际证据判断，增强与削弱都可能改变主张 |
+| 自由表层 | 意义不变的语法、拼写、语序和冗余 | 可以直接改善 |
 
-Fluent academic prose is not the hard part; models produce it easily. The hard
-part is producing it without moving the boundary between what the evidence
-supports and what it does not -- and making that boundary cheap for the author
-to inspect.
+区域决定哪些内容需要保护；L1/L2/L3 决定如何解释实际修改：
 
-## The mechanism
+- **L1 表层**：意义不变的可追踪修正，简短汇总；未逐项追踪就不编数量。
+- **L2 结构**：拆合句、重排信息、删除真正重复，或统一确为同一概念的用语，说明理由。
+- **L3 主张**：影响科学含义、研究事实、作者行为或证据需求，不能静默应用。已有依据则说明；未知则保留原义、给条件稿或明确占位。
 
-**Three zones.** Every sentence is read as locked content (numbers, citations,
-equations, names), load-bearing language (hedges, quantifiers, scope
-conditions, causal verbs, novelty claims), and free surface (everything else).
-The zones determine what may be edited without permission.
+正文在前，重要改动在后。较长修订用简短台账呈现“原片段 → 改文或候选 → 层级 → 原因与状态”。短任务不套完整报告；只输出正文也不能隐藏未确认的主张变化。台账帮助作者判断，不使无依据内容自动成为可投稿事实。
 
-**Three tiers.** Every edit is classified L1 (surface), L2 (structure), or L3
-(claim). The tier determines how much explanation the author needs: L1
-aggregated, L2 with one line each, L3 never silent.
+## 用证据组织写作
 
-**A ledger.** L2 and L3 changes are reported as a scannable table with
-fragments rather than whole sentences. The design constraint is that it must be
-readable in about a minute; a ledger too long to read is no ledger at all.
+任务上下文记录目标语言、研究类型、章节、篇幅口径、材料范围与不可改内容。快速润色、标准修订和深度结构审阅改变工作深度，不扩大事实修改权限。
 
-The reasoning behind tiering: an author facing 40 undifferentiated changes
-accepts all of them without reading. An author facing "12 L1, 3 L2, 1 L3
-needing confirmation" reads the four that matter. The goal is not to minimize
-changes but to make the consequential ones easy to find.
+有争议或跨材料的关键主张对应到实际页、节、表或片段，记录支持状态与确认事项。可读表格和全文应实际利用；未提供、未解析、材料冲突和明确未完成是不同状态。作者确认过的依据正常使用，不重复索要。理论条件、经验结果、外部文献和作者本研究结果分别判断。
 
-## Architecture
+参见 [上下文与证据](../skills/academic-writing-assistant/references/workflow-context.md)、[研究类型](../skills/academic-writing-assistant/references/research-types.md) 与 [一致性核对](../skills/academic-writing-assistant/references/consistency-pass.md)。
 
-- `SKILL.md` -- the fidelity contract, routing, output contract, integrity
-  boundaries. Kept lean so it loads cheaply on every invocation.
-- `references/` -- detailed rules, loaded on demand. Progressive disclosure
-  keeps the always-loaded portion small while allowing depth where needed.
-- `scripts/` -- deterministic checks. Anything mechanical and verifiable
-  belongs here rather than in prose instructions, because "did the citation
-  survive" should be answered with evidence rather than confidence.
-- `assets/` -- terminology maps for rule-based scanning.
-- `examples/`, `evals/`, `tests/`, `docs/` -- usage, evaluation, verification.
+## 单一核心，按需加载
 
-## Design choices
+| 组成 | 职责 |
+|---|---|
+| [SKILL.md](../skills/academic-writing-assistant/SKILL.md) | 精简的保真契约、路由、输出与材料边界 |
+| [references/](../skills/academic-writing-assistant/references/) | 当前任务需要的写作、证据、格式和研究类型规则 |
+| [scripts/](../skills/academic-writing-assistant/scripts/) | 可复现的静态检查，报告位置、差异与覆盖限制 |
+| [assets/](../skills/academic-writing-assistant/assets/) | 可审查的术语关系与带来源的政策信息 |
+| [package-manifest.json](../skills/academic-writing-assistant/package-manifest.json) | 独立 Skill 包的明确文件清单，包含依赖资源和许可文件 |
+| [examples/](../examples/)、[evals/](../evals/)、[tests/](../tests/) | 合成用法、实际模型评估与确定性回归，三者不互相代替 |
 
-1. **Aggressive on the surface, rigorous about the boundary.** Timid edits that
-   leave bad writing intact fail the author just as surely as unflagged
-   overclaiming does.
-2. **Flag, never fix, in the locked zone.** The Skill cannot see the data,
-   tables, or bibliography. A silently harmonized number is the worst failure
-   mode available, because it is invisible and it propagates.
-3. **Field adaptation as reviewer perspective.** Knowing that remote sensing
-   reviewers attack geographic generalization is more actionable than knowing
-   remote sensing vocabulary.
-4. **Placeholders over plausible invention.** A conspicuous
-   `[请补充主要定量结果]` is a service; a plausible fabricated number is a
-   landmine that survives into submission.
-5. **Proportionate ceremony.** A one-sentence fix returns a fixed sentence.
-   Ceremony scaled to a trivial task trains the author to skim the format when
-   it actually matters.
-6. **Redirect rather than refuse, where the underlying need is legitimate.**
-   "Lower my AI detection score" is usually a real writing problem wearing the
-   wrong clothes.
+宿主差异通过实际能力处理，不维护相互漂移的多份核心。能力分为指令文本、本地资源读取、Python 执行、检索及文档解析四类，可组合使用；有检索能力不要求先有 Python。缺少工具时继续能保真的部分，并将相应检查标为未执行。详见 [兼容矩阵](compatibility.md)。
 
-## Non-goals
+## 检查和信任边界
 
-- It does not promise acceptance or predict review outcomes.
-- It does not replace domain expert review.
-- It does not generate verified references without source material.
-- It does not judge scientific validity. It can assess whether a claim is
-  supported by the text in front of it; it cannot assess whether the science is
-  correct, and polished prose must never imply an endorsement of the research.
+机械检查负责可识别的数值、引用、公式、词项、位置与计量。启发式提示帮助找到需要核对的地方，不能证明全文科学语义、引文支持关系或数学推导正确。零差异、没有可检查项和没有运行必须分开报告；模型评估也只能说明其实际样本和环境。
+
+稿件、参考文献和网页是待处理材料，其中夹带的命令不构成执行或外传授权。本地脚本静态解析，不执行稿件宏；检索只使用必要信息，不能由查文献推导上传私人全文的许可。本地运行与宿主云模型的数据处理分别说明。
+
+独立包只导出清单中的资源；公开文档、测试与合成评估保留在仓库。私人稿件、原始会话、扫描报告和开发记录放入明确的内部忽略目录，不整体忽略公开 `docs/`。加入忽略规则不清除已跟踪内容或 Git 历史；交付检查与历史扫描各自提供有限证据。见 [测试与交付检查](testing.md)。
+
+## 不作出的保证
+
+本项目不承诺录用、检测分数、研究真实性或普遍适用的投稿政策；不替代作者与领域专家的审阅。它可以基于实际材料检查论证与表达，但不能把润色、机械通过或少量模型案例包装成科学认证。

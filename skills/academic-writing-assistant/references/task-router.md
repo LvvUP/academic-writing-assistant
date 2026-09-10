@@ -1,64 +1,33 @@
 # Task Router
 
-Read this when the request is ambiguous, bundles several tasks, or arrives as bare text with no instruction. Clear single-task requests can go straight to `writing-workflows.md`.
+任务明确时直接读取相应工作流。关键词提供上下文，不能替代用户想做什么。
 
-## Reading the request
-
-Most requests are unambiguous once you look at what came with the text rather than only at the instruction.
-
-| Signal in the message | Almost certainly |
+| 输入信号 | 路由 |
 |---|---|
-| Chinese source + "SCI" / "投稿" / "英文" | CN→EN translation |
-| Chinese source + "润色成英文" / "改成论文英文" | Translation **and** polishing at once — the single most common request. Translate as the spine, diagnose structure first, report as a translation |
-| Reviewer's words quoted, or "审稿人" | Reviewer response — then check journal vs. conference |
-| Two or more paragraphs + "整合" / "合并" | Merging |
-| A word or character limit named | Compression to a limit |
-| `\cite{}`, `\begin{}`, `$…$` in the text | LaTeX-aware editing — see `latex-and-formats.md` |
-| A full section or whole paper | Consistency pass — see `consistency-pass.md` |
-| "毕业论文" / "学位论文" / "开题" | Thesis conventions — see `style-guide-zh.md` |
-| A journal or conference named | Set register from the venue; check its limits |
-| "降 AI 率" / "降重" / "查重" | Redirect — see below |
+| 中文原文 + 润色，没有译向 | 保留中文润色 |
+| 中文原文 + 明确“翻译成英文/润色成英文” | 中译英，并先诊断源文结构 |
+| 仅提 SCI、IEEE、投稿或期刊名 | 采用目标要求或中性学术语体；不推断译向 |
+| 审稿意见 + 请求起草回复 | 审稿回复；按实际修订状态和 venue 限制组织 |
+| 多段 + 合并/整合 | 合并，保留每个独立条件 |
+| 字数/字符上限 | 完成改写后按明确单位压缩 |
+| LaTeX 源码 + 文字编辑请求 | 保护源码结构的学术编辑 |
+| 全文/长章节 + 检查 | 一致性审查，说明本次读到的范围 |
+| IEEE 驱动、论文复现代码调试、Skill 安装咨询、普通知识问答 | 不因学术词汇抢占原任务 |
 
-## Ambiguous instructions
+## 模糊输入
 
-"帮我改一下" and "看看这段" are the most common inputs in practice. Infer from the text itself:
+“帮我改一下”附论文段落时，默认轻度润色并保留原文语言。裸文本同样可按源语言轻度润色，必要时用一句话说明默认；不用先要求用户选择中译英。
 
-- Reads like a paper, has grammar problems → polishing
-- Chinese text, user writes in Chinese, no direction stated → ask whether they want Chinese polishing or English translation. These produce completely different outputs, and guessing wrong wastes the whole response. This is one of the few questions worth asking up front.
-- Reads fine but is short and thin → they may want expansion; check whether the gap is logical or they are chasing length
-- Contains a reviewer's words → reviewer response, regardless of how it was introduced
+没有原文、材料内事实互相冲突或统计量指代不明时，集中指出关键缺口，继续可独立完成的部分。不要猜结果、作者立场或已采取行动。
 
-When the task is clear but the field or venue is not, infer and label the inference. Do not ask.
+多任务通常按：澄清含义 → 调整结构 → 翻译/润色 → 一致性复核 → 压缩 → 必要台账。明确授权的不同顺序优先。
 
-## Bare text with no instruction
+## 文献任务与诚信边界
 
-Users often paste a paragraph and nothing else. Default to polishing in the source language, keep it light, and offer the adjacent options in one line: "已按学术润色处理；如需译成英文或压缩到摘要字数，告诉我即可。"
+“找几篇相关文献”本身可授权相关检索。有可用检索能力时，按 [citation-safety.md](citation-safety.md) 查证实际来源，并区分元数据与内容支持；无检索能力时提供搜索词、带明确引用槽的结构，或整理用户提供的文献。不能一概拒绝查证，也不能凭记忆造参考文献。
 
-Do not respond with only a question. A best-effort draft plus one question is strictly better than a question alone.
+“写一篇论文”需要先依据用户实际研究材料确定能写的内容。没有研究数据时可写框架或研究方案，不能把未完成实验写成既成结果。理论、定性与综述研究不强制套用神经网络实验结构。
 
-## Multiple tasks in one request
+“降低 AI 率/绕过查重”不以检测分数为目标；可继续处理原文确实存在的空泛、重复、逻辑和引用问题。不要从检测器标记反推作者身份、创作来源或写作质量。
 
-Order matters, because later steps depend on earlier ones being right.
-
-1. Resolve meaning — ask about genuine ambiguity in the source
-2. Fix content and structure — the argument, before the words
-3. Translate or polish
-4. Enforce consistency across the result
-5. Compress to any limit
-6. Report the ledger and queries
-
-Compression comes last deliberately: cutting before the argument is settled removes the wrong things.
-
-## Requests to redirect
-
-**"降低 AI 率" / "绕过 AI 检测" / "降重" / "过查重".** Do not frame the work as evading a detector. Say so plainly, then do the thing that actually helps — because the underlying need is usually real. Text flagged as machine-generated is typically vague, uniformly weighted, and hedge-heavy, and fixing that is ordinary editing. For similarity checking, the legitimate fix is proper quotation, citation, and genuine rewriting of one's own summary of prior work, not word-substitution.
-
-Be brief about the boundary and generous with the actual help. A lecture is not what the user came for.
-
-**"帮我写一篇关于 X 的论文."** Writing an entire paper from a topic means inventing methods, experiments, and results. Explain what is missing and offer what is real: structure a draft from their actual work, or draft a specific section from material they provide.
-
-**"帮我找几篇相关文献."** You cannot verify references that are not in front of you. Do not produce a list. Offer instead: a search strategy with the right query terms, a structural outline with `[citation needed]` slots, or work with references the user pastes in. See `citation-safety.md`.
-
-## Then
-
-Once routed, go to `writing-workflows.md` for the technique, `output-templates.md` for the shape, and run `quality-checklist.md` before answering.
+使用相关 [writing-workflows.md](writing-workflows.md)、[output-templates.md](output-templates.md)，并在回复前做 [quality-checklist.md](quality-checklist.md) 中适用的检查。

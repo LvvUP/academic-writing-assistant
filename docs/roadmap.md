@@ -1,48 +1,5 @@
-# Detailed Roadmap
+# 路线图已合并
 
-Implementation detail behind the root `ROADMAP.md`.
+请阅读仓库根目录的 [唯一规范路线图](../ROADMAP.md)。原先这里的 v0.3、v0.4 设想已归入后续方向，未承诺版本或时间；当前 0.3.0 是尚未发布的候选。
 
-## v0.1
-
-- Core Skill with modular references.
-- Field adapter for ten fields.
-- Terminology and structure checker scripts.
-- README, examples, tests, open-source governance files.
-
-## v0.2 (current)
-
-- Fidelity contract in `SKILL.md`: three zones, three change tiers, ledger format.
-- `fidelity-protocol.md` with worked examples, including edits that should not be made.
-- `reviewer-response.md` split by venue type, with hard-case handling.
-- `submission-package.md`: cover letter, highlights with the 85-character limit,
-  generative-AI disclosure templates in both languages, CRediT roles.
-- `latex-and-formats.md`: protected markup inventory, math handling, common
-  LaTeX errors, Word and Markdown notes.
-- `consistency-pass.md`: terminology, abbreviations, symbols, tense, numbers,
-  method naming, cross-references, and claim consistency across sections.
-- `fidelity_check.py`: multiset comparison of citations, cross-references,
-  numbers, math blocks, and custom macros between two versions.
-- `manuscript_audit.py`: abbreviation first-use, claim-strength scanning,
-  filler and hedge stacking, tense mixing, terminology drift, length limits.
-- `structure_checker.py`: added related_work and conclusion, placeholder
-  counting, JSON output.
-- `terminology_checker.py`: occurrence counts, dominant-variant reporting,
-  `_meta` key support in the map.
-
-## v0.3
-
-- Discipline-specific reviewer attack patterns beyond the current ten fields.
-- Caption and float conventions.
-- Degree-thesis structure per common Chinese university templates.
-- Appeal and major-revision response examples.
-
-## v0.4
-
-- Terminology map expansion with per-field notes and contributor guidance.
-- Additional keyword rules per section and field.
-- Larger example library.
-
-## v1.0
-
-- Freeze structure, publish contributor guide for field packs.
-- Full evaluation documentation and release notes.
+历史 0.1、0.2 的变更保留在 [CHANGELOG](../CHANGELOG.md)。原有脚本说明已由 [当前接口与覆盖边界](scripts.md) 接替；安装与宿主实际验证分别见 [安装指南](installation.md) 和 [兼容矩阵](compatibility.md)。本页保留为旧链接的迁移入口，不另维护一份计划。

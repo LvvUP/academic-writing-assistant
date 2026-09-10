@@ -1,75 +1,61 @@
-# FAQ
+# 常见问题
 
-## Is this a paper-writing tool?
+## 能帮我写哪些内容？
 
-No. It is an academic expression and structure assistant. It helps revise,
-translate, organize, and respond -- it does not replace the author's research,
-evidence, or responsibility for what gets submitted.
+可以润色、翻译、整理结构，根据已提供的研究材料起草章节，或准备审稿回复与投稿材料。它帮助作者表达和核对已有研究；研究设计、真实证据与投稿责任仍由作者承担。没有结果时可以给工作稿，不能补造结果让稿件显得完整。
 
-## What is the "fidelity contract"?
+## “保真契约”保护什么？
 
-Every sentence is read as three zones: locked content (numbers, citations,
-equations) that is reproduced exactly, load-bearing language (hedges,
-quantifiers, scope conditions) that may only change toward accuracy and always
-with disclosure, and free surface (grammar, structure, phrasing) that is edited
-freely.
+数值、单位、引用、公式等属于锁定区；可能性、否定、条件、因果和适用范围属于承重语言；意义不变的语法与措辞属于自由表层。修改再分为 L1 表层、L2 结构、L3 主张，重要改动通过短台账说明。见 [设计说明](design.md) 与 [核心规则](../skills/academic-writing-assistant/SKILL.md)。
 
-Every edit is then tiered L1/L2/L3, so you can see at a glance which changes
-touched your claims and which were just grammar.
+## 能读取我提供的表格、数据或全文吗？
 
-## Why does it refuse to fix an obviously wrong number?
+取决于当前宿主的文件读取与格式解析能力。材料可读时，应实际检查相关正文、表格行列、单位、脚注和来源位置，不让作者重复粘贴已经提供的内容。只提取出正文时，不能声称看过 PDF 图像、Word 修订层或未解析的附件。报告应说明已读范围和未检查部分。
 
-Because it cannot see your data. If the text says 92.3% and a table says 93.2%,
-the Skill flags the discrepancy rather than picking one. The cost of flagging a
-real error is thirty seconds of your attention; the cost of silently
-harmonizing to the wrong value is a correction in proof.
+## 为什么正文和表格数值不一致时，不直接改成表格里的值？
 
-## Can it write related work without references?
+能读到两处数值，不等于知道哪一处正确。版本、统计口径或精度可能不同，应先定位冲突并核对依据。作者已经确认更正依据与范围后，可正常修改并记录，不反复询问；不能默认较大的值或表格里的值更可靠。
 
-It can produce a structural draft with explicit `[citation needed]` slots, or
-ask for your reference list. It will not generate citations. A fabricated
-reference looks completely normal and survives into submissions.
+## 没有提供参考文献，还能写相关工作吗？
 
-## Will it help me lower my AI detection score?
+有检索能力且获得相应授权时，可以实际查找和读取来源，并遵守指定的来源范围。没有可用来源时，可给组织框架、检索词和明确的证据占位，不凭记忆补造作者、DOI 或文献结论。
 
-It will not rewrite against a detector's score -- those tools are unreliable in
-both directions, and optimizing against them is futile.
+元数据、摘要和全文核查是不同层次。找到真实论文不等于它支持当前主张，应说明实际读到什么以及支持位置。检索只需必要的非敏感信息；查文献的授权不自动包括上传完整未发表稿件或私人审稿意见。见 [引用安全规则](../skills/academic-writing-assistant/references/citation-safety.md)。
 
-It will fix what usually causes the flag: uniform sentence length, evenly
-weighted points, vague universals, stacked hedges, and connective overuse.
-Fixing those produces text that is both better and less formulaic.
+## 只输出正文，会省略重要事实吗？
 
-## Do I need to disclose that I used this?
+不会因此获得修改事实的额外权限。能保真就只给正文；无法安全解决的歧义保留原义、用明确占位或最小说明。作者明确说分析、实验或证明尚未完成时，工作稿也要保留这一状态；没有提供结果材料则不能推断作者未完成研究。见 [摘要示例](../examples/abstract-writing.md)。
 
-Probably, if the assistance was substantive. Most publishers now require
-disclosure of generative-AI use in writing, while exempting basic grammar and
-spell checking. Elsevier asks for a dedicated section before the references;
-ICLR treats undisclosed substantive LLM use as an ethics violation. Thresholds
-differ by venue -- check your target journal's author guide.
-`references/submission-package.md` has templates in both languages.
+## 检查脚本通过，是否意味着全文正确？
 
-## Does it handle LaTeX?
+不是。保真比对检查静态可识别的保护项和部分上下文变化；术语脚本检查配置词项共现；结构脚本给关键词覆盖提示。它们不能证明全文科学结论、数值归属、引文支持关系或论证充分性。
 
-Yes. Paste `.tex` source and you get `.tex` back, with `\cite{}`, `\ref{}`,
-math, and custom macros preserved. Run `fidelity_check.py` afterward to verify
-mechanically rather than by re-reading.
+缩写提示不等于数学符号首次定义检查。自动时态审计目前未实现，显式请求 `--checks tense` 会报告未检查；正常的“方法用现在时、实验过程用过去时”也不应自动统一。符号、时态和跨章节科学含义仍需结合实际材料复核。接口、退出码与覆盖状态见 [脚本说明](scripts.md)。
 
-## Can it handle my field?
+## 支持 LaTeX、Word 和 Markdown 吗？
 
-Built-in adapters cover ten fields, recording what reviewers in each actually
-attack. Unlisted fields use the general workflow -- supply your field, target
-venue, and key terminology when asking. Where information is missing, it uses
-placeholders rather than inventing field facts.
+写作规则包含这些格式，但实际读取、编辑与导出能力由宿主决定。LaTeX 静态检查不执行宏、外部输入或编译；未知和动态构造可能覆盖不足。Word 修订、公式与版式是否保留，需要相应工具的实际验证，不能由纯文本检查推导。见 [格式规则](../skills/academic-writing-assistant/references/latex-and-formats.md)。
 
-## Journal response letter or conference rebuttal?
+## 理论、定性研究或综述也适用吗？
 
-They are different documents. Journal letters are exhaustive, point-by-point,
-and written after revisions are made. Conference rebuttals face hard character
-caps, are prioritized by what moves scores, and are written before revisions
-exist. The Skill handles them separately; tell it which venue you are
-responding to.
+适用的组织方式随研究类型变化：理论工作保留假设和证明状态，定性研究交代材料与分析方式，综述区分来源与综合结论。不会要求所有研究都有训练、数据集、消融或准确率。作者确认的术语与定义优先，相关概念不会仅因用词相近就合并。见 [研究类型规则](../skills/academic-writing-assistant/references/research-types.md)。
 
-## Does it require external services?
+## 审稿回复会自动承诺补实验或修改论文吗？
 
-No. All Skill files and scripts are local, and the scripts use only the Python
-standard library.
+规则要求区分已完成、作者明确计划和 Agent 建议；没有确认的行动不能写成 “We have revised” 或 “We will add”。期刊回复与会议 rebuttal 常有不同结构，但允许材料、修改时机和篇幅以当前 venue 规则为准，不能只凭类别推断。见 [回复规则](../skills/academic-writing-assistant/references/reviewer-response.md)。
+
+## 能降低 AI 检测率吗？需要披露 AI 使用吗？
+
+本项目不针对检测分数或绕过查重优化，也不承诺分数变化。可以帮助改进可见的语法、冗余、信息组织、准确转述与引用；不能根据检测器输出判定作者身份。
+
+是否披露、披露哪些使用方式，需按目标 venue、年份与轨道核对当前指南。声明只能描述已确认的实际使用与复核情况，不能把未确认事项写成已经完成人工审查或获得许可。已核验来源与适用边界见 [政策来源](../skills/academic-writing-assistant/references/policy-sources.md)。
+
+## 需要外部服务吗？稿件会不会离开本机？
+
+核心写作需要可加载指令的 AI 宿主，但不要求额外的检索服务。四个稿件检查脚本及安装工具只使用 Python 标准库，不主动联网；开发用 `skill_lint.py` 需要 PyYAML，测试依赖见 [测试说明](testing.md)。
+
+本地脚本不联网不代表云模型不会接收稿件。宿主、账户设置、检索和第三方文档解析各有数据处理边界，应按实际工具和授权范围判断。安装工具不会自动修改全局宿主设置或开启云同步。支持状态和未验证项目见 [兼容矩阵](compatibility.md)。
+
+## 有哪些实际验证结果？
+
+确定性测试、原生 Skill 发现和真实写作行为是不同证据。[2026-09-10 行为评估](../evals/results-2026-09-10.md) 保留了初始升级版的一项失败与后续定向修复验证；小样本不能证明总体写作效果提升，也不能替代各宿主的端到端验证。安装方式见 [安装指南](installation.md)，许可与历史版本权利见 [许可说明](licensing.md)。

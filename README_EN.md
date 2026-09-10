@@ -1,362 +1,184 @@
 <div align="center">
 
-<img src="assets/logo/revision-compass.svg" alt="Revision Compass" width="120">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/logo/revision-compass.png">
+  <img src="assets/logo/revision-compass.svg" alt="Revision Compass: pages, revision lines and a check mark" width="112">
+</picture>
 
 # Academic Writing Assistant
 
-A field-adaptive academic writing Skill for Chinese and English research papers.
+**Clearer manuscripts. Important changes you can check.**
 
-[中文](README.md) | **English**
+A Chinese–English academic writing Skill for researchers. Polish, translate and draft reviewer responses from the research material you provide.
+
+[中文](README.md) · **English**
+
+[![License: AGPL-3.0-only](assets/readme/license-agpl.svg)](LICENSE)
+[![Actual model evaluation records, including failures and limitations](assets/readme/evaluation-records.svg)](evals/results-2026-09-10.md)
+
+[Get started](#get-started) · [More examples](examples/) · [Compatibility](docs/compatibility.md) · [Evaluation records](evals/results-2026-09-10.md)
+
+<sub>0.3.0 · Unreleased (in development, not a formal release)</sub>
 
 </div>
 
-## Positioning
+## See a revision
 
-`academic-writing-assistant` is an academic writing Skill / Plugin for researchers: polishing, Chinese-English translation, section drafting, reviewer responses and rebuttals, submission materials, and whole-draft consistency checking.
+This is a **synthetic example** of intended handling, not a real research finding or model-evaluation record.
 
-The problem it solves is not "make the prose flow better." Models already do that easily — and that is precisely the danger, because fluent prose quietly upgrades claims. "在部分数据集上有所改善" becomes "significantly outperforms existing methods," the author reads English better than anything they would have written, and ships it. By the time a reviewer catches it, the cost is already incurred.
+**Input · Polish the Chinese text without changing its meaning**
 
-So this Skill is built around being **aggressive on the surface and rigorous about the boundary**: which content may never be touched, which words change the science when you change them, and how an author can audit every edit in about a minute.
+> 该方法可能在部分场景改善性能，噪声往往会在一定程度上影响现有方法。
 
-Built for graduate students, PhD candidates, early-career researchers, faculty, and AI Agent users who want a reusable academic writing workflow.
+**Output**
 
-## The core mechanism: the fidelity contract
+> 该方法可能在部分场景下改善性能；噪声往往会对现有方法产生一定程度的影响。
 
-Read every sentence as three zones before editing. This is the single most useful habit in the Skill.
+**Changed:** phrasing and the connection between clauses. **Preserved:** possibility, limited scope, frequency and degree—“可能、部分、往往、一定程度”. These words carry the claim's strength and scope.
 
-| Zone | Contents | Handling |
-|---|---|---|
-| **Locked** | Numbers, units, p-values, dataset and method names, citation markers, equations, symbols, cross-references, ethics approval numbers | Reproduce exactly. If something looks wrong, **flag it — never fix it**. You cannot see the data; the author can |
-| **Load-bearing** | Hedges (may / suggests / demonstrates), quantifiers (all / some), scope conditions ("on the evaluated datasets"), causal verbs (causes vs. is associated with), novelty claims (first / SOTA / significantly) | Change only toward accuracy, and always disclose |
-| **Free surface** | Grammar, articles, tense, sentence splitting, connectives, redundancy, word order, equal-strength synonyms | Edit confidently. This is where the value lives |
+The revised text comes first, followed by important changes and open questions. A short sentence may need little or no editing. Mentioning submission or SCI alone does not request an English translation.
 
-Every edit is tiered:
+## Get started
 
-- **L1 surface** — grammar, articles, tense, spelling → reported as one aggregate line, not enumerated
-- **L2 structure** — splitting, reordering, terminology normalization → one line of reasoning each
-- **L3 claim** — touches load-bearing language → **never applied silently**; flagged with reasoning or left as a query
+Core writing needs an Agent that can load instructions. The installer and mechanical checks need **Python 3.9+**; core text use needs neither Python nor a designated paid API. Available capabilities depend on the host.
 
-The reason for tiering is practical: an author who receives 40 undifferentiated changes accepts all of them without reading, because checking is too expensive. An author who receives "12 L1 + 3 L2 + 1 L3 needing your confirmation" actually reads the four that matter. Making the important changes cheap to find is the job.
+**This is the unmerged 0.3.0 candidate.** These steps target `codex/academic-writing-upgrade`; they do not assume the default branch contains the installer. The development branch must be publicly pushed before the clone command works. Until then, use a candidate checkout supplied by the maintainer.
 
-## Core features
-
-| Feature | What it does |
-|---|---|
-| Fidelity-preserving revision | Three zones, three change tiers, and a ledger the author can audit line by line |
-| Task routing | Detects polishing, translation, expansion, merging, compression, section drafting, reviewer response |
-| Field adaptation | Adjusts emphasis by field — specifically, **what that field's reviewers attack** |
-| CN/EN translation | Both directions, with a terminology table and notes on non-obvious decisions |
-| Section drafting | Abstract, introduction, related work, method, experiment, discussion, conclusion |
-| Reviewer response | Separates journal response letters from conference rebuttals (different length, tense, structure) |
-| Submission materials | Cover letters, highlights (85-character limit), AI-use disclosure, CRediT statements |
-| LaTeX-aware editing | Edits `.tex` source directly, preserving `\cite{}`, `\ref{}`, math, and custom macros |
-| Whole-draft consistency | Terminology, abbreviation first-use, symbols, tense, numbers, and claim strength across sections |
-| Deterministic check scripts | Mechanically verify that citations, numbers, and equations survived a rewrite |
-| Integrity guardrails | Forbids fabricated citations, datasets, results, and unsupported claims |
-
-## What changed from the previous version
-
-| | v0.1 | v0.2 |
-|---|---|---|
-| Change reporting | Revised text plus vague notes | L1/L2/L3 tiers with an auditable ledger |
-| Claim protection | "Do not exaggerate" as a principle | Load-bearing vocabulary, a strength ladder, mandatory disclosure |
-| Reviewer response | One template | Journal letter and conference rebuttal handled separately |
-| Submission materials | None | Cover letter, highlights, AI disclosure, CRediT |
-| LaTeX | None | Dedicated source-editing rules and preservation checking |
-| Whole-draft checks | None | Terminology, abbreviations, symbols, tense, claim consistency |
-| Scripts | Keyword bingo | Citation/number preservation, abbreviation first-use, venue limits |
-| Field adaptation | Terms and emphasis | **What reviewers in that field actually attack** |
-
-## Supported Writing Tasks
-
-Polishing · Expansion · Merging · Compression to a limit · CN→EN · EN→CN · Abstract · Introduction · Related work · Method · Experiment · Discussion and limitations · Conclusion · Journal response letter · Conference rebuttal · Cover letter · Highlights · AI disclosure · Title optimization · Contribution statements · Terminology consistency · Whole-draft consistency · Naturalization · Prompt optimization
-
-## Supported Research Fields
-
-Built-in Field Adapters cover: computer vision, machine learning and AI, NLP and LLMs, medical imaging and clinical research, remote sensing, robotics, data mining and recommendation, bioinformatics, materials science and chemistry, and the social sciences.
-
-Each adapter records not a vocabulary list but **what reviewers in that field actually attack** — remote sensing reviewers ask about geographic generalization, clinical reviewers about external validation, NLP reviewers about data contamination. Writing that anticipates the field's characteristic objection is the difference between a defensible paper and a major revision.
-
-The list above is **not a limit on what the Skill supports**. Unlisted fields use the same general academic writing workflow: identify the task, preserve technical meaning, keep evidence boundaries clear, maintain terminology consistency, and adapt to the context you provide. Supply your field, target venue style, and key terminology when asking. Where information is missing, the Skill uses placeholders or asks — it does not invent field facts.
-
-## Repository structure
-
-```text
-academic-writing-assistant/
-├── .codex-plugin/plugin.json
-├── assets/logo/
-├── skills/academic-writing-assistant/
-│   ├── SKILL.md                    # Fidelity contract, routing, output contract, integrity
-│   ├── references/                 # Loaded on demand
-│   │   ├── fidelity-protocol.md    # The three zones and tiers, with worked examples
-│   │   ├── writing-workflows.md    # How to execute each task
-│   │   ├── reviewer-response.md    # Journal letter vs. conference rebuttal
-│   │   ├── submission-package.md   # Cover letter, highlights, AI disclosure
-│   │   ├── latex-and-formats.md    # LaTeX, Word, Markdown handling
-│   │   ├── consistency-pass.md     # Whole-draft consistency
-│   │   ├── field-adapter.md        # What reviewers attack, by field
-│   │   ├── style-guide-zh.md       # Chinese academic register
-│   │   ├── style-guide-en.md       # English register and CN-interference patterns
-│   │   ├── task-router.md          # Task identification and requests to redirect
-│   │   ├── output-templates.md     # Response shapes
-│   │   ├── quality-checklist.md    # Pre-send checks
-│   │   ├── citation-safety.md      # Citation and evidence boundaries
-│   │   ├── terminology.md          # CN↔EN term selection and consistency
-│   │   └── examples.md             # End-to-end worked examples
-│   ├── assets/terminology-map.zh-en.json
-│   └── scripts/                    # Deterministic checks
-├── examples/  ├── tests/  ├── docs/  ├── evals/
-├── README.md  ├── README_EN.md  └── LICENSE
+```sh
+git clone --branch codex/academic-writing-upgrade \
+  https://github.com/LvvUP/academic-writing-assistant.git
+cd academic-writing-assistant
 ```
 
-`SKILL.md` holds the core mechanism and routing; detailed rules live in `references/` so agents load only what they need.
+For an existing repository, check out that development branch first. Then run the installer from the repository root. For Codex:
 
-## Installation
-
-### Install for Codex
-
-Send this prompt to Codex:
-
-```text
-Install the Academic Writing Assistant Skill from https://github.com/LvvUP/academic-writing-assistant into my local Codex skills directory, then verify that $academic-writing-assistant can be invoked.
+```sh
+python3 -B scripts/install_skill.py install \
+  --host codex --home-root "$HOME"
 ```
 
-After installation, start a new Codex session and invoke:
+This installs to `~/.agents/skills/academic-writing-assistant`. **Every existing destination is refused, including an empty directory.** Update and uninstall also refuse and preserve contents when user edits, extra files or caches are present. See [installation, updates and troubleshooting](docs/installation.md).
+
+Refresh the host's Skill list or start a new session, select the actual discovered Skill entry, and enter this in Codex:
 
 ```text
-Use $academic-writing-assistant to polish this academic paragraph.
+$academic-writing-assistant
+Polish this Chinese paragraph. Preserve numbers, conditions and citations:
+…
 ```
 
 <details>
-<summary>Manual fallback</summary>
+<summary><strong>Claude Code, Cursor and Grok Build</strong></summary>
 
-```bash
-git clone https://github.com/LvvUP/academic-writing-assistant.git
-mkdir -p ~/.codex/skills
-cp -R academic-writing-assistant/skills/academic-writing-assistant ~/.codex/skills/
+Choose one installation command for your host:
+
+```sh
+python3 -B scripts/install_skill.py install \
+  --host claude --home-root "$HOME"
+python3 -B scripts/install_skill.py install \
+  --host cursor --home-root "$HOME"
+python3 -B scripts/install_skill.py install \
+  --host grok-build --home-root "$HOME"
 ```
 
-If your Codex environment supports local plugins, you can also use `.codex-plugin/plugin.json` as the plugin manifest.
+- **Claude Code:** install under `~/.claude/skills`; invoke `/academic-writing-assistant`.
+- **Cursor:** install under `~/.cursor/skills`; type `/` in Agent and select the Skill.
+- **Official Grok Build coding agent:** install under `~/.grok/skills`; invoke `/academic-writing-assistant`. This does not establish native support in Grok web chat, model APIs or third-party CLIs.
+
+These are personal Skill parent directories; the package occupies an `academic-writing-assistant` subdirectory. Claude Code uses a slash invocation, rather than Codex's `$` syntax.
+
+See the [compatibility matrix](docs/compatibility.md) for Codex's older `.codex/skills` path, project scope and the optional plugin wrapper. Other hosts can load `SKILL.md` and the needed references from the complete package; file reading, Python and retrieval depend on actual capabilities.
 
 </details>
 
-### Install for Claude Code
+**Native verification scope (2026-09-10):** Temporary local installation lifecycles and directory mappings were tested. Codex CLI 0.147.0 discovered the Skill, but its model call returned **HTTP 400** requiring a newer CLI; writing behavior in that attempt is **NOT RUN**. Native discovery and behavior in Claude Code, Cursor and Grok Build are **NOT RUN**. Official directory documentation and installer tests are not native certification. See the [compatibility matrix](docs/compatibility.md).
 
-You can also ask Claude Code to install it:
+## How revisions work
 
-```text
-Install the Academic Writing Assistant Skill from https://github.com/LvvUP/academic-writing-assistant into my local Claude Code skills directory, then verify that $academic-writing-assistant can be invoked.
-```
+The fidelity contract divides text into three zones:
 
-<details>
-<summary>Manual fallback</summary>
+- **Locked:** preserve numbers, units, citations, equations and names against readable source material. Flag conflicts first; apply and disclose author-confirmed corrections or format conversions within the authorized scope.
+- **Load-bearing:** possibility, scope, negation, causality, significance and novelty. Weakening as well as strengthening can change a claim and needs evidence and explanation.
+- **Free surface:** grammar, spelling, word order and redundancy that can be improved without changing meaning.
 
-```bash
-git clone https://github.com/LvvUP/academic-writing-assistant.git
-mkdir -p ~/.claude/skills
-cp -R academic-writing-assistant/skills/academic-writing-assistant ~/.claude/skills/
-```
+Explain important edits as **L1 surface / L2 structure / L3 claim**, with no silent L3 changes. A newly written translation gets no fictional L1 correction count. Terminology work must preserve distinctions already defined by the author. See the [fidelity protocol](skills/academic-writing-assistant/references/fidelity-protocol.md).
 
-</details>
-
-After installation, start a new Claude Code session and invoke:
-
-```text
-Use $academic-writing-assistant to translate this Chinese academic paragraph into English.
-```
-
-### Install for Other Agents
-
-If your agent supports a Skill directory, copy the whole directory:
-
-```text
-skills/academic-writing-assistant/
-```
-
-If your agent can read GitHub repositories, give it this link:
-
-```text
-https://github.com/LvvUP/academic-writing-assistant
-```
-
-If your agent does not support Skills, use `SKILL.md` as the main instruction and load files from `references/` as needed.
-
-Do not copy only `scripts/`. The scripts perform mechanical checks; the fidelity rules, task routing, and integrity boundaries live in `SKILL.md` and `references/`.
-
-## Quick Examples
-
-### Polishing — what the change ledger looks like
-
-Input:
-
-```text
-I work on medical image segmentation. Polish this for an SCI paper:
-Our method can reduce the annotation difficulty, the segmentation results are
-relatively good, it helps with small lesions, and it clearly outperforms
-existing methods.
-```
-
-Example output:
-
-#### Revised text
-
-```text
-The proposed method reduces the annotation burden in medical image segmentation
-and improves the delineation of small lesions compared with the evaluated
-baselines. [please add the datasets, metrics, and values]
-```
-
-#### Change ledger
-
-L1 (grammar/articles/tense): 4 changes, not enumerated.
-
-| # | Original | Revised | Tier | Reason |
-|---|---|---|---|---|
-| 1 | relatively good | improves the delineation ... compared with the evaluated baselines | L3 | No comparison target; English papers need to name what the comparison is against |
-| 2 | clearly outperforms existing methods | compared with the evaluated baselines | L3 | "Clearly/significantly" reads as a statistical significance claim. If a test was run, tell me the method and p-value and this can be restored |
-
-#### Needs confirmation
-
-- Which datasets and metrics (Dice / IoU / HD95)?
-- Which specific baselines? Naming them substantially reduces the chance a reviewer challenges the fairness of the comparison.
-- Is the annotation-burden reduction quantified (time, pixels, or number of labeled samples)?
-
-Note that **no Dice score was invented** to complete the sentence — missing information appears as a placeholder, and both L3 entries explain how to revert.
-
-### CN→EN — it tells you which sentence should not be translated literally
-
-Input:
-
-```text
-Translate for an SCI paper: 针对遥感图像中目标尺度变化大、背景复杂的问题，
-本文提出一种多尺度特征融合方法，具有重要的理论意义和应用价值。
-```
-
-Example output:
-
-#### English Translation
-
-```text
-To address the large scale variation and complex backgrounds in remote sensing
-images, this study proposes a multi-scale feature fusion method.
-```
-
-#### Terminology choices
-
-| Chinese | English | Note |
+| Mode | Suitable tasks | Delivery focus |
 |---|---|---|
-| 遥感图像 | remote sensing images | Standard term in the field |
-| 目标尺度变化 | scale variation | More idiomatic than "target scale change" |
-| 多尺度特征融合 | multi-scale feature fusion | Conventional; not "feature merging" |
+| Quick polish | One-line corrections and short passages | Text and necessary notes |
+| Standard revision | Polishing, translation, abstracts and responses | Text, important edits and material gaps |
+| Deep structural review | Long drafts and multiple sources | Actual coverage and claim-to-source locations |
 
-#### Translation notes
+The Skill also supports section drafting, submission materials and whole-draft consistency review. Journal response letters and conference rebuttals follow their respective contexts. Empirical studies, theoretical proofs, qualitative research and reviews receive appropriate checks; see [research-type examples](examples/research-types.md). Missing material stays explicit. Completed work, confirmed plans and undecided suggestions remain distinct.
 
-- Dropped 具有重要的理论意义和应用价值 (L3). This is conventional closing framing in Chinese papers, but translated literally as "has important theoretical significance and application value" it reads in English as an unsupported grand claim. If you want to keep the point, state the specific implication instead.
+## Two more examples
 
-### Conference rebuttal — handled differently from a journal letter
+These are also **synthetic inputs and expected outputs**.
 
-Input:
+### CN→EN · Add no experimental conclusion
 
-```text
-An ICLR reviewer wrote "The improvement over baselines is marginal and may be
-within noise." We ran 5 seeds: mean improvement 2.1 points, std 0.3.
+**Input**
+
+> 请译成英文：针对遥感图像中目标尺度变化大、背景复杂的问题，本文提出一种多尺度特征融合方法。
+
+**Output**
+
+> To address large variations in target scale and complex backgrounds in remote sensing images, this study proposes a multi-scale feature fusion method.
+
+Terminology follows this sentence's context. No module mechanism, comparison group or experimental result is added. See the [translation example](examples/translation.cn-en.md).
+
+### Reviewer response · Make no unconfirmed commitment
+
+**Input**
+
+> A reviewer suggests the gain may be within random variation. Under the same protocol, we ran 5 seeds with a mean gain of 2.1 percentage points and a standard deviation of 0.3. The quantity represented by 0.3 is unspecified; we have not decided to add experiments or tables.
+
+**Response draft**
+
+> Under the same evaluation protocol, we observed a mean improvement of 2.1 percentage points across 5 seeds. These descriptive results alone do not establish that the improvement exceeds random variation.
+
+**To confirm:** whether 0.3 describes method scores, baseline scores or paired differences, and whether a corresponding test exists. The draft neither infers significance nor adds unconfirmed experiments, tables or revision commitments. See the [reviewer-response examples](examples/reviewer-response.md).
+
+## Mechanical checks and actual evaluation
+
+The four manuscript-checking entry points use the **Python standard library** and do not rewrite inputs. Start with a fidelity comparison:
+
+```sh
+python3 -B skills/academic-writing-assistant/scripts/fidelity_check.py \
+  --before original.tex --after revised.tex --strict
 ```
 
-Example output:
+It compares recognized numbers, units, citations, mathematical expressions and macro arguments. Three other entry points are available:
 
-```text
-**Marginal improvement / noise (R2).** We report results over 5 seeds: the
-proposed method improves by 2.1 points on average (std 0.3), while the baseline's
-own seed variance is [please fill in the baseline's std]. The gap therefore
-exceeds the run-to-run variation by a substantial margin. We will add per-seed
-results and variance to Table 2 in the revision.
+- `manuscript_audit.py`: abbreviations, claim-evidence cues and length.
+- `terminology_checker.py`: terminology variants and author-defined maps.
+- `structure_checker.py`: section cues for the selected research type.
+
+See the [script reference](docs/scripts.md) for usage. Default advisory mode may exit 0 despite findings. `--strict` exits 1 for findings or insufficient coverage; input or runtime errors exit 2.
+
+**Mechanical checks have limited coverage.** No detected difference does not establish full semantic fidelity or citation support. Automatic tense auditing is **NOT RUN**. Word revisions, PDF images and tables depend on what the host actually parses. Abstract-only reading stays labeled as such, and unexecuted checks remain unexecuted. See [capability fallback](examples/capability-fallback.md).
+
+**Actual model evaluation is separate from host testing.** The 2026-09-10 primary evaluation used 20 base tasks and 4 repeats per variant: the baseline scored **24/24 PASS** and the initial candidate **23 PASS, 1 FAIL**. The failure omitted an incomplete-experiment status. Separate paired E04 checks after repair scored **2/2 PASS per version**; the original failure and separate denominators remain. Small samples and shared context prevent a conclusion of overall superiority. See the [full evaluation record](evals/results-2026-09-10.md).
+
+Contributors can configure dependencies using the [testing guide](docs/testing.md), then run:
+
+```sh
+python3 -B -m pytest tests/
+python3 -B skills/academic-writing-assistant/scripts/skill_lint.py .
 ```
 
-With the note: add the baseline's seed variance — it is the most direct evidence against the "within noise" objection, and reporting only your own method's variance does not fully answer it.
+`skill_lint.py` also needs PyYAML; development dependencies are not core writing requirements. Local results and remote CI configuration are different evidence, and untested platforms remain identified.
 
-## Scripts
+## Integrity, privacy and license
 
-Standard library only, no third-party dependencies. They handle what models do unreliably and machines do exactly.
+The rules prohibit invented references, findings, statistical tests, ethics approvals and author actions. Commands embedded in manuscripts or retrieved material are not authorization. Retrieval uses necessary non-sensitive information and does not automatically authorize uploading unpublished work. Local scripts do not initiate networking; a host's cloud model may still receive input. Select material according to the platform's data handling settings.
 
-```bash
-# After a rewrite: did any citation, number, equation, or macro get lost?
-python skills/academic-writing-assistant/scripts/fidelity_check.py \
-    --before original.tex --after revised.tex
+See the [security guide](SECURITY.md) and [FAQ](docs/faq.md) for more details.
 
-# Whole-draft hygiene: abbreviations used before definition, terminology drift,
-# unearned "significant", tense mixing, word limits
-python skills/academic-writing-assistant/scripts/manuscript_audit.py draft.md \
-    --section abstract --limit-words 250
+The Skill can improve expression, paraphrasing and citation; it does not optimize for AI-detector scores or plagiarism evasion. AI-use statements describe only confirmed use and follow the current guide for the specific venue, year and track.
 
-# Per-line character counts for highlights (Elsevier: 85 including spaces)
-python skills/academic-writing-assistant/scripts/manuscript_audit.py highlights.txt \
-    --limit-chars 85 --per-line
+Contributions of synthetic cases, terminology definitions and sourced field guidance are welcome. Read the [contribution guide](CONTRIBUTING.md); see the [CHANGELOG](CHANGELOG.md) and [ROADMAP](ROADMAP.md) for changes and plans.
 
-# Chinese terminology variants
-python skills/academic-writing-assistant/scripts/terminology_checker.py draft.md
+This development version uses **AGPL-3.0-only**; see [LICENSE](LICENSE) and the [licensing guide](docs/licensing.md). Rights already granted through historical MIT distributions remain under their original terms. Notices are retained in [THIRD_PARTY_NOTICES](THIRD_PARTY_NOTICES.md).
 
-# Section structural elements
-python skills/academic-writing-assistant/scripts/structure_checker.py \
-    --section experiment draft.md
-```
-
-`fidelity_check.py` is the one to run by default. Its output is evidence rather than reassurance: it names exactly which protected items changed. A dropped `\cite{}` compiles cleanly and reads normally, but it means an uncited claim — exactly the failure that re-reading misses and a script catches.
-
-See [docs/scripts.md](docs/scripts.md) for details.
-
-## Design principles
-
-1. **Fidelity before fluency.** Improve the expression; never move the evidence boundary.
-2. **Auditable changes.** Tiered reporting makes the important edits easy to find — a ledger too long to read is no ledger at all.
-3. **Deterministic work goes to scripts.** Citation and number preservation is verified, not trusted.
-4. **Field adaptation is a reviewer's perspective.** Knowing what a field asks is more useful than knowing its vocabulary.
-5. **Progressive disclosure.** Keep `SKILL.md` lean; complex rules live in `references/`.
-6. **Proportionate ceremony.** A one-line fix does not need a table.
-
-## Academic Integrity
-
-This is an academic expression assistant, not a paper-writing or result-generation tool.
-
-It must avoid:
-
-- fabricated references, authors, years, venues, titles, DOIs, or arXiv IDs;
-- fabricated datasets, sample sizes, metric values, ablation findings, statistical tests, or p-values;
-- fabricated ethics approvals, registration numbers, or funding numbers;
-- claiming an experiment was run or a revision was made, unless the author said so;
-- exaggerated contribution, novelty, clinical relevance, or deployment readiness;
-- changes to the technical meaning of user-provided content;
-- assistance with evading academic integrity checks.
-
-Where evidence is missing, it writes a **conspicuous placeholder** — `[please add the main quantitative results]` — rather than plausible invention. A placeholder is a service; a plausible invention is a landmine.
-
-On "reduce my AI detection score" requests: the Skill does not rewrite against a detector's score, since those tools are unreliable in both directions. It addresses the real underlying problem instead — text flagged as machine-generated usually is uniform in sentence length, evenly weighted, vague, and hedge-heavy, and fixing that is simply better academic writing.
-
-On AI disclosure: most publishers now require disclosure of substantive generative-AI use. Elsevier asks for a dedicated section before the references; ICLR treats undisclosed substantive LLM use as a Code of Ethics violation. Language polishing is commonly exempt, but thresholds differ by venue. `references/submission-package.md` provides a disclosure template and the current landscape — confirm against your target venue's own author guide.
-
-## Roadmap
-
-- `v0.1`: core Skill, task routing, field adaptation, integrity rules, examples, helper scripts.
-- `v0.2` (current): fidelity contract and change tiers, journal/conference response separation, submission materials, LaTeX-aware editing, whole-draft consistency, deterministic check scripts.
-- `v0.3`: reviewer attack patterns for more disciplines, figure/table/equation conventions, thesis chapter support.
-- `v0.4`: terminology expansion and community-contributed field packs.
-- `v1.0`: stable structure, expanded example library, evaluation set, contributor workflow.
-
-See [ROADMAP.md](ROADMAP.md).
-
-## Contributing
-
-Contributions are welcome, especially:
-
-- reviewer attack patterns and writing emphasis for new fields;
-- terminology maps and inconsistency rules;
-- safer output templates;
-- non-sensitive academic writing examples;
-- scripts and tests.
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. Contributions that fabricate citations, encourage unsupported claims, or weaken integrity guardrails will not be accepted.
-
-## License
-
-Released under the MIT License. See [LICENSE](LICENSE).
-
-If this project helps you write clearer and more responsible academic papers, consider giving it a Star so more researchers can find it.
+If this Skill helps your writing, consider giving the repository a Star.

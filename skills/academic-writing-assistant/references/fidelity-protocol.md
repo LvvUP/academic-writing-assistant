@@ -1,235 +1,76 @@
 # Fidelity Protocol
 
-Worked guidance for the hardest judgment in academic editing: how far you may move a sentence before you have changed what the author is claiming.
-
-Read this when a revision touches claim strength, when you are unsure whether an edit is L2 or L3, or when a user pushes back on a change you made.
-
-## Contents
-
-- [Why fidelity is the whole game](#why-fidelity-is-the-whole-game)
-- [Zone 1: locked](#zone-1-locked)
-- [Derived numbers](#derived-numbers)
-- [Bounding an overclaim](#bounding-an-overclaim-three-options-not-one)
-- [Zone 2: load-bearing language](#zone-2-load-bearing-language)
-- [Zone 3: free surface](#zone-3-free-surface)
-- [Worked examples](#worked-examples)
-- [Edge cases](#edge-cases)
-- [Reporting](#reporting)
-
-## Why fidelity is the whole game
-
-An author sends a rough paragraph and gets back polished English. The English is better than anything they would have written. So they accept it — all of it, without line-by-line comparison, because comparing is slow and the output looks authoritative.
-
-That trust is the product. It is also the risk. Every unflagged strengthening rides along on it into a submitted manuscript, where it becomes the author's word and the author's responsibility. A reviewer who spots "significantly outperforms" with no significance test does not blame the tool.
-
-So the goal is not to be conservative for its own sake. Timid edits that leave bad writing intact fail the author just as surely. The goal is to be **aggressive on the surface and rigorous about the boundary** — and to make the boundary cheap for the author to inspect.
+保真要求可审查的表达改进。最容易遗漏的错误不是明显编造数字，而是把可检验条件、证据强度或作者状态悄悄改变。
 
 ## Zone 1: locked
 
-Reproduce character-for-character. Never paraphrase, reformat, round, convert, or "clean up."
+保留数值及精度、正负号、单位、比较符、样本数、数据集与方法名称、版本、引用命令及键、公式、符号、交叉引用、伦理与注册编号。只保留数字集合不足以保留事实：A/B 指标互换数值、引用移动到另一论断之后，都需要检查。
 
-- Numerals, percentages, units, tolerances, confidence intervals, p-values
-- Dataset, benchmark, corpus, and cohort names — including capitalization (`ImageNet`, not `Imagenet`)
-- Method, model, architecture, and software names, with versions
-- Citation markers: `[12]`, `(Zhang et al., 2021)`, `\cite{zhang2021}`, `\citep{}`
-- Equations, inline math, symbols, subscripts, superscripts
-- Cross-references: `Section 3.2`, `Table 4`, `Fig. 5`, `\ref{}`, `\label{}`
-- Hyperparameters, seeds, hardware, runtimes
-- Ethics approval numbers, registration IDs, accession numbers, funding numbers
+发现疑似错误时指出原始位置和两种冲突，不自行确定哪个正确。例如合成稿中正文写 92.3%，表中写 93.2%，应同时保留并询问依据。用户已经明确核对并授权更正时可更正，记录原值、改值和依据。
 
-### When a locked item looks wrong
+### 授权的格式转换
 
-Flag; do not fix. Examples of things that must become queries rather than edits:
-
-- The text says 92.3% but the referenced table says 93.2%
-- A symbol appears before its definition
-- "three datasets" is followed by four dataset names
-- A citation year contradicts a claim about chronology
-
-You do not have the data, the tables, or the bibliography. The author does. Write:
-
-> **需确认**：正文第 2 段为 92.3%，与 Table 4 的 93.2% 不一致。已保留原文数值未作修改，请核对以哪个为准。
-
-The cost of flagging a real error is thirty seconds of author attention. The cost of silently harmonizing two numbers to the wrong one is a corrected-in-proof or a retraction. These are not comparable.
-
-### One exception: mechanical formatting the author asked for
-
-If the user explicitly requests a formatting normalization — "统一成 Table 1 而不是 table 1", "把百分号统一" — apply it, and confirm what was normalized. The rule protects against *unrequested* alteration.
+用户明确要求统一 Table/table、引用格式或单位展示时，可在授权范围内转换并说明。数值精度、单位换算、公式文本、引用命令或结构标记有含义时不能一律算 L1。格式变化虽经授权也需检查对应关系；不可将授权扩大到改数据。
 
 ### Derived numbers
 
-A number you calculate from two locked values — 91.2 − 89.8 = 1.4 — is neither supplied by the author nor invented. It comes up constantly: improvement margins, relative gains, parameter reductions, speedups.
-
-The rule: **offer it, never insert it.** Put the derived value in the ledger or the queries as a suggestion, not in the manuscript-ready text.
-
-The reason is that the arithmetic is trivially right and the *interpretation* is where it goes wrong. A 1.4-point difference is only "a 1.4-point improvement" if both numbers come from the same evaluation protocol, the same split, and the same metric definition — which you cannot verify. Relative percentages are worse: "a 1.6% relative gain" versus "1.4 points absolute" are both true and mean different things to a reader, and picking one for the author makes a rhetorical choice on their behalf.
-
-> **需确认**：91.2% 与 89.8% 相差 1.4 个百分点。如果两者是同一评测协议下的结果，
-> 建议写成 "a 1.4-point F1 gain over the baseline"，比"提高很多"有说服力得多。
-> 请确认口径后再写入。
-
-Once the author confirms, use it freely — it is then their number.
-
-### Bounding an overclaim: three options, not one
-
-"Soften toward accuracy" is underspecified. When a sentence claims more than the evidence supports, there are three legitimate moves, and they are not interchangeable:
-
-**Add a scope condition.** "可广泛应用于各种遥感场景" → "may generalize to other change-detection scenarios, although this would require confirmation across sensors, regions, and acquisition periods." Right when the author plainly believes the claim and the limits are conventional for the field.
-
-**Cut the sentence.** The same sentence, deleted. Right when it adds no information — and unbounded applicability claims usually do not. Removing one costs the paper nothing and removes an attack surface.
-
-**Leave a placeholder.** "The method is expected to generalize to `[请补充你能支持的适用范围]`." Right when only the author knows the real boundary.
-
-The trap in the first option: the limits you add come from your field knowledge, not the author's text. Writing "across sensors, regions, and acquisition periods" asserts a specific limitation profile the author never stated. It moves in the safe direction, but it is still content you introduced.
-
-So when you soften by adding scope, mark it L3, say where the limitation came from, and **offer deletion as the alternative**. Let the author choose between conceding a specific limitation and simply not making the claim.
+工具推算值要与作者原始值区分。合成输入为“同一指标同一协议下 91.2% 与 89.8%”，算术差为 1.4 个百分点，相对变化约为 1.56%；两种口径不同。只有已确认比较口径且用户要求计算/表述时才写入正文，并说明由哪些值计算。缺少同协议等信息时先在建议中列出算式和条件，不自行称“提升”。不要把均值差或标准差换成统计显著性。
 
 ## Zone 2: load-bearing language
 
-These words determine what the paper asserts. They look like style; they are not.
+承重语言包括可能性、能力、频率、量词、范围、因果、比较、否定、例外和新颖性。它们不构成适用一切语境的强度直线：`can` 可能描述操作能力，`may` 可能描述认识不确定性；应按句意处理。
 
-### Hedges and evidential strength
+- **可能与频率**：“往往”与“可能”各自承担信息；只有同一含义的重复才可合并。删掉“部分场景/一定程度”若改变范围或程度，归 L3。
+- **证明与观察**：明确的定理证明可以用 prove；经验结果通常表达证据支持。不要把作者已经给出的证明降格为推测，也不要替作者补证明。
+- **因果**：是否允许因果表述取决于设计、假设和证据，不能仅凭实验/观察性研究标签一刀切。材料不足时标需核查，不自行断言因果或不存在因果。
+- **显著性**：判断统计显著性、实际重要性、否定表达和非统计语义。未在当前材料找到对应检验，表示“待核查”，不等于作者没做。标准差、方差、置信区间和 p 值各有含义；某处有检验不能支撑全部主张。不得自动改成 consistent/stable/notable，这些词也需要依据。
+- **首次性与比较**：`to our knowledge` 不提供文献检索证据。首次/SOTA/优于谁、在哪个指标/条件下，应与材料中的检索范围或对照相对应；缺失时保留原文并标疑问，或给明确条件化候选。
+- **否定与条件**：重写后复查 not、unless、only、at most、仅、除非、并非；删一个词可能反转结论。
 
-Ordered from weakest to strongest:
+### 用户要求更强主张
 
-`may / might` < `can` < `suggests / indicates` < `shows / demonstrates` < `establishes / proves`
+更强表达诉求不是研究证据。证据未知时可写：“若已完成并报告 [对应检验及结果]，可采用 [候选表述]。”候选必须显然有条件，不能先给无条件投稿正文再提醒。用户已经提供并确认相应证据后正常采用，不反复追问已解决事项。
 
-Chinese equivalents: `可能` < `能够` < `表明 / 说明` < `证明` < `充分证明`
+### 给过强主张加边界
 
-**Never move rightward on your own.** Moving leftward (toward caution) is permitted and often correct, but still disclose it — an author who deliberately wrote "demonstrates" after checking their statistics deserves to know you softened it, and may want it back.
-
-`prove` deserves special attention with Chinese-native authors, because 证明 covers both mathematical proof and empirical support. In English, "prove" claims deductive certainty. An experiment does not prove; it demonstrates, indicates, or provides evidence for. Flag every 证明 → prove translation.
-
-### Quantifiers and coverage
-
-`all` / `every` / `always` / `universally` are absolute claims. `most` / `many` / `several` / `some` are not. Never inflate; never quietly deflate a defensible absolute either (a mathematical result may legitimately hold for all inputs).
-
-Watch the implicit universal in translation: 该方法能够提升检测性能 has no explicit scope and may become an unbounded "The method improves detection performance." Add the scope the evidence supports, and mark it L3.
-
-### Scope conditions
-
-Phrases like "on the evaluated datasets," "in this cohort," "under the stated assumptions," "for images above 512×512," "在所测试的场景下" are the difference between a defensible claim and an overclaim. They are also the first thing that gets cut when someone tightens a sentence for concision.
-
-Treat every scope condition as load-bearing. If you must cut one for length, say so explicitly and offer the shorter form as an option rather than a default.
-
-### Causal language
-
-`causes` / `leads to` / `results in` assert causation. `is associated with` / `correlates with` / `is accompanied by` do not. Chinese 导致 is frequently used loosely where the evidence supports only correlation — this is one of the most common overclaims to reach English drafts from Chinese sources, and reviewers in medicine, epidemiology, and the social sciences attack it reliably.
-
-Unless the design is experimental with controls, prefer associational language and flag the change.
-
-### Novelty and comparison
-
-`first` / `novel` / `state-of-the-art` / `outperforms` / `superior` are checkable claims that reviewers do check.
-
-- "first" — nearly indefensible; a single missed 2019 paper sinks it. Suggest "to our knowledge, the first" at minimum, and flag it.
-- "state-of-the-art" — means "as of a specific comparison set on a specific benchmark." Bind it to that set or drop it.
-- "outperforms" — needs a named baseline and a named metric. Unqualified, it is an invitation to a reviewer question.
-- "significantly" — in a paper, this reads as a statistical claim. If no test was run, it is wrong, not merely strong. This is worth flagging every single time; it is the single most common unearned word in Chinese-authored English manuscripts.
-
-### Negation, conditionals, and comparatives
-
-Easy to drop, and reversing in meaning when dropped: `not`, `unless`, `except`, `only`, `at most`, `no worse than`, `fails to`, `除非`, `仅`, `并非`. Re-read any sentence containing these after rewriting it.
+可采用材料已有边界、删除无实质内容句、或留下适用范围占位。来自领域常识的新限制（例如传感器、地域、时间）也属于新增内容，不能因为方向谨慎就当作作者已知局限。作为 L3 建议列出，用户确认后再写入正文。
 
 ## Zone 3: free surface
 
-Edit confidently. This is where the value is, and hesitation here produces stilted, half-improved prose that helps nobody.
+可直接修正语法、冠词、拼写、名词化和真实重复，也可在含义不变时调整信息顺序。下列不是自动同义替换：better features → more discriminative features；significant → consistent；相关 → 导致；特征融合 → 特征聚合。
 
-- Grammar, agreement, articles, prepositions, plurals
-- Tense (subject to section conventions — see `style-guide-en.md`)
-- Sentence splitting and combining, when the claim is untouched
-- Connectives and transitions that make existing logic explicit
-- Cutting redundancy, filler, and empty intensifiers with no evidential role
-- Reordering within a sentence for end-weight and emphasis
-- Replacing vague verbs with precise ones of the same strength: `get better features` → `learn more discriminative features`
-- Terminology normalization toward the author's dominant usage
-
-The last one is worth stressing. When a draft mixes 目标检测 and 对象检测, or "feature fusion" and "feature merging," pick the author's more frequent variant and normalize to it, rather than imposing your preference. Consistency is the goal; the specific choice is usually the author's to make. Note the normalization as L2.
+术语只有已确认指同一概念时才按作者惯用形式统一，记录为 L2；概念关系未知时保留区别并提示。作者定义或真实语境优先于词表的推荐项。
 
 ## Worked examples
 
-### Example 1 — the classic overclaim
+以下均为合成材料，数字只属于这些示例。
 
-**Original:** 实验表明我们的方法明显优于现有方法，证明了该模块的有效性。
+### 保留有意义的限定
 
-**Bad revision (L3 applied silently):**
-> Experiments demonstrate that our method significantly outperforms existing methods, proving the effectiveness of the proposed module.
+原文：噪声往往会在一定程度上影响现有方法，使性能有所下降。
 
-Three unearned upgrades in one sentence: `significantly` implies a test that was never mentioned; `outperforms existing methods` is unbounded; `proving` claims deductive certainty from empirical results. All three look like faithful translation. None are.
+改后：噪声往往会使现有方法的性能有所下降。
 
-**Good revision:**
-> Experiments show that the proposed method outperforms the compared baselines on the evaluated datasets, supporting the effectiveness of the proposed module.
+L2：合并“影响方法→性能下降”的重复叙述；保留频率“往往”和有限幅度“有所”。若“在一定程度上”在上下文另有具体范围含义，应保留并按 L3 考虑，不套用此例机械删除。
 
-**Ledger entry:**
+不应默认改成 `Noise degrades the performance of existing methods.`，因为频率与程度消失。
 
-| # | 原文 | 修改后 | 层级 | 原因 |
-|---|---|---|---|---|
-| 1 | 明显优于现有方法 | outperforms the compared baselines on the evaluated datasets | L3 | "明显/significantly" 在英文论文中读作统计显著性主张；未见检验，故改为受限比较。若已做显著性检验，请告知检验方法与 p 值，可改回 significantly |
-| 2 | 证明了 | supporting | L3 | prove 在英文中意味演绎证明；实验结果宜用 support/demonstrate |
+### 原文已经正确
 
-**需确认**：`existing methods` 具体指哪些 baseline？写明对比方法名称会显著降低审稿人质疑"与谁比较"的概率。
+原文：The model achieved 89.2% Dice on the internal validation set, although performance dropped to 81.4% on the external cohort.
 
-Notice the ledger explains what the author gains from each change and how to reverse it. That is what makes it actionable instead of merely defensive.
+可保留原文。数值、外部验证范围与让步均有信息，不因希望更积极而删除。
 
-### Example 2 — an edit that should not have been made
+### 只要正文
 
-**Original:** The model achieves 89.2% Dice on the internal validation set, though performance drops to 81.4% on the external cohort.
+请求：只输出润色正文：该方法可能在部分场景下改善性能。
 
-**Bad revision:**
-> The model achieves 89.2% Dice on the validation set, with strong performance maintained across cohorts.
+回答：该方法可能改善部分场景下的性能。
 
-The revision deleted a number, dropped the internal/external distinction, and inverted the author's honest concession into a positive claim. In medical imaging, external-cohort degradation is the most important sentence in the paragraph — it is precisely what reviewers look for as evidence of methodological honesty. "Improving" it destroys the paper's credibility.
-
-**Correct handling:** the sentence is already well-formed. Leave it. If anything, `though` → `whereas` for register. L1, aggregate line, no ledger entry.
-
-The lesson: not every sentence needs improvement, and the confidence to leave good writing alone is part of the skill.
-
-### Example 3 — legitimate aggressive editing
-
-**Original:** 由于在实际应用场景中往往存在着大量的噪声干扰的问题，因此使得现有的方法在进行处理的时候会不可避免地受到一定程度的影响，从而导致最终的性能表现有所下降。
-
-**Revision:**
-> Noise in real-world settings degrades the performance of existing methods.
-
-This cut roughly 70% of the characters and is entirely faithful. Chinese academic drafts frequently carry 由于……因此……从而…… scaffolding, nominalizations (进行处理), and hedge stacking (往往、一定程度、有所) that add length without adding content. Stripping them is the highest-value edit available and requires no permission — the claim, its scope, and its strength are unchanged.
-
-Report as L2 with a one-line reason: "压缩冗余虚词与名词化结构，语义未变."
-
-Do not overcorrect into telegraphic prose, though. `有所下降` → `degrades` is right; deleting a genuine hedge like 在部分场景下 is not.
-
-### Example 4 — a query instead of an edit
-
-**Original:** Our approach reduces annotation cost by 60% compared to full supervision.
-
-There is nothing to fix linguistically. But 60% invites a question: reduced relative to what annotation protocol, measured how — pixels, images, hours? If the paper does not say, a reviewer will ask.
-
-This is not a fidelity issue; it is an anticipatory review comment. Put it under 需确认, not in the ledger:
-
-> **需确认**：60% 的标注成本下降是按标注像素、图像数量还是标注时长计算？审稿人通常会追问该口径，建议在方法或实验部分说明。
-
-Offering these is one of the most valuable things this Skill does — it catches the reviewer comment before the reviewer does. Keep them separate from the edits so they do not dilute the change ledger.
-
-## Edge cases
-
-**The author explicitly wants a stronger claim.** They may have evidence you cannot see. Comply, but state the dependency once: "已按要求改为 significantly outperforms — 请确认稿件中报告了对应的显著性检验." Then drop it. Repeating a warning after the author has made an informed decision is condescending, not careful.
-
-**The source text is internally contradictory.** Do not pick a side. Present both readings and ask which is intended. Choosing silently means half the time you have written something the author did not mean, with no signal that it happened.
-
-**Translating a claim that is idiomatic in one language and an overclaim in the other.** 具有重要的理论意义和应用价值 is standard Chinese framing and largely ceremonial; "has important theoretical significance and application value" reads in English as an unsupported grand claim. Translate the function, not the words: name the specific contribution, or cut it. Mark L3 and explain — the author usually did not realize the phrase does not transfer.
-
-**A section that is entirely fabrication risk**, such as a related-work request with no references supplied. Do not produce a plausible-looking draft with invented citations. Give the structure with explicit `[citation needed]` slots, or ask for the reference list. See `citation-safety.md`.
-
-**Very short input.** One sentence, obvious fix. Skip the ledger and the queries; return the fixed sentence and a clause of explanation. Ceremony scaled to a trivial task wastes the author's attention and trains them to ignore the format when it matters.
+保留“可能”和“部分”。如果原文两个数值互相矛盾，只输出正文也不授权选边；保持原义或加最小必要占位。
 
 ## Reporting
 
-The ledger exists so the author can audit in one minute instead of ten. It fails if it is too long to read.
+L1 只汇总真实追踪的修改；翻译不计 L1。L2/L3 台账引用短片段，列变化与依据，不输出冗长内部推理。正文不得夹带未确认新事实；台账中的“需确认”不豁免这一条。
 
-- Quote fragments, not sentences. The changed span plus minimal context.
-- One line of reasoning per entry, written for the author's benefit — what problem the change avoids — not as a justification of your authority.
-- L1 in a single aggregate count. Nobody reads "added article before 'proposed method'" forty times.
-- In translation, the L1 count does not apply -- the target text is newly written, not corrected. Say so in one line rather than inventing a number.
-- Every L3 needs either explicit reasoning or a query. No silent claim edits, ever.
-- If nothing needed confirming, write 暂无. An empty section is information; a missing section looks like an oversight.
-
-When `scripts/fidelity_check.py` has been run, cite its result rather than asserting preservation from memory: "fidelity_check 显示 14 处引用、9 个数值、3 个公式全部保留." Evidence beats reassurance, and the author can re-run it themselves.
+有工具时报告实际机械检查范围和发现，无工具时说明未执行。脚本只覆盖可识别对象，不能证明全部科学关系或引用支持。发现差异应回看原始位置，区分授权变化、错误与覆盖不足。

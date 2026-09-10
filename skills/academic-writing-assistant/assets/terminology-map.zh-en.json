@@ -1,181 +1,315 @@
 {
   "_meta": {
-    "description": "Chinese terminology variants that should not be mixed within one manuscript. Each entry lists the variants, a recommended default, the standard English term, and a note explaining when the recommendation does not apply.",
-    "usage": "python scripts/terminology_checker.py draft.md",
-    "contributing": "Add entries with a real note explaining the field convention. Where both variants are genuinely standard, say so rather than picking arbitrarily -- the choice belongs to the author."
+    "schema_version": 2,
+    "description": "Conditional terminology suggestions, separated into equivalent, style_preference and related_concepts. Co-occurrence is not proof of inconsistency.",
+    "usage": "Resolve scripts/terminology_checker.py from the installed Skill root; input paths are relative to the caller. --map replaces this map.",
+    "priority": "Author-confirmed definitions and usage > selected glossary > bundled style suggestion. Set author_confirmed=true and preferred to a configured variant, or relation=related_concepts with definitions.",
+    "relations": {
+      "equivalent": "Conditionally the same concept; review consistency without automatic replacement.",
+      "style_preference": "Optional wording preference, not a scientific correction.",
+      "related_concepts": "Potentially different concepts; preserve distinctions, do not normalize."
+    },
+    "legacy_maps": "Missing relation remains supported as style_preference; required legacy fields are validated.",
+    "english_matching": "Optional variants_en list; case-insensitive whole Latin-token matching by default. Set case_sensitive=true for capitalization comparisons. No inflection or semantic matching."
   },
   "computer_vision": [
     {
       "recommended_zh": "目标检测",
-      "variants_zh": ["目标检测", "对象检测"],
+      "variants_zh": [
+        "目标检测",
+        "对象检测"
+      ],
       "en": "object detection",
-      "note": "中文视觉论文通用“目标检测”；“对象检测”少见，建议统一。英文不用 target detection。"
+      "note": "同指 computer vision 中的 object detection 时，可按作者已确认译法统一。target detection 在特定研究中可能另有含义，不作绝对禁用。",
+      "relation": "style_preference"
     },
     {
       "recommended_zh": "语义分割",
-      "variants_zh": ["语义分割", "语义划分"],
+      "variants_zh": [
+        "语义分割",
+        "语义划分"
+      ],
       "en": "semantic segmentation",
-      "note": "“语义划分”非标准表述，建议统一为“语义分割”。"
+      "note": "同指 semantic segmentation 时可优先使用“语义分割”；若“语义划分”在当前研究有独立定义，保留该定义。",
+      "relation": "style_preference"
     },
     {
       "recommended_zh": "实例分割",
-      "variants_zh": ["实例分割", "实例划分"],
+      "variants_zh": [
+        "实例分割",
+        "实例划分"
+      ],
       "en": "instance segmentation",
-      "note": "建议统一为“实例分割”。"
+      "note": "同指 instance segmentation 时可统一译法；作者定义和目标读者习惯优先。",
+      "relation": "style_preference"
     },
     {
       "recommended_zh": "鲁棒性",
-      "variants_zh": ["鲁棒性", "稳健性", "健壮性"],
+      "variants_zh": [
+        "鲁棒性",
+        "稳健性",
+        "健壮性"
+      ],
       "en": "robustness",
-      "note": "“鲁棒性”在工科论文中最常见；若全文已统一使用“稳健性”（统计学背景常见），保持一致即可。"
+      "note": "这些译法在不同学科可有不同偏好；作者已确认的含义和用词优先，不按出现频率自动替换。",
+      "relation": "style_preference"
     },
     {
       "recommended_zh": "泛化能力",
-      "variants_zh": ["泛化能力", "泛化性能", "推广能力"],
+      "variants_zh": [
+        "泛化能力",
+        "泛化性能",
+        "推广能力"
+      ],
       "en": "generalization",
-      "note": "同一段落内不宜混用。英文中常直接用 generalization，不必写 generalization ability。"
+      "note": "能力、实际测得的性能和推广范围不必相同；先核对作者定义，不自动合并。",
+      "relation": "related_concepts"
     },
     {
       "recommended_zh": "特征融合",
-      "variants_zh": ["特征融合", "特征聚合", "特征整合"],
+      "variants_zh": [
+        "特征融合",
+        "特征聚合",
+        "特征整合"
+      ],
       "en": "feature fusion",
-      "note": "若指同一模块应统一；若论文刻意区分融合与聚合，需在首次出现时定义清楚。英文不用 feature merging。"
+      "note": "融合、聚合、整合或 merging 可能指不同操作或模块；共现本身不是错误，保持研究定义和模块对应关系。",
+      "relation": "related_concepts",
+      "variants_en": [
+        "feature fusion",
+        "feature aggregation",
+        "feature merging"
+      ]
     },
     {
       "recommended_zh": "骨干网络",
-      "variants_zh": ["骨干网络", "主干网络"],
+      "variants_zh": [
+        "骨干网络",
+        "主干网络"
+      ],
       "en": "backbone",
-      "note": "两种表述均常见，全文统一即可。"
+      "note": "同指 backbone 时可统一译法；如作者分别定义主干结构与骨干模块，应保留区别。",
+      "relation": "style_preference"
     },
     {
       "recommended_zh": "消融实验",
-      "variants_zh": ["消融实验", "消融研究"],
+      "variants_zh": [
+        "消融实验",
+        "消融研究"
+      ],
       "en": "ablation study",
-      "note": "英文固定搭配为 ablation study，不用 ablation experiment。"
+      "note": "ablation study 和 ablation experiment 的选用取决于指完整研究还是具体实验；不作绝对禁用。",
+      "relation": "style_preference"
     }
   ],
   "medical_imaging": [
     {
       "recommended_zh": "病灶检测",
-      "variants_zh": ["病灶检测", "病变检测"],
+      "variants_zh": [
+        "病灶检测",
+        "病变检测"
+      ],
       "en": "lesion detection",
-      "note": "按具体医学语境选择（病灶偏局部病变，病变范围更广），全文须一致。"
+      "note": "病灶与病变可能对应不同范围或医学定义；依据研究任务和已确认医学术语保留区别。",
+      "relation": "related_concepts"
     },
     {
       "recommended_zh": "医学图像分割",
-      "variants_zh": ["医学图像分割", "医学影像分割"],
+      "variants_zh": [
+        "医学图像分割",
+        "医学影像分割"
+      ],
       "en": "medical image segmentation",
-      "note": "两种中文表达均标准；“影像”在临床期刊更常见，“图像”在工科期刊更常见。选定后全文统一。"
+      "note": "图像与影像可按学科和作者偏好选择；如指代的数据或模态不同，不作词面统一。",
+      "relation": "style_preference"
     },
     {
       "recommended_zh": "外部验证",
-      "variants_zh": ["外部验证", "外部测试"],
+      "variants_zh": [
+        "外部验证",
+        "外部测试"
+      ],
       "en": "external validation",
-      "note": "临床研究中“外部验证”是规范术语，与内部验证构成关键区分，不宜写成“外部测试”。"
+      "note": "外部验证和外部测试可能指不同目的、数据划分或研究阶段；需依据研究设计，不按共现自动替换。",
+      "relation": "related_concepts"
     },
     {
       "recommended_zh": "金标准",
-      "variants_zh": ["金标准", "标准答案"],
+      "variants_zh": [
+        "金标准",
+        "标准答案"
+      ],
       "en": "reference standard",
-      "note": "临床期刊多用“金标准 / reference standard”；工科论文常用“真值 / ground truth”。按目标期刊选择。"
+      "note": "金标准、参考标准、真值和标准答案不保证等价；保留作者实际采用的标准与不确定性，不能升级其权威程度。",
+      "relation": "related_concepts"
     }
   ],
   "remote_sensing": [
     {
       "recommended_zh": "变化检测",
-      "variants_zh": ["变化检测", "变更检测"],
+      "variants_zh": [
+        "变化检测",
+        "变更检测"
+      ],
       "en": "change detection",
-      "note": "遥感论文标准表述为“变化检测”。"
+      "note": "同指遥感 change detection 时可优先使用“变化检测”；自定义任务中的“变更”按其实际含义处理。",
+      "relation": "style_preference"
     },
     {
       "recommended_zh": "遥感图像",
-      "variants_zh": ["遥感图像", "遥感影像"],
+      "variants_zh": [
+        "遥感图像",
+        "遥感影像"
+      ],
       "en": "remote sensing image",
-      "note": "两种表达均标准，测绘遥感期刊多用“影像”，需结合期刊风格全文统一。"
+      "note": "两种译法可按作者或venue偏好选择；先确认指代同类数据。",
+      "relation": "style_preference"
     },
     {
       "recommended_zh": "空间分辨率",
-      "variants_zh": ["空间分辨率", "地面分辨率"],
+      "variants_zh": [
+        "空间分辨率",
+        "地面分辨率"
+      ],
       "en": "spatial resolution",
-      "note": "若指地面采样距离，英文应写 ground sample distance (GSD)，与 spatial resolution 含义不完全相同。"
+      "note": "空间分辨率、地面分辨率和地面采样距离不应默认等同；须明确量的定义与单位。",
+      "relation": "related_concepts"
     },
     {
       "recommended_zh": "多源数据融合",
-      "variants_zh": ["多源数据融合", "多源信息融合"],
+      "variants_zh": [
+        "多源数据融合",
+        "多源信息融合"
+      ],
       "en": "multi-source data fusion",
-      "note": "全文统一即可。"
+      "note": "数据融合与信息融合可能指不同抽象层次或处理流程；保持作者定义。",
+      "relation": "related_concepts"
     }
   ],
   "machine_learning": [
     {
       "recommended_zh": "优化目标",
-      "variants_zh": ["优化目标", "目标函数"],
+      "variants_zh": [
+        "优化目标",
+        "目标函数"
+      ],
       "en": "optimization objective / objective function",
-      "note": "若论文刻意区分训练目标与数学函数，保留区分并在首次出现时说明；否则统一。"
+      "note": "研究目标、优化目标与目标函数可能有不同含义；不要仅因词面接近就统一。",
+      "relation": "related_concepts"
     },
     {
       "recommended_zh": "过拟合",
-      "variants_zh": ["过拟合", "过度拟合"],
+      "variants_zh": [
+        "过拟合",
+        "过度拟合"
+      ],
       "en": "overfitting",
-      "note": "“过拟合”为标准术语。"
+      "note": "在同一 overfitting 定义下可统一中文写法；这是术语表的条件化建议，不能覆盖作者的特殊定义。",
+      "relation": "equivalent",
+      "variants_en": [
+        "overfitting",
+        "over-fitting"
+      ],
+      "recommended_en": "overfitting"
     },
     {
       "recommended_zh": "微调",
-      "variants_zh": ["微调", "精调"],
+      "variants_zh": [
+        "微调",
+        "精调"
+      ],
       "en": "fine-tuning",
-      "note": "“微调”为标准术语。"
+      "note": "同指 fine-tuning 时可采用“微调”；“精调”如指不同工艺或阶段应保留。",
+      "relation": "style_preference",
+      "variants_en": [
+        "fine-tuning",
+        "finetuning"
+      ],
+      "recommended_en": "fine-tuning"
     },
     {
       "recommended_zh": "训练集",
-      "variants_zh": ["训练集", "训练数据集"],
+      "variants_zh": [
+        "训练集",
+        "训练数据集"
+      ],
       "en": "training set",
-      "note": "全文统一即可，通常“训练集”更简洁。"
+      "note": "同指同一个 training set 时可选定一种表达；具体数据划分与范围必须保持。",
+      "relation": "equivalent"
     },
     {
       "recommended_zh": "分布偏移",
-      "variants_zh": ["分布偏移", "分布漂移"],
+      "variants_zh": [
+        "分布偏移",
+        "分布漂移"
+      ],
       "en": "distribution shift",
-      "note": "全文统一；若同时讨论 concept drift，需明确区分。"
+      "note": "shift、drift 和 concept drift 在研究中可能采用不同定义或时间假设；先明确概念，不能自动合并。",
+      "relation": "related_concepts"
     }
   ],
   "nlp": [
     {
       "recommended_zh": "预训练语言模型",
-      "variants_zh": ["预训练语言模型", "预训练模型"],
+      "variants_zh": [
+        "预训练语言模型",
+        "预训练模型"
+      ],
       "en": "pre-trained language model",
-      "note": "若论文同时涉及视觉预训练模型，需保留“语言”以避免歧义。"
+      "note": "预训练语言模型是可能更窄的类别；省略“语言”可能扩大范围，需保留作者研究对象的限定。",
+      "relation": "related_concepts"
     },
     {
       "recommended_zh": "大语言模型",
-      "variants_zh": ["大语言模型", "大型语言模型"],
+      "variants_zh": [
+        "大语言模型",
+        "大型语言模型"
+      ],
       "en": "large language model (LLM)",
-      "note": "两者均可，全文统一。"
+      "note": "同指同一类 large language model 时可按作者偏好统一表述。",
+      "relation": "style_preference"
     },
     {
       "recommended_zh": "幻觉",
-      "variants_zh": ["幻觉", "臆造"],
+      "variants_zh": [
+        "幻觉",
+        "臆造"
+      ],
       "en": "hallucination",
-      "note": "“幻觉”为当前中文文献主流译法。"
+      "note": "模型 hallucination 与其他语境中的臆造未必同义；核对错误类型和作者定义。",
+      "relation": "related_concepts"
     }
   ],
   "general_academic": [
     {
       "recommended_zh": "本文",
-      "variants_zh": ["本文", "本研究"],
+      "variants_zh": [
+        "本文",
+        "本研究"
+      ],
       "en": "this paper / this study",
-      "note": "期刊论文中混用较常见但显得不整齐；建议全文以一种为主。学位论文通常用“本文”。"
+      "note": "论文文本与研究活动可以分别作为主语；两者共现不必构成不一致。",
+      "relation": "related_concepts"
     },
     {
       "recommended_zh": "评价指标",
-      "variants_zh": ["评价指标", "评估指标"],
+      "variants_zh": [
+        "评价指标",
+        "评估指标"
+      ],
       "en": "evaluation metric",
-      "note": "两者均可，全文统一。"
+      "note": "同指同一 evaluation metric 时可按作者偏好选择；指标定义和计算口径保持不变。",
+      "relation": "style_preference"
     },
     {
       "recommended_zh": "对比实验",
-      "variants_zh": ["对比实验", "比较实验"],
+      "variants_zh": [
+        "对比实验",
+        "比较实验"
+      ],
       "en": "comparative experiments",
-      "note": "全文统一即可。"
+      "note": "同指同一组比较实验时可统一译法；不同实验设计仍须保留区别。",
+      "relation": "style_preference"
     }
   ]
 }

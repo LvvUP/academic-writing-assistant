@@ -1,159 +1,59 @@
 # Reviewer Response and Rebuttal
 
-Two different documents that users conflate, with different length budgets, different readers, and different tone.
-
-| | Journal response letter | Conference rebuttal |
-|---|---|---|
-| Venue | Elsevier, Springer, IEEE Trans, medical journals | ICLR, NeurIPS, ICML, CVPR, ACL |
-| Length | Effectively unbounded; thoroughness is a virtue | Hard character or page cap, strictly enforced |
-| Timing | Written *after* revisions are made | Written *before* revisions; you promise, then deliver |
-| Reader | Editor + the original reviewers, reading carefully | Overloaded reviewers skimming during a short discussion window |
-| Tense | "We have revised Section 3.2…" | "We will add…" / "We have run the requested experiment and obtained…" |
-| Structure | Point-by-point, exhaustive, quotes each comment | Prioritized: the objections that actually move scores come first |
-
-Getting this wrong is costly. A 6000-word point-by-point reply pasted into a conference rebuttal box will be truncated and unread. A terse conference-style rebuttal sent to a journal editor reads as dismissive.
-
-Ask which one it is if it is not obvious from the venue.
-
-## Contents
-
-- [Before drafting](#before-drafting)
-- [The response unit](#the-response-unit)
-- [Journal response letter](#journal-response-letter)
-- [Conference rebuttal](#conference-rebuttal)
-- [Handling the hard cases](#handling-the-hard-cases)
-- [Tone](#tone)
-- [The claim boundary](#the-claim-boundary)
-- [Templates](#templates)
+回复需要同时准确表达审稿意见、作者立场、实际工作状态与证据。期刊回复信和会议 rebuttal 常有不同组织形式，但具体长度、允许材料和修改时机以当前 venue 规则为准。
 
 ## Before drafting
 
-Establish three things. Guessing any of them produces a response that misrepresents the authors.
+从用户材料确认：
 
-1. **What did the reviewer actually say?** Work from their words, not a paraphrase. If the user summarized ("审稿人说创新性不够"), ask for the verbatim comment — the specific wording usually reveals what would satisfy them.
-2. **What has already been done?** This is the critical one. Whether an experiment has been run determines whether you write "we have added" or "we will add." Never assume. Claiming a completed revision that does not exist is a serious misrepresentation to an editor, and it is the easiest error to make when drafting speculatively.
-3. **Do the authors agree?** Agreement, partial agreement, and principled disagreement produce structurally different responses. Do not default to total capitulation; conceding a point the authors believe is wrong weakens the paper and misleads the reviewer.
+- 审稿人具体说了什么。仅有概述时可写带占位的初稿，并说明尚未看到原话；不假装逐字引用。
+- 作者同意、部分同意还是有依据地不同意。未知时不替作者全盘承认错误。
+- 哪些工作已完成、哪些是作者明确计划、哪些只是可选建议。
+- 哪些结果、修订位置、实验条件与统计分析已提供。
+
+已确认信息不反复问；缺口集中说明，可保真的回复先写。
 
 ## The response unit
 
-Every reply to a single point has the same four moves, whatever the venue:
+按需要组织为 concern → position → evidence → action。要具体，但具体信息必须有来源。
 
-1. **Restate the concern** in one line, in your own words. This proves you understood it and is the fastest way to build reviewer goodwill.
-2. **Position**: agree / partially agree / respectfully clarify. Say which, explicitly.
-3. **Action**: what changed or what is proposed, concretely. "We clarified the motivation" is empty. "We added a paragraph in Section 3.1 explaining why the gating is applied before rather than after normalization, and added Table 6 reporting the reversed order" is a real answer.
-4. **Evidence**: quote the new text, cite the new table, or give the number. A response with no artifact behind it does not resolve anything.
+| 状态 | 可用表述 |
+|---|---|
+| 作者明确已完成，且提供内容/位置 | We have revised [真实位置] to [已提供的改动]. |
+| 作者明确决定未来做 | We will [已确认计划]. |
+| Agent 建议作者考虑 | 放在正文外：“建议补充……”；不代写成 will |
+| 未知 | [请确认是否已完成及真实位置/结果] |
 
-Reviewers reading fifteen responses reward specificity and punish padding. Cut everything that is not one of these four moves.
+不要凭空产生审稿人编号、表号、章节号、新实验、修订承诺或作者立场。统计量必须明确属于方法、baseline 还是配对差值；SD 不等于 variance，更不等于显著性证据。
 
 ## Journal response letter
 
-Open with a brief note to the editor: thanks, a one-paragraph summary of the main changes, and a statement of how the manuscript improved. Then go point by point.
-
-Formatting that editors find usable:
-
-- Number every comment: R1.1, R1.2, R2.1
-- Quote the comment verbatim, visually distinguished (italic or a quote block)
-- Response immediately below
-- New or changed manuscript text quoted directly, with section and line numbers
-- Never make the editor hunt through the revised manuscript to find your change
-
-Answer every comment, including the ones you disagree with and the ones that are trivial. Silent omission reads as evasion and is a common reason a revision goes back for another round.
+通常逐条覆盖意见，保留用户给定编号和原话，回应后引出实际修订文本与位置。只有已完成修订才使用 have revised。没有审稿编号可按“Comment 1”等清楚说明为本次整理编号，不伪称 venue 原编号。
 
 ## Conference rebuttal
 
-Space is the binding constraint. Spend it where it changes scores.
+在实际篇幅限制下优先回应核心技术问题；相同疑问可合并，但不丢掉独立异议。不要从“会议”推断必须承诺修订，或默认允许追加实验。用户给了当前政策即可按该政策处理；需要检索时核验实际年份与轨道。
 
-1. **Triage.** Rank objections by how much they affect the outcome. A reviewer who thinks the method is fundamentally flawed matters more than one who wants an extra citation.
-2. **Lead with the biggest.** Do not open with a thank-you paragraph — with hard caps, that is a wasted line.
-3. **Group shared concerns.** "R1 and R3 both ask about generalization to unseen categories: …" saves space and shows the reviewers you read all the reviews.
-4. **Numbers over prose.** A new result table is worth a paragraph of argument.
-5. **Be explicit about what is promised versus done.** Reviewers discount promises heavily; if the experiment was actually run during the rebuttal period, say so unmistakably and give the numbers.
-6. **Check the cap before submitting.** Major ML venues cap rebuttals by characters or pages and enforce it by truncation. Count against the venue's stated limit rather than estimating — `scripts/manuscript_audit.py --limit-words` handles counting.
+回复中引用数值、方差或检验时，保留作者的统计定义与条件；仅均值差较大不能排除随机波动。未看到相应检验应写“当前材料未提供”，不说“作者未做检验”。
 
-Format for skimming: bold the concern, plain text for the answer, one blank line between points.
+## Handling hard cases
 
-## Handling the hard cases
+- **创新性不清**：依据已给信息解释与最近工作具体区别；缺材料时留槽，不加强 novel/first。
+- **无法补实验**：只有作者提供的原因与替代计划可写进回复；Agent 可以提出建议供作者选，不自作承诺。
+- **误解或事实错误**：引用已有证据澄清；不能为了礼貌声称“已修改某节”或“我们写得不清楚”，除非作者确认。
+- **意见矛盾**：明确冲突并列可选方案；用户确认选择后再写已采纳/计划。
+- **不友好语气**：回应技术内容、保持专业；私下联系编辑仅作为选项，不主动代发消息。
 
-**"The novelty is unclear."** Usually means the paper failed to *position* the work, not that the work is unoriginal. Answer with the specific technical difference from the closest prior method and the evidence that the difference matters — ideally an ablation. Do not restate the contributions list more emphatically; that is what the reviewer already read and did not find convincing.
+## 合成示例：统计量指代未知
 
-**A request for an experiment the authors cannot run.** Say so plainly, give the actual reason (no access to the dataset, no compute, requires an ethics amendment), and offer the closest feasible substitute. Reviewers accept honest constraints far more often than they accept evasion. Never imply the experiment was run.
+输入：审稿意见是 “The improvement over baselines is marginal and may be within noise.” 作者说“跑了 5 个种子，均值提升 2.1 个点，标准差 0.3”，未给审稿编号或修订计划。
 
-**The reviewer misunderstood the paper.** A misunderstanding is evidence the writing was unclear — even when the reviewer was careless. Clarify without saying "as clearly stated in Section 3," which is a reliable way to antagonize a reviewer. Instead: "We may not have made this sufficiently clear. Section 3.2 has been revised to state explicitly that…"
-
-**A factually wrong criticism.** Correct it with evidence, once, neutrally. State the fact, cite the location, move on. No accumulation of counter-arguments; no invitation to a debate.
-
-**A hostile or dismissive review.** Respond to the technical content and ignore the tone completely. Never mirror it. If a review is genuinely unprofessional, the mechanism is a private note to the editor or AC, not the public response — mention that option to the user rather than putting it in the letter.
-
-**Contradictory reviewer requests.** Name the conflict openly and explain the choice: "R1 asks for a broader evaluation while R2 asks for deeper analysis of the existing setting. Given the page limit we prioritized R2's request and added the broader comparison to Appendix C."
-
-## Tone
-
-Polite, specific, confident. Not obsequious, not defensive.
-
-- One brief thanks per reviewer. Not per comment — repeated gratitude reads as padding and is noticed.
-- No apology for the paper's existence. "We apologize for the poor quality of our work" hurts the authors and is not what the reviewer wants.
-- No over-conceding. Authors are entitled to defend correct choices; a well-argued disagreement is respected.
-- Avoid "obviously," "clearly," "as we already stated" — all of them imply the reviewer was inattentive.
-- Keep an even register. The response is a professional document, and the editor reads it too.
-
-## The claim boundary
-
-The fidelity rules apply here with unusual force, because a response letter is a factual representation to an editor.
-
-Never write, unless the user has confirmed it:
-
-- That an experiment was run, or what it showed
-- That text was added, or where
-- A metric, dataset, or result value
-- That a reviewer's suggestion was adopted
-
-When the user has not said, produce the response with explicit slots — `[请填入新实验结果]`, `[请填写修改后的章节号与行号]` — and say clearly that these must be filled before sending. Placeholders that survive into a submitted letter are embarrassing; invented numbers are misconduct. The placeholder is the safe failure mode, so make it visually obvious.
-
-Some venues also require disclosing AI assistance used in preparing responses. See `submission-package.md`.
-
-## Templates
-
-### Journal, per comment
+可用初稿：
 
 ```text
-**Comment R1.2:** [verbatim reviewer text]
-
-**Response:** We thank the reviewer for this point. We agree that [restated concern].
-[What was done, concretely.] The revised text now reads:
-
-> "[new manuscript text]"
-
-This appears in Section [X], page [X], lines [X–X].
+We evaluated 5 seeds and observed a mean improvement of 2.1 points.
+[请确认 0.3 是方法得分、baseline 得分，还是逐种子配对差值的标准差，
+并补充对应统计分析后再回应波动问题。]
 ```
 
-### Journal, Chinese
-
-```text
-**审稿意见 R1.2：** [审稿人原文]
-
-**回复：** 感谢审稿人指出这一问题。我们认同 [重述关切]。
-针对该意见，我们 [具体修改内容]。修改后的表述为：
-
-> "[修改后正文]"
-
-修改位置：第 [X] 节，第 [X] 页，第 [X–X] 行。
-```
-
-### Conference rebuttal, per point
-
-```text
-**Generalization to unseen categories (R1, R3).** We ran this during the rebuttal
-period. On [dataset], the method reaches [metric] on held-out categories versus
-[metric] for [baseline]; full results are in the table below. We will add this as
-Table 6 in the camera-ready.
-```
-
-### Respectful disagreement
-
-```text
-**Response:** We appreciate this perspective and would like to offer a clarification.
-[Reviewer's premise] holds under [condition], but our setting differs in that
-[specific technical reason, with evidence]. We have added a sentence to Section [X]
-making this assumption explicit, since the reviewer's reading suggests it was not
-sufficiently clear in the original submission.
-```
+说明：已有均值不能单独回答“是否噪声”；不添加 R2、Table 2 或 We will add。若作者补齐并确认统计口径与分析，可据其真实结论完善回复，不重复索取相同信息。
