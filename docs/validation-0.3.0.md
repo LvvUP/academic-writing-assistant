@@ -5,7 +5,7 @@
 ## 版本与交付状态
 
 - 基线：`6af0be1916b6ce6452fee2d1ddf053f37584380d`，插件版本 0.2.0；本次重新执行基线测试为 **45 PASS**，仓库 lint **PASS**。
-- 升级：0.3.0 开发候选，分支 `codex/academic-writing-upgrade`。首个已推送实现提交为 [`a03ac61`](https://github.com/LvvUP/academic-writing-assistant/commit/a03ac613ff0eb97730d8d687f2cf5293ddc15781)。首轮远程 CI 发现 Windows 问题，修复及 PR 交付仍 **PENDING**。
+- 升级：0.3.0 开发候选，分支 `codex/academic-writing-upgrade`。实现提交为 [`a03ac61`](https://github.com/LvvUP/academic-writing-assistant/commit/a03ac613ff0eb97730d8d687f2cf5293ddc15781)，Windows 修复为 [`bc54557`](https://github.com/LvvUP/academic-writing-assistant/commit/bc545575e54cac4e0d689454b5641f9d423d546e)。两次提交均已推送；修复后原生 CI **PASS**，PR 交付状态见文末。
 - 本地原有用户改动检查：开始时目标仓库工作树干净；开发使用独立分支，未重置原主分支或清理相邻项目。
 
 ## 问题与回归覆盖
@@ -32,7 +32,19 @@
 
 Windows 修复让 CLI 在入口明确使用 UTF-8，测试文件和文本管道也显式指定编码；没有用 CI 全局编码开关掩盖默认环境的问题。安装器改为读取完整的、不跟随链接的文件属性，继续严格拒绝硬链接。依据 [Python 官方文档](https://docs.python.org/3.12/library/os.html#os.DirEntry.stat)，Windows 的 `DirEntry.stat()` 将链接数置零，不能用它来拒绝安装器自身创建的普通文件。新增 52 项编码回归与 8 项安装器回归；两类修复均保留对旧版本实际失败的证据。
 
-修复后的本地全量：Python 3.9.6 **579 PASS、0 FAIL、0 SKIP**（48.71 秒）；Python 3.12.14 **579 PASS、0 FAIL、0 SKIP**（15.51 秒）。11 项仓库、包、官方结构校验、actionlint、导出和更新检查通过；源包、导出和安装的 35 个受管文件逐项一致，包 Gitleaks 无命中，Codex 原生发现再次通过。Windows 修复的独立工程复审 **PASS**：双 Python 各 49 个独立探针、128 个编码及安装器回归通过；10 个已有测试文件的 240 个既有定义经 AST 核对，除显式编码外未改变断言或行为。新原生 CI 仍 **PENDING**；本地强制 cp1252 的检查不代替 Windows runner。
+修复后的本地全量：Python 3.9.6 **579 PASS、0 FAIL、0 SKIP**（48.71 秒）；Python 3.12.14 **579 PASS、0 FAIL、0 SKIP**（15.51 秒）。11 项仓库、包、官方结构校验、actionlint、导出和更新检查通过；源包、导出和安装的 35 个受管文件逐项一致，包 Gitleaks 无命中，Codex 原生发现再次通过。Windows 修复的独立工程复审 **PASS**：双 Python 各 49 个独立探针、128 个编码及安装器回归通过；10 个已有测试文件的 240 个既有定义经 AST 核对，除显式编码外未改变断言或行为。
+
+提交 `bc54557` 的 [修复后原生 CI](https://github.com/LvvUP/academic-writing-assistant/actions/runs/34500982677) 已由独立 Agent 核对实际提交 SHA、6 个作业及日志，全部 **PASS**。每个矩阵作业均为 **579 PASS、0 FAIL、0 SKIP**，并实际完成仓库/暂存区的 99 文件验证和 35 文件包导出，无跳过步骤：
+
+| 实际 runner | 实际 Python | 测试耗时 |
+|---|---|---|
+| Ubuntu 22.04.5 / x64 | 3.9.25 | 25.05 秒 |
+| Ubuntu 22.04.5 / x64 | 3.12.14 | 23.28 秒 |
+| macOS 14.8.9 / arm64 | 3.12.10 | 20.01 秒 |
+| Windows Server 2022 / 10.0.20348 / x64 | 3.9.13 | 58.08 秒 |
+| Windows Server 2022 / 10.0.20348 / x64 | 3.12.10 | 74.38 秒 |
+
+秘密扫描作业通过；下载的 6 个完整作业日志另用 Gitleaks 8.30.1 扫描，退出 0、无命中，未上传 artifact。本地 cp1252 模拟与这次真实 Windows runner 结果分别记录。
 
 复跑命令及固定依赖见 [测试指南](testing.md)。核心命令为：
 
@@ -74,12 +86,28 @@ python -B scripts/check_delivery.py . --index
 
 已读取可访问历史 PR 正文和提交说明，检查专业扫描、私人路径与联系信息候选。唯一历史 PNG 与原 Logo 摘要相同；视觉检查和 PNG 元数据解析未发现私人文字、GPS 或作者信息。SVG 与新增本地徽章不含外部图片、脚本或追踪请求。
 
-首次 GitHub 项目检查取得全部分页：1 个历史 PR，无普通 issue、评论、release、tag、Actions run 或 artifact，未发现附件 URL；当时无 CI 日志可下载。新增 PR 和 CI 日志须在公开后再次核对。Wiki Git 入口未取得可用仓库，属 **未验证**；其他人的 clone、不可访问或已删除的远程对象、缓存及云平台留存不在可证明的清除范围。
+首次 GitHub 项目检查取得全部分页：1 个历史 PR，无普通 issue、评论、release、tag、Actions run 或 artifact，未发现附件 URL；当时无 CI 日志可下载。首次 CI 完成后又读取项目公开面并下载 62 份日志文件，实际 ZIP、磁盘内容和记录摘要一致；Gitleaks 无命中。24 个额外路径/数字候选经独立逐条复核，均为公开 runner 路径或 Python 构建编号，未发现真实敏感内容；没有为此放宽公开文件规则。修复后 CI 的 6 份完整作业日志另已扫描通过。
 
-首次推送前的 35 文件导出包 Gitleaks 扫描退出 **0**、**0 findings**。工作树和实际暂存区各 **98 个公开文件**，交付守卫与各自快照的 Gitleaks 扫描均 **PASS**，无待分类命中；公开文件均为普通单链接文件。`.internal/` 与 `.local/` 的实际 Git 跟踪清单为空，35 文件包不含内部资料。提交 `a03ac61` 创建后、首次推送前，又扫描新增提交元信息、954,193 字节实际补丁，以及全部本地对象（16 个 commit、197 个 blob）；Gitleaks 均退出 0、无命中，32 个作者/提交者记录均为 GitHub noreply。提交树与已审暂存区逐字节一致。Windows 修复后的新提交仍需经过同样门禁。`.internal/`、`.local/` 是明确的忽略目录；没有忽略整个 `docs/`。加入 ignore 不表示清除了历史。
+新 PR、简介和 topics 使用已扫描文案发布，再从 GitHub 读取，实际正文及字段与已审内容一致。Wiki Git 入口未取得可用仓库，属 **未验证**；其他人的 clone、不可访问或已删除的远程对象、缓存及云平台留存不在可证明的清除范围。
+
+首次推送前的 35 文件导出包 Gitleaks 扫描退出 **0**、**0 findings**。工作树和实际暂存区各 **98 个公开文件**，交付守卫与各自快照的 Gitleaks 扫描均 **PASS**，无待分类命中；公开文件均为普通单链接文件。`.internal/` 与 `.local/` 的实际 Git 跟踪清单为空，35 文件包不含内部资料。提交 `a03ac61` 创建后、首次推送前，又扫描新增提交元信息、954,193 字节实际补丁，以及全部本地对象（16 个 commit、197 个 blob）；Gitleaks 均退出 0、无命中，32 个作者/提交者记录均为 GitHub noreply。提交树与已审暂存区逐字节一致。
+
+Windows 修复新增回归文件后，工作树、实际暂存区和提交 `bc54557` 均为 **99 个公开文件**，逐文件摘要一致；新增的 84,992 字节实际补丁、提交元信息、全部本地对象（17 个 commit、218 个 blob）再扫描，均退出 0、无命中或待分类项，34 个作者/提交者记录均为 GitHub noreply。独立复核对实际 Git 对象重新计算摘要，闭环通过。历史 Gitleaks 日志计数为 15 个提交，与逐对象覆盖的 17 个 commit 分别记录。
+
+`.internal/`、`.local/` 是明确的忽略目录；没有忽略整个 `docs/`。加入 ignore 不表示清除了历史。
 
 本地检查脚本不主动联网；宿主云模型如何处理稿件是独立问题。漏洞报告入口的实际状态和可用流程见 [SECURITY.md](../SECURITY.md)。
 
 ## 远程交付
 
-开发分支首次推送已完成；首轮远程 CI **FAIL**，具体 Windows 失败保留于上文。Windows 修复的提交与推送、新一轮原生 CI、PR、简介/topics 读取验证和最终工作树状态仍 **PENDING**。主分支合并、正式版本发布、历史重写、强制推送和可见性修改不在本次执行动作中。
+开发分支及 Windows 修复已推送，已创建 [PR #2](https://github.com/LvvUP/academic-writing-assistant/pull/2)，目标为 `main`。这是 **0.3.0 开发候选**，尚未合并或正式发布。实现提交的原生 CI 与首次失败记录见上文；后续文档提交的检查结果以 [PR 最新提交检查](https://github.com/LvvUP/academic-writing-assistant/pull/2/checks) 为准，不能将旧提交的通过自动套用到新提交。
+
+GitHub 简介已实际更新并回读一致：
+
+> 面向中文科研作者的通用学术写作 Skill：论文润色、中英互译、审稿回复与保真核查，保留事实、数值和证据边界。
+
+14 个 topics 已更新并回读一致，保留原有 6 个有效主题：`academic-writing`、`chinese-academic-writing`、`codex-skill`、`research-paper`、`reviewer-response`、`translation`、`agent-skills`、`scientific-writing`、`research-tools`、`chinese`、`latex`、`manuscript`、`peer-review`、`rebuttal`。简介描述项目定位，不宣称候选版已在默认分支发布或未经验证的宿主已获认证。
+
+公开交付为 99 个文件，完整清单可从 [开发分支 Git 树](https://github.com/LvvUP/academic-writing-assistant/tree/codex/academic-writing-upgrade) 或 `git ls-files` 核对；独立包的 35 文件清单见 [安装说明](installation.md)。原始日志、截图与开发审查保留在明确忽略目录，未纳入 Git 或安装包。最终提交 SHA、远程检查和工作树状态在交付回复中另按实际结果记录。
+
+本次没有合并主分支、发布正式版本、重写历史、强制推送或修改仓库可见性。合并与正式发布留给维护者另行决定。
