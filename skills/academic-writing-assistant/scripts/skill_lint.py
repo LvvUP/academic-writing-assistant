@@ -17,6 +17,8 @@ from html.parser import HTMLParser
 from pathlib import Path, PurePosixPath
 from urllib.parse import unquote, urlsplit
 
+from check_utils import configure_cli_streams
+
 REQUIRED_REFERENCES = [
     'task-router.md', 'field-adapter.md', 'writing-workflows.md', 'style-guide-zh.md',
     'style-guide-en.md', 'output-templates.md', 'quality-checklist.md', 'examples.md',
@@ -428,6 +430,7 @@ def check(root, package=False):
 
 
 def main(argv=None):
+    configure_cli_streams()
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('root', nargs='?', default='.')
     parser.add_argument('--package', action='store_true', help='Validate a standalone Skill directory, without repository-only files.')

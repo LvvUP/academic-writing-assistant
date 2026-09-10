@@ -19,7 +19,7 @@ def test_skill_frontmatter_has_name_and_description():
 def test_skill_description_is_specific_and_excludes_unrelated_requests():
     # Behavioral trigger evaluation lives in evals; this only checks packaging.
     import yaml
-    data = yaml.safe_load((SKILL_DIR / "SKILL.md").read_text().split("---", 2)[1])
+    data = yaml.safe_load((SKILL_DIR / "SKILL.md").read_text(encoding='utf-8').split("---", 2)[1])
     assert isinstance(data["description"], str)
     assert 1 <= len(data["description"]) <= 1024
     assert "academic" in data["description"].lower()

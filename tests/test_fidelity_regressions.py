@@ -116,7 +116,7 @@ def test_html_and_markdown_are_escaped_in_reports():
 
 def run_cli(*args, input_text=None, cwd=None):
     return subprocess.run([sys.executable, str(SCRIPTS / 'fidelity_check.py'), *map(str, args)],
-                          input=input_text, text=True, capture_output=True, cwd=cwd)
+                          input=input_text, text=True, encoding='utf-8', capture_output=True, cwd=cwd)
 
 
 def test_cli_stdin_bom_chinese_path_and_immutable_files(tmp_path):
@@ -132,9 +132,9 @@ def test_cli_stdin_bom_chinese_path_and_immutable_files(tmp_path):
 
 @pytest.mark.parametrize('kind', ['empty', 'decode', 'missing', 'both_stdin'])
 def test_cli_input_errors_have_exit_two_without_traceback(tmp_path, kind):
-    good = tmp_path / 'good.txt'; good.write_text('Value: 5.')
+    good = tmp_path / 'good.txt'; good.write_text('Value: 5.', encoding='utf-8')
     bad = tmp_path / 'bad.txt'
-    if kind == 'empty': bad.write_text('  ')
+    if kind == 'empty': bad.write_text('  ', encoding='utf-8')
     if kind == 'decode': bad.write_bytes(b'\xff')
     args = ['--before', bad, '--after', good]
     if kind == 'both_stdin': args = ['--before', '-', '--after', '-']
@@ -145,10 +145,10 @@ def test_cli_input_errors_have_exit_two_without_traceback(tmp_path, kind):
 
 def test_strict_change_and_coverage_exit_codes(tmp_path):
     before = tmp_path / 'before.txt'; after = tmp_path / 'after.txt'
-    before.write_text('Value: 5 mg.'); after.write_text('Value: 5 g.')
+    before.write_text('Value: 5 mg.', encoding='utf-8'); after.write_text('Value: 5 g.', encoding='utf-8')
     assert run_cli('--before', before, '--after', after).returncode == 0
     assert run_cli('--before', before, '--after', after, '--strict').returncode == 1
-    before.write_text('Ordinary prose.'); after.write_text('Ordinary prose.')
+    before.write_text('Ordinary prose.', encoding='utf-8'); after.write_text('Ordinary prose.', encoding='utf-8')
     assert run_cli('--before', before, '--after', after, '--strict').returncode == 1
 
 
@@ -190,12 +190,12 @@ def test_math_comments_are_excluded_and_layout_can_change():
 
 def test_untrusted_latex_is_never_executed(tmp_path):
     sentinel = tmp_path / 'synthetic-private.txt'
-    sentinel.write_text('synthetic secret fixture')
+    sentinel.write_text('synthetic secret fixture', encoding='utf-8')
     text = r'\input{' + str(sentinel) + r'} \write18{echo untrusted}'
     report = fidelity.build_report(text, text)
     assert report['_meta']['coverage_insufficient']
     assert 'synthetic secret fixture' not in json.dumps(report)
-    assert sentinel.read_text() == 'synthetic secret fixture'
+    assert sentinel.read_text(encoding='utf-8') == 'synthetic secret fixture'
 
 
 @pytest.mark.parametrize('text', [r'\num{banana}', r'\SI{5}', r'\method{' + '{' * 130 + 'x' + '}' * 131])

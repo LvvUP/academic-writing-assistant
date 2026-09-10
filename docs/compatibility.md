@@ -47,8 +47,10 @@ Codex 原生发现最初使用许可与版本元数据更新前的冻结升级�
 |---|---|
 | macOS 本地安装生命周期及变更保护 | **PASS**：真实临时目录测试 |
 | 暂存写入 ENOSPC、发布冲突、恢复原安装 | **PASS**：故障注入用例；不等于断电恢复认证 |
-| Windows 不覆盖目标的发布分支 | **PASS（模拟分支）**：模拟 Windows 的 rename 约束；原生 Windows **NOT RUN** |
-| Linux 文件系统生命周期 | **NOT RUN**：本阶段未在 Linux 执行 |
+| Windows 不覆盖目标的发布分支 | **PASS（模拟分支）**：模拟 Windows 的 rename 约束；首次原生 CI **FAIL**，见下文 |
+| Linux 文件系统生命周期 | **PASS（首次 CI）**：Ubuntu 22.04 两个 Python 版本实际执行测试与包导出 |
+
+首次推送 `a03ac61` 后的 [远程 CI](https://github.com/LvvUP/academic-writing-assistant/actions/runs/34498319298) 中，Ubuntu 3.9.25/x64、3.12.14/x64 与 macOS 3.12.10/arm64 各通过 519 项测试。Windows 3.9.13/x64、3.12.10/x64 各为 478 PASS、41 FAIL，后续包验证步骤被跳过。Windows 默认编码及安装器读取文件链接计数的问题正在修复，原失败保留；不能把目录映射或本机测试通过称为 Windows 已通过。完整后续结果见 [验收记录](validation-0.3.0.md)。
 
 安装器不编译或执行源包来获得正文，不运行用户宏，不使用 `shell-escape`。严格拒绝安装目录内额外文件；普通 Python 生成的缓存也会阻止更新/卸载。测试已覆盖这种拒绝与文件保留，处理方式见 [安装排障](installation.md#核查与排障)。
 

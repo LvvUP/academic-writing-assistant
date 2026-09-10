@@ -29,7 +29,7 @@ from collections import OrderedDict
 from pathlib import Path
 from typing import Dict, List, Optional, Sequence
 
-from check_utils import read_input, markdown_text, placeholder_spans
+from check_utils import configure_cli_streams, read_input, markdown_text, placeholder_spans
 from prose_utils import mask_prose
 
 
@@ -310,6 +310,7 @@ def render(section: str, result: dict, placeholders: int) -> str:
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
+    configure_cli_streams()
     parser = argparse.ArgumentParser(description='Study-aware section clues; no automatic judgment of scientific quality.')
     parser.add_argument('--section', choices=sorted(SECTION_RULES), required=True)
     parser.add_argument('--research-type', choices=RESEARCH_TYPES, default='empirical')

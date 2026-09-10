@@ -118,8 +118,8 @@ def test_relation_mutations_cli_strict_and_advisory_preserve_input(tmp_path, bef
     saved = [before.read_bytes(), after.read_bytes()]
     command = [sys.executable, '-B', str(SCRIPTS / 'fidelity_check.py'),
                '--before', str(before), '--after', str(after), '--json']
-    advisory = subprocess.run(command, cwd=tmp_path, capture_output=True, text=True)
-    strict = subprocess.run(command + ['--strict'], cwd=tmp_path, capture_output=True, text=True)
+    advisory = subprocess.run(command, cwd=tmp_path, capture_output=True, text=True, encoding='utf-8')
+    strict = subprocess.run(command + ['--strict'], cwd=tmp_path, capture_output=True, text=True, encoding='utf-8')
     assert advisory.returncode == 0, advisory.stderr
     assert strict.returncode == 1, strict.stderr
     result = json.loads(strict.stdout)
@@ -189,7 +189,7 @@ def test_linewrapped_numeric_cli_strict_requires_review_and_preserves_files(tmp_
     command = [sys.executable, '-B', str(SCRIPTS / 'fidelity_check.py'),
                '--before', str(before), '--after', str(after), '--json']
     for flags, expected in [([], 0), (['--strict'], 1)]:
-        result = subprocess.run(command + flags, cwd=tmp_path, capture_output=True, text=True)
+        result = subprocess.run(command + flags, cwd=tmp_path, capture_output=True, text=True, encoding='utf-8')
         assert result.returncode == expected, result.stderr
         report = json.loads(result.stdout)
         assert report['_meta']['coverage_insufficient']

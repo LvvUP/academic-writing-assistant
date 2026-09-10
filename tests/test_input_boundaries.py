@@ -11,7 +11,7 @@ SCRIPTS = Path(__file__).resolve().parents[1] / 'skills/academic-writing-assista
 
 def cli(script, *args, input_text=None, cwd=None):
     return subprocess.run([sys.executable, str(SCRIPTS / script), *map(str, args)],
-                          input=input_text, text=True, capture_output=True, cwd=cwd)
+                          input=input_text, text=True, encoding='utf-8', capture_output=True, cwd=cwd)
 
 
 @pytest.mark.parametrize('script,args', [('terminology_checker.py', []), ('structure_checker.py', ['--section', 'abstract']), ('term_consistency_check.py', []), ('section_audit.py', ['--section', 'abstract'])])
@@ -84,9 +84,9 @@ def test_placeholder_raw_text_uses_original_input():
 def test_deep_custom_json_is_a_private_controlled_input_error(tmp_path, depth):
     path = tmp_path / 'map.json'
     data = '[' * depth + '"SYNTHETIC_PRIVATE_MARKER"' + ']' * depth
-    path.write_text(data)
+    path.write_text(data, encoding='utf-8')
     result = cli('terminology_checker.py', '--map', path, input_text='Synthetic text.')
     assert result.returncode == 2
     assert 'Traceback' not in result.stderr
     assert 'SYNTHETIC_PRIVATE_MARKER' not in result.stderr + result.stdout
-    assert path.read_text() == data
+    assert path.read_text(encoding='utf-8') == data

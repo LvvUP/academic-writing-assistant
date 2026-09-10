@@ -17,6 +17,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Dict, List, Sequence, Tuple
 
+from check_utils import configure_cli_streams
 from fidelity_parser import CATEGORIES, extract_document, sentence_spans
 
 LABELS = {
@@ -226,6 +227,7 @@ def render(report: Dict[str, Dict]) -> Tuple[str, bool]:
 
 
 def main(argv: Sequence[str] | None = None) -> int:
+    configure_cli_streams()
     parser = argparse.ArgumentParser(description='Compare protected manuscript content within a documented static scope.')
     parser.add_argument('--before', required=True, help='Original UTF-8 file; use - for stdin on one side.')
     parser.add_argument('--after', required=True, help='Revised UTF-8 file; use - for stdin on one side.')

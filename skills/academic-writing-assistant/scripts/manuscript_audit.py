@@ -29,7 +29,7 @@ from collections import Counter, OrderedDict
 from pathlib import Path
 from typing import Callable, Dict, List, Optional, Sequence
 
-from check_utils import read_input, markdown_text
+from check_utils import configure_cli_streams, read_input, markdown_text
 from prose_utils import mask_prose, sentence_spans, escaped
 
 
@@ -590,6 +590,7 @@ def render(results: "OrderedDict[str, List[Dict]]", section: Optional[str]) -> s
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
+    configure_cli_streams()
     parser = argparse.ArgumentParser(
         description="Whole-draft hygiene checks for academic manuscripts."
     )

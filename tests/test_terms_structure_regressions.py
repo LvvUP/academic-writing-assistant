@@ -159,7 +159,7 @@ def test_confirmed_preference_detects_only_the_nonpreferred_form():
 
 def test_glossary_duplicate_json_keys_are_rejected(tmp_path):
     path = tmp_path / 'duplicate.json'
-    path.write_text('{"field": [], "field": []}')
+    path.write_text('{"field": [], "field": []}', encoding='utf-8')
     with pytest.raises(ValueError, match='Duplicate'):
         terms.load_terms(path)
 

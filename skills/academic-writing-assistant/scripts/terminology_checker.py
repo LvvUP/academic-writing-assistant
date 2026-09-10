@@ -15,7 +15,7 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Sequence
 
-from check_utils import markdown_text, read_input
+from check_utils import configure_cli_streams, markdown_text, read_input
 from prose_utils import mask_prose
 
 DEFAULT_MAP = Path(__file__).resolve().parents[1] / 'assets' / 'terminology-map.zh-en.json'
@@ -174,6 +174,7 @@ def render_markdown(findings: List[Dict[str, Any]]) -> str:
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
+    configure_cli_streams()
     parser = argparse.ArgumentParser(description='Report configured terminology variants without merging distinct concepts.')
     parser.add_argument('file', nargs='?', help='UTF-8 file; stdin when omitted or -.')
     parser.add_argument('--map', default=str(DEFAULT_MAP), help='Replacement glossary JSON; author definitions take priority over bundled suggestions.')

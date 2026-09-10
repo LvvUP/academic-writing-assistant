@@ -12,7 +12,7 @@ def run_script(name, *args, input_text=None, check=True):
     return subprocess.run(
         [sys.executable, str(SCRIPT_DIR / name), *args],
         input=input_text,
-        text=True,
+        text=True, encoding='utf-8',
         capture_output=True,
         cwd=ROOT,
         check=check,

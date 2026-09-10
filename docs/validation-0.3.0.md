@@ -5,7 +5,7 @@
 ## 版本与交付状态
 
 - 基线：`6af0be1916b6ce6452fee2d1ddf053f37584380d`，插件版本 0.2.0；本次重新执行基线测试为 **45 PASS**，仓库 lint **PASS**。
-- 升级：0.3.0 开发候选，分支 `codex/academic-writing-upgrade`。最终提交、PR 与远程验证状态将在公开交付后补记；目前为 **PENDING**。
+- 升级：0.3.0 开发候选，分支 `codex/academic-writing-upgrade`。首个已推送实现提交为 [`a03ac61`](https://github.com/LvvUP/academic-writing-assistant/commit/a03ac613ff0eb97730d8d687f2cf5293ddc15781)。首轮远程 CI 发现 Windows 问题，修复及 PR 交付仍 **PENDING**。
 - 本地原有用户改动检查：开始时目标仓库工作树干净；开发使用独立分支，未重置原主分支或清理相邻项目。
 
 ## 问题与回归覆盖
@@ -15,6 +15,7 @@
 | 正负号、科学计数指数、单位、p 值、区间端点与运算关系；引用、公式、自定义宏和位置；跨行关系等未支持内容的覆盖提示 | `tests/test_fidelity_regressions.py`、`tests/test_numeric_relations.py` |
 | 保留 LaTeX 正文，统计证据按局部论断检查，限定比较范围与因果提示 | `tests/test_manuscript_regressions.py` |
 | UTF-8/BOM、stdin、无效输入、深层 JSON/YAML、受控退出、不修改原稿 | `tests/test_input_boundaries.py` |
+| Windows 默认编码与 cp1252 重定向、中文/数学符号、CLI 输出/错误、导入时不重配宿主流 | `tests/test_cli_encoding.py` |
 | frontmatter、包内资源、硬链接/符号链接与不安全资源拒绝 | `tests/test_lint_regressions.py` |
 | 术语类别和作者词表优先级、多种研究结构、长输入性能边界 | `tests/test_terms_structure_regressions.py` |
 | 安装、更新、导出、卸载、冲突拒绝、路径与旧文件保护、故障恢复 | `tests/test_install_skill.py` |
@@ -25,7 +26,13 @@
 
 ## 实际执行
 
-本机为 macOS 15.7.3 / Darwin 24.6、arm64 主机，Python 3.9.6 进程通过 Rosetta 运行于 x86_64，另用 Python 3.12.14。最终脚本修复后的全量测试：Python 3.9.6 为 **519 PASS、0 FAIL、0 SKIP**（29.27 秒），Python 3.12.14 为 **519 PASS、0 FAIL、0 SKIP**（10.79 秒）。仓库/独立包 lint、官方 Skill/插件结构校验、actionlint 1.7.12 和差异空白检查均 **PASS**。远程 Ubuntu、Windows、macOS 矩阵在首次推送前为 **NOT RUN**。
+本机为 macOS 15.7.3 / Darwin 24.6、arm64 主机，Python 3.9.6 进程通过 Rosetta 运行于 x86_64，另用 Python 3.12.14。首次推送前脚本版本的全量测试：Python 3.9.6 为 **519 PASS、0 FAIL、0 SKIP**（29.27 秒），Python 3.12.14 为 **519 PASS、0 FAIL、0 SKIP**（10.79 秒）。仓库/独立包 lint、官方 Skill/插件结构校验、actionlint 1.7.12 和差异空白检查均 **PASS**。
+
+[首轮远程 CI](https://github.com/LvvUP/academic-writing-assistant/actions/runs/34498319298) 已实际运行：Ubuntu 3.9.25/x64、3.12.14/x64 和 macOS 3.12.10/arm64 各为 **519 PASS、0 FAIL、0 SKIP**，秘密扫描通过；Windows 3.9.13/x64 与 3.12.10/x64 各为 **478 PASS、41 FAIL、0 SKIP**，失败用例相同，涉及默认文本编码和安装器文件属性处理。Windows 后续仓库验证与导出步骤被跳过，不能记作通过。后续验证将保留这一失败记录。
+
+Windows 修复让 CLI 在入口明确使用 UTF-8，测试文件和文本管道也显式指定编码；没有用 CI 全局编码开关掩盖默认环境的问题。安装器改为读取完整的、不跟随链接的文件属性，继续严格拒绝硬链接。依据 [Python 官方文档](https://docs.python.org/3.12/library/os.html#os.DirEntry.stat)，Windows 的 `DirEntry.stat()` 将链接数置零，不能用它来拒绝安装器自身创建的普通文件。新增 52 项编码回归与 8 项安装器回归；两类修复均保留对旧版本实际失败的证据。
+
+修复后的本地全量：Python 3.9.6 **579 PASS、0 FAIL、0 SKIP**（48.71 秒）；Python 3.12.14 **579 PASS、0 FAIL、0 SKIP**（15.51 秒）。11 项仓库、包、官方结构校验、actionlint、导出和更新检查通过；源包、导出和安装的 35 个受管文件逐项一致，包 Gitleaks 无命中，Codex 原生发现再次通过。Windows 修复的独立工程复审 **PASS**：双 Python 各 49 个独立探针、128 个编码及安装器回归通过；10 个已有测试文件的 240 个既有定义经 AST 核对，除显式编码外未改变断言或行为。新原生 CI 仍 **PENDING**；本地强制 cp1252 的检查不代替 Windows runner。
 
 复跑命令及固定依赖见 [测试指南](testing.md)。核心命令为：
 
@@ -48,7 +55,9 @@ python -B scripts/check_delivery.py . --index
 
 ## README、Logo 与许可证
 
-实际调用本机已安装的 `beautify-github-readme` 技能，在内容稳定后按其工作流维护中文首页和英文版。使用安装的 Chrome 152 与 Playwright 实际预览两种语言、浅/深色、960/360 像素视口共 8 个组合；图片加载、页面宽度、锚点、展开交互和浏览器错误检查通过，并逐段人工看图。该结果是本地 GitHub 宽度 Markdown 预览；GitHub 线上渲染在首次推送前为 **NOT RUN**。
+实际调用本机已安装的 `beautify-github-readme` 技能，在内容稳定后按其工作流维护中文首页和英文版。使用安装的 Chrome 152 与 Playwright 实际预览两种语言、浅/深色、960/360 像素视口共 8 个组合；图片加载、页面宽度、锚点、展开交互和浏览器错误检查通过，并逐段人工看图。
+
+首次推送后另在 GitHub 实际页面预览 8 个语言/主题/宽度组合（1280/390 像素）：页面均返回 200，3 张图片正确加载，折叠区域可实际展开，无页面横向溢出或脚本错误；并实际看图。四个语言/主题组合完成“开始使用 / Get started”的真实点击与滚动核对，每页 10 个本地锚点可解析。GitHub 为锚点加 `user-content-` 前缀，初次只匹配裸 ID 的探针不足以判定坏链接；后续按实际 DOM 和跳转行为验证通过。
 
 保留原 SVG/PNG Logo，SHA-256 分别为：
 
@@ -67,10 +76,10 @@ python -B scripts/check_delivery.py . --index
 
 首次 GitHub 项目检查取得全部分页：1 个历史 PR，无普通 issue、评论、release、tag、Actions run 或 artifact，未发现附件 URL；当时无 CI 日志可下载。新增 PR 和 CI 日志须在公开后再次核对。Wiki Git 入口未取得可用仓库，属 **未验证**；其他人的 clone、不可访问或已删除的远程对象、缓存及云平台留存不在可证明的清除范围。
 
-最终 35 文件导出包的 Gitleaks 扫描已退出 **0**、**0 findings**。工作树和实际暂存区各 **98 个公开文件**，交付守卫与各自快照的 Gitleaks 扫描均 **PASS**，无待分类命中；公开文件均为普通单链接文件。`.internal/` 与 `.local/` 的实际 Git 跟踪清单为空，35 文件包不含内部资料。提交创建后的新增对象与待推送补丁将在首次推送前再扫描，当前 **PENDING**。`.internal/`、`.local/` 是明确的忽略目录；没有忽略整个 `docs/`。加入 ignore 不表示清除了历史。
+首次推送前的 35 文件导出包 Gitleaks 扫描退出 **0**、**0 findings**。工作树和实际暂存区各 **98 个公开文件**，交付守卫与各自快照的 Gitleaks 扫描均 **PASS**，无待分类命中；公开文件均为普通单链接文件。`.internal/` 与 `.local/` 的实际 Git 跟踪清单为空，35 文件包不含内部资料。提交 `a03ac61` 创建后、首次推送前，又扫描新增提交元信息、954,193 字节实际补丁，以及全部本地对象（16 个 commit、197 个 blob）；Gitleaks 均退出 0、无命中，32 个作者/提交者记录均为 GitHub noreply。提交树与已审暂存区逐字节一致。Windows 修复后的新提交仍需经过同样门禁。`.internal/`、`.local/` 是明确的忽略目录；没有忽略整个 `docs/`。加入 ignore 不表示清除了历史。
 
 本地检查脚本不主动联网；宿主云模型如何处理稿件是独立问题。漏洞报告入口的实际状态和可用流程见 [SECURITY.md](../SECURITY.md)。
 
 ## 远程交付
 
-开发分支推送、PR、远程 CI、简介/topics 读取验证和最终工作树状态目前 **PENDING**，将按真实结果更新。主分支合并、正式版本发布、历史重写、强制推送和可见性修改不在本次执行动作中。
+开发分支首次推送已完成；首轮远程 CI **FAIL**，具体 Windows 失败保留于上文。Windows 修复的提交与推送、新一轮原生 CI、PR、简介/topics 读取验证和最终工作树状态仍 **PENDING**。主分支合并、正式版本发布、历史重写、强制推送和可见性修改不在本次执行动作中。

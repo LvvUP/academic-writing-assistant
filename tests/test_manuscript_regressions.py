@@ -111,12 +111,12 @@ def test_cli_errors_strict_and_readonly(tmp_path):
     path = tmp_path / '中文 稿件.tex'
     path.write_text('\ufeff\\begin{document}\nOur method significantly improves accuracy.\n\\end{document}', encoding='utf-8')
     original = path.read_bytes()
-    result = subprocess.run([sys.executable, str(SCRIPTS / 'manuscript_audit.py'), str(path), '--json', '--strict', '--checks', 'claims'], capture_output=True, text=True, cwd=tmp_path)
+    result = subprocess.run([sys.executable, str(SCRIPTS / 'manuscript_audit.py'), str(path), '--json', '--strict', '--checks', 'claims'], capture_output=True, text=True, encoding='utf-8', cwd=tmp_path)
     assert result.returncode == 1
     assert json.loads(result.stdout)['claims'][0]['line'] == 2
     assert path.read_bytes() == original
     for args in [['--checks', ''], ['--limit-words', '-1'], ['--limit-chars', '0']]:
-        result = subprocess.run([sys.executable, str(SCRIPTS / 'manuscript_audit.py'), str(path), *args], capture_output=True, text=True)
+        result = subprocess.run([sys.executable, str(SCRIPTS / 'manuscript_audit.py'), str(path), *args], capture_output=True, text=True, encoding='utf-8')
         assert result.returncode == 2
         assert 'Traceback' not in result.stderr
 
@@ -209,7 +209,7 @@ def test_excluded_spaces_do_not_count_as_visible_characters():
 def test_empty_check_selection_is_usage_error():
     result = subprocess.run([sys.executable, str(SCRIPTS / 'manuscript_audit.py'),
                              '--checks', ',,,', '--strict', '--json'],
-                            input='Normal prose.', capture_output=True, text=True)
+                            input='Normal prose.', capture_output=True, text=True, encoding='utf-8')
     assert result.returncode == 2
 
 
@@ -370,9 +370,9 @@ def test_final_claims_cli_json_stdin_bom_and_readonly(tmp_path, strict, expected
     command = [sys.executable, '-B', str(SCRIPTS / 'manuscript_audit.py')]
     flags = ['--checks', 'claims', '--json'] + (['--strict'] if strict else [])
     file_result = subprocess.run(command + [str(path)] + flags, capture_output=True,
-                                 text=True, cwd=tmp_path)
+                                 text=True, encoding='utf-8', cwd=tmp_path)
     stdin_result = subprocess.run(command + ['-'] + flags, input='\ufeff' + text,
-                                  capture_output=True, text=True, cwd=tmp_path)
+                                  capture_output=True, text=True, encoding='utf-8', cwd=tmp_path)
     for result in [file_result, stdin_result]:
         assert result.returncode == expected_exit
         assert result.stderr == ''

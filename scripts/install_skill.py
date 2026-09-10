@@ -181,7 +181,9 @@ def inventory(root, max_entries):
                 relative = path.relative_to(root).as_posix()
                 if len(files) + len(directories) >= max_entries:
                     raise InstallError('Installation has additional files/directories; refusing removal.')
-                info = entry.stat(follow_symlinks=False)
+                # Windows DirEntry.stat caches zero link/inode/device fields.
+                # Fetch full, non-following metadata before enforcing nlink == 1.
+                info = path.lstat()
                 if stat.S_ISLNK(info.st_mode):
                     raise InstallError('Installation contains a symlink: ' + relative)
                 if stat.S_ISDIR(info.st_mode):
@@ -419,7 +421,16 @@ def uninstall(destination):
     return {'status': 'uninstalled', 'destination': str(target), 'files': len(original['files'])}
 
 
+def configure_utf8_output():
+    """Keep redirected CLI output UTF-8 regardless of the process locale."""
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, 'reconfigure', None)
+        if callable(reconfigure):
+            reconfigure(encoding='utf-8', errors='backslashreplace')
+
+
 def main(argv=None):
+    configure_utf8_output()
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=('install', 'update', 'uninstall', 'export'))
     parser.add_argument('--destination', type=Path, help='Exact Skill directory, relative to your current working directory if not absolute.')

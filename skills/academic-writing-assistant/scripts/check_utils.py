@@ -8,6 +8,23 @@ import sys
 from pathlib import Path
 
 
+def configure_cli_streams():
+    """Set the CLI wire encoding without changing streams at library import.
+
+    Redirected Windows streams can otherwise inherit a legacy locale codec.
+    Input remains strict so malformed UTF-8 reaches the caller's input-error
+    handler. Output escapes isolated surrogates (for example in an OS error's
+    path) while preserving all valid Unicode. In-memory host streams such as
+    StringIO already contain text and need no reconfiguration or replacement.
+    """
+    for name in ('stdin', 'stdout', 'stderr'):
+        stream = getattr(sys, name)
+        reconfigure = getattr(stream, 'reconfigure', None)
+        if callable(reconfigure):
+            reconfigure(encoding='utf-8',
+                        errors='strict' if name == 'stdin' else 'backslashreplace')
+
+
 def read_input(path=None):
     """Caller-relative UTF-8 input; one leading BOM is not manuscript content."""
     if path and path != '-':
