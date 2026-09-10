@@ -35,6 +35,12 @@ defeats the purpose of the project.
 - Run `python -m pytest tests/` after changing scripts or repository structure.
 - Keep the Revision Compass logo in both READMEs. The lint script and tests
   enforce this.
+- Preserve AGPL-3.0-only for the current project and retain the historical MIT
+  notices and grants. Keep root and standalone package licenses in sync.
+- Put raw development records and private material in `.internal/` or `.local/`.
+  Keep useful public documentation, synthetic examples, tests, and evaluations.
+- Distinguish unit tests, model evaluations, Skill discovery, and native host
+  execution. Report failures, untested coverage, and unavailable checks honestly.
 
 ## Structure
 

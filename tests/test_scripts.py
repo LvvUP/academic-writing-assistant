@@ -111,14 +111,14 @@ def test_fidelity_check_detects_a_dropped_dataset_name(tmp_path):
 
 
 def test_fidelity_check_does_not_flag_ordinary_prose_as_a_name(tmp_path):
-    """Sentence-initial capitals must not be mistaken for dataset names."""
-    before, after = write_pair(
-        tmp_path,
-        "The method works well. Experiments confirm this.",
-        "The method performs well. Experiments confirm this finding.",
-    )
-    result = run_script("fidelity_check.py", "--before", before, "--after", after)
-    assert "Status: PASS" in result.stdout
+    """Ordinary capitals are not entities, and zero coverage is not proof."""
+    before, after = write_pair(tmp_path, "The method works well. Experiments confirm this.",
+                               "The method performs well. Experiments confirm this finding.")
+    result = run_script("fidelity_check.py", "--before", before, "--after", after, "--json")
+    payload = json.loads(result.stdout)
+    assert payload["named_entities"]["before_count"] == 0
+    assert payload["named_entities"]["after_count"] == 0
+    assert payload["_meta"]["status"] == "INSUFFICIENT"
 
 
 def test_fidelity_check_pass_message_states_its_limits(tmp_path):

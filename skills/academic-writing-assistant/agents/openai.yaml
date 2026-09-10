@@ -1,6 +1,6 @@
 interface:
   display_name: "Academic Writing Assistant"
-  short_description: "Field-adaptive academic writing support"
-  default_prompt: "Use $academic-writing-assistant to polish this academic paragraph responsibly."
+  short_description: "面向中英文学术论文的保真润色、翻译、审稿回复与一致性核查"
+  default_prompt: "使用 $academic-writing-assistant 润色这段学术文本，保留事实、数值、引用和限定条件，并披露重要修改。"
 policy:
   allow_implicit_invocation: true

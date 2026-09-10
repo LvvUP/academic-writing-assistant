@@ -1,40 +1,33 @@
-# Roadmap
+# 路线图
 
-## v0.1: Foundation
+这是项目唯一维护的路线图。当前开发候选为 **0.3.0（Unreleased，未发布）**；版本发布以正式发布记录为准。下列未来方向不承诺版本号或时间，已实现内容与历史记录见 [CHANGELOG](CHANGELOG.md)。
 
-- Task routing across polishing, expansion, merging, translation, and section writing.
-- Field adaptation across ten research areas.
-- Academic integrity rules and citation safety.
-- Quality checklist, output templates, README, examples, tests.
+## 0.3.0 候选范围
 
-## v0.2: Fidelity and submission workflow (current)
+- 保留三区域、L1/L2/L3 与台账，统一只输出正文、证据不足、作者行为和引用检索的规则。
+- 按任务规模维护上下文与主张证据对应，适配经验、理论、定性和综述写作；利用实际可读表格、全文和作者术语。
+- 改进数值、单位、引用、LaTeX 静态保真及来源定位，明确零覆盖与未支持构造；修正术语关系、占位和章节提示。
+- 提供清单驱动的安装、更新、卸载与独立包导出，保护已有改动，按实际能力说明宿主适配与降级。
+- 增加确定性回归、交付守卫、最小权限 CI 和可复跑行为评估，保留失败与覆盖限制。
+- 采用 AGPL-3.0-only，保留历史及第三方必要声明；维护中文优先的公开说明与英文 README。
 
-- Fidelity contract: locked zone, load-bearing language, free surface.
-- L1/L2/L3 change tiers and the auditable change ledger.
-- Journal response letters separated from conference rebuttals.
-- Submission package: cover letters, highlights, AI-use disclosure, CRediT.
-- LaTeX-aware editing with mechanical preservation checking.
-- Whole-draft consistency: terminology, abbreviations, symbols, tense, claims.
-- Deterministic scripts: `fidelity_check.py`, `manuscript_audit.py`.
-- Field adapters rewritten around what reviewers attack.
+候选已完成的本地检查不等于所有宿主和系统验证完成。各宿主真实发现、模型调用及平台测试以 [兼容矩阵](docs/compatibility.md) 为准；模型效果的证据与限制见 [行为评估记录](evals/results-2026-09-10.md)。
 
-## v0.3: Depth per discipline
+## 后续方向，尚未承诺
 
-- Reviewer attack patterns for more disciplines, including humanities and law.
-- Figure, table, and equation caption conventions.
-- Thesis chapter support, including Chinese degree-thesis structural norms.
-- Response-letter examples covering major revision and rejection appeals.
+| 方向 | 拟解决的问题与验收依据 |
+|---|---|
+| 学科与研究类型深度 | 在现有适配上补充人文、法学等有来源的写作差异；以合成案例验证，避免将个别审稿经验概括为统一规则 |
+| 图表、公式说明与学位论文 | 丰富题注、图表讨论和章节组织；学校及 venue 要求附具体来源与适用版本 |
+| 回复与申诉示例 | 增加大修、相互冲突意见及有依据申诉案例，保留作者真实立场与行动状态 |
+| 社区术语与领域资源 | 完善贡献流程、概念关系和歧义案例，尊重作者定义，验证新增资源与独立包完整性 |
+| 语义与格式覆盖 | 研究更可靠的数学符号定义、时态语境及复杂文档支持；实现前保持明确的未检查状态 |
+| 更广泛的实测 | 在可用宿主和系统上运行独立发现、调用与文件生命周期测试；扩大行为样本并保留失败与复跑条件 |
 
-## v0.4: Terminology and community field packs
+这些方向合并了旧路线图中原拟 v0.3、v0.4 的想法；当前 0.3.0 候选不意味着那些想法全部实现。
 
-- Expanded terminology maps with field-specific notes.
-- A contributor workflow for adding field packs.
-- Broader coverage in `structure_checker.py` keyword rules.
-- More end-to-end examples with real change ledgers.
+## 稳定版本的条件
 
-## v1.0: Stable release
+在考虑 1.0 之前，需要让核心规则与包接口形成可维护的兼容约定，补齐主要任务的独立行为证据，并明确支持环境、发布检查和社区资源审查流程。是否达到这些条件由实际证据判断，不能仅以示例数量或自动测试通过替代。
 
-- Frozen Skill structure and reference layout.
-- Complete example library across all supported tasks.
-- Manual and automated evaluation suite.
-- Documented plugin packaging and installation across agents.
+历史 0.1 与 0.2 的工作保留在 [变更日志](CHANGELOG.md)；具体脚本能力见 [脚本说明](docs/scripts.md)，不再在第二份路线图复制维护。

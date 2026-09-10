@@ -29,6 +29,9 @@ from collections import Counter, OrderedDict
 from pathlib import Path
 from typing import Callable, Dict, List, Optional, Sequence
 
+from check_utils import read_input, markdown_text
+from prose_utils import mask_prose, sentence_spans, escaped
+
 
 # --------------------------------------------------------------------------
 # Claim-strength vocabulary
@@ -51,13 +54,13 @@ STATISTICAL_EVIDENCE = (
 SUPERLATIVE_PATTERNS = OrderedDict(
     (
         (r"\bstate[- ]of[- ]the[- ]art\b", "Bind to a named comparison set and date, or drop."),
-        (r"\bthe first\b|\bwe are the first\b", "Nearly indefensible; consider 'to our knowledge, the first'."),
-        (r"\boutperforms? all\b", "Requires comparison against every existing method."),
+        (r"\bthe first\b|\bwe are the first\b", "Verify the defined novelty scope and literature evidence; to our knowledge is not evidence."),
+        (r"\boutperforms?\s+all\b", "Identify the comparison set and check that the reported results support its full stated scope."),
         (r"\bbest performance\b", "Specify on which datasets and against which baselines."),
         (r"\bsuperior to (?:all|existing|other)\b", "Unbounded comparison claim."),
         (r"\buniversally\b|\bin all cases\b|\balways achieves\b", "Absolute coverage claim."),
-        (r"\bperfectly\b|\bcompletely solves?\b|\bfully solves?\b", "Overclaim; no method fully solves a research problem."),
-        (r"首次(?:提出|实现)", "首次主张极难辩护，建议改为'据我们所知，首次'。"),
+        (r"\bperfectly\b|\bcompletely solves?\b|\bfully solves?\b", "Check the stated domain and proof/evidence; a bounded theoretical result may be justified."),
+        (r"首次(?:提出|实现)", "核对首次主张的范围和文献依据；据我们所知不能替代证据。"),
         (r"完美(?:解决|实现)", "宣传性表述，建议改为具体、可核查的描述。"),
         (r"彻底(?:解决|消除)", "绝对化表述，建议限定范围。"),
         (r"全面(?:超越|优于)", "无界比较主张，需绑定具体对比方法。"),
@@ -99,24 +102,21 @@ HEDGE_WORDS = (
 
 
 def read_text(path: Optional[str]) -> str:
-    if path:
-        return Path(path).read_text(encoding="utf-8")
-    return sys.stdin.read()
+    return read_input(path)
 
 
 def strip_markup(text: str) -> str:
-    """Remove math and LaTeX commands so prose checks do not fire inside them."""
-    cleaned = re.sub(r"\$\$.+?\$\$", " ", text, flags=re.DOTALL)
-    cleaned = re.sub(r"(?<!\$)\$[^$\n]+?\$(?!\$)", " ", cleaned)
-    cleaned = re.sub(r"\\begin\{(\w+\*?)\}.*?\\end\{\1\}", " ", cleaned, flags=re.DOTALL)
-    cleaned = re.sub(r"\\[a-zA-Z@]+\*?(?:\[[^\]]*\])*(?:\{[^}]*\})*", " ", cleaned)
-    cleaned = re.sub(r"^\s*%.*$", " ", cleaned, flags=re.MULTILINE)
-    return cleaned
+    """Mask non-prose without changing original offsets or line breaks."""
+    return mask_prose(text)[0]
 
 
 def split_sentences(text: str) -> List[str]:
-    parts = re.split(r"(?<=[.!?。！？])\s+|\n{2,}", text)
-    return [part.strip() for part in parts if part and part.strip()]
+    return [sentence for _, _, sentence in sentence_spans(text)]
+
+
+def source_location(text, start, end):
+    return {"line": locate(text, start), "start": start, "end": end,
+            "source": text[start:end]}
 
 
 def locate(text: str, index: int) -> int:
@@ -173,7 +173,7 @@ def check_abbreviations(text: str) -> List[Dict]:
                 {
                     "type": "abbreviation_used_before_definition",
                     "item": acronym,
-                    "line": use_line,
+                    **source_location(text, first_use, first_use + len(acronym)),
                     "note": f"'{acronym}' is used on line {use_line} but {where}. "
                     "Move the definition to first use.",
                 }
@@ -183,7 +183,7 @@ def check_abbreviations(text: str) -> List[Dict]:
                 {
                     "type": "abbreviation_defined_once",
                     "item": acronym,
-                    "line": locate(prose, definition),
+                    **source_location(text, definition + 1, definition + 1 + len(acronym)),
                     "note": f"'{acronym}' is defined but used only once. "
                     "Spelling it out costs the reader less than an abbreviation "
                     "they must remember.",
@@ -196,7 +196,7 @@ def check_abbreviations(text: str) -> List[Dict]:
                 {
                     "type": "abbreviation_never_defined",
                     "item": acronym,
-                    "line": locate(prose, min(usages[acronym])),
+                    **source_location(text, min(usages[acronym]), min(usages[acronym]) + len(acronym)),
                     "note": f"'{acronym}' is used {len(usages[acronym])} times without a "
                     "parenthesized definition. Confirm it is standard enough for the venue.",
                 }
@@ -205,55 +205,151 @@ def check_abbreviations(text: str) -> List[Dict]:
     return findings
 
 
+# A small lexical predicate inventory separates obvious independent clauses.
+# It is not a parser or a guarantee that a test belongs to the claimed outcome.
+CLAUSE_PREDICATE = (
+    r"(?:is|are|was|were|has|have|had|can|could|does|do|did|"
+    r"changed?|changes|improves?|improved|increases?|increased|decreases?|decreased|"
+    r"reduces?|reduced|differs?|differed|shows?|showed|causes?|caused|"
+    r"leads?|led|outperforms?|outperformed|establish(?:es|ed)?|"
+    r"conclude[sd]?|observes?|observed|returned|yielded|remained|plan(?:ned|s)?)"
+)
+INDEPENDENT_CLAUSE = re.compile(
+    r"\s*(?P<subject>(?:(?!(?:significantly|statistically|not|only|also)\b)"
+    r"[A-Za-z][\w'-]*\s+){1,7})"
+    r"(?:(?:significantly|statistically|not|only|also)\s+){0,3}"
+    + CLAUSE_PREDICATE + r"\b", re.I)
+PREDICATION = re.compile(r"\b" + CLAUSE_PREDICATE + r"\b", re.I)
+TEST_SUBJECT = re.compile(
+    r"(?:(?:a|an|the)\s+)?(?:(?:paired|unpaired|statistical)\s+)?"
+    r"(?:t[- ]test|test|wilcoxon(?:\s+test)?|anova|chi[- ]squared?(?:\s+test)?)\s*", re.I)
+EXTRA_COMPARISON_OBJECT = re.compile(r"\b(?:and|or)\s+(?:to\s+)?(?:all|every)\b", re.I)
+
+
+def claim_clauses(sentence):
+    """Yield original-relative spans, preserving shared-subject/test phrases."""
+    boundaries, previous, cursor, depth = [], 0, 0, 0
+    has_predication = False
+    for match in re.finditer(r"[;；]|\b(?:and|or|but|whereas|while)\b|但", sentence, re.I):
+        has_predication = has_predication or bool(PREDICATION.search(sentence, cursor, match.start()))
+        for char in sentence[cursor:match.start()]:
+            if char in "([":
+                depth += 1
+            elif char in ")]":
+                depth = max(0, depth - 1)
+        cursor = match.end()
+        if match.group().lower() in {"and", "or"}:
+            # Do not split outcome lists, shared verbs, tests joined by "and",
+            # or a test-subject clause reporting evidence for the same outcome.
+            following = INDEPENDENT_CLAUSE.match(sentence, match.end())
+            if (depth or not following or not has_predication
+                    or TEST_SUBJECT.fullmatch(following.group("subject").strip())):
+                continue
+        boundaries.append((previous, match.start()))
+        previous = match.end()
+        has_predication = False
+    boundaries.append((previous, len(sentence)))
+    for start, end in boundaries:
+        while start < end and sentence[start].isspace():
+            start += 1
+        while end > start and sentence[end - 1].isspace():
+            end -= 1
+        if start < end:
+            yield start, end, sentence[start:end]
+
+
+def bounded_comparison(clause, match, extra_object_at):
+    """Recognize a locally specified comparison object, not any qualifier."""
+    if not re.search(r"(?:outperforms?\s+all|superior\s+to\s+all)$", match.group(), re.I):
+        return False
+    count = r"(?:[1-9]\d*|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)"
+    scope = r"(?:evaluated|tested|selected|listed|included|reported)"
+    objects = r"(?:baselines?|methods?|models?|comparators?|systems?|approaches?|algorithms?|variants?)\b"
+    bounded = re.compile(
+        r"\s+(?:the\s+)?(?:" + count + r"\s+(?:" + scope + r"\s+)?" + objects
+        + r"|" + scope + r"\s+" + objects
+        + r"|" + objects + r"\s+(?:(?:that|which)\s+(?:were\s+)?)?" + scope + r"\b)",
+        re.I).match(clause, match.end())
+    if not bounded:
+        return False
+    # A bounded first object must not hide an additional universal object.
+    # Its last position is computed once per clause, avoiding repeated suffix
+    # copies/scans when a long clause contains many bounded comparisons.
+    return extra_object_at < bounded.end()
+
+
+def nonasserted_cause(clause, position):
+    """Recognize direct denial or a short explicit inference/question frame."""
+    prefix = clause[:position]
+    if re.search(r"\b(?:not|cannot|can't|couldn't|doesn't|don't|didn't|isn't|aren't|wasn't|weren't)\s+$|(?:未|没有|不会|不)$", prefix, re.I):
+        return True
+    subject = r"(?:[A-Za-z][\w'-]*\s+){0,8}"
+    denied_inference = (
+        r"\b(?:(?:do|does|did)\s+not|cannot|can't|could\s+not|couldn't|doesn't|don't|didn't)\s+"
+        r"(?:establish|conclude|infer|prove|show|demonstrate|imply)\s+"
+        r"(?:that\s+)?" + subject + r"$"
+    )
+    question = r"\b(?:tested?|asked?|examined?|investigated?)\s+whether\s+" + subject + r"$"
+    chinese_denial = r"(?:不能|无法|不足以)(?:证明|推断|说明)[^，,；;。]{0,24}$"
+    return bool(re.search(denied_inference + "|" + question + "|" + chinese_denial, prefix, re.I))
+
+
 def check_claims(text: str) -> List[Dict]:
-    """Superlatives, unearned significance language, and causal overreach."""
-    prose = strip_markup(text)
-    lowered = prose.lower()
-    has_stats = any(marker in lowered for marker in STATISTICAL_EVIDENCE)
-    findings: List[Dict] = []
-
-    for sentence in split_sentences(prose):
-        sentence_lower = sentence.lower()
-        offset = prose.find(sentence)
-        line = locate(prose, offset) if offset >= 0 else 0
-
-        if not has_stats and any(term in sentence_lower for term in SIGNIFICANCE_TERMS):
-            findings.append(
-                {
-                    "type": "significance_without_test",
-                    "item": excerpt(sentence),
-                    "line": line,
-                    "note": "Uses significance language, but no statistical test appears "
-                    "anywhere in the text. In a paper this reads as a claim that a test "
-                    "was run. Use 'consistent' or report the difference directly, or add "
-                    "the test.",
-                }
-            )
-
-        for pattern, note in SUPERLATIVE_PATTERNS.items():
-            if re.search(pattern, sentence, re.IGNORECASE):
-                findings.append(
-                    {
-                        "type": "unbounded_claim",
-                        "item": excerpt(sentence),
-                        "line": line,
-                        "note": note,
-                    }
-                )
-                break
-
-        for pattern, note in CAUSAL_PATTERNS.items():
-            if re.search(pattern, sentence, re.IGNORECASE):
-                findings.append(
-                    {
-                        "type": "causal_language",
-                        "item": excerpt(sentence),
-                        "line": line,
-                        "note": note,
-                    }
-                )
-                break
-
+    """Flag positive claims lacking a nearby reported test, not absent research."""
+    prose, _, excluded = mask_prose(text)
+    evidence_view = list(prose)
+    for span in excluded:
+        if span["kind"] == "math":
+            evidence_view[span["start"]:span["end"]] = text[span["start"]:span["end"]]
+    # Restoring inline math must not restore TeX comments as evidence.
+    for span in excluded:
+        if span["kind"] == "math":
+            for match in re.finditer(r"%[^\n]*", text[span["start"]:span["end"]]):
+                at = span["start"] + match.start()
+                if not escaped(text, at):
+                    evidence_view[at:span["start"] + match.end()] = " " * (match.end() - match.start())
+    evidence_view = "".join(evidence_view)
+    findings = []
+    test_pattern = re.compile(
+        r"\bp\s*(?:[- ]value\s*)?[<>=≤≥]\s*(?:0?\.\d+|\d+)"
+        r"|\b(?:paired |unpaired )?t[- ]test\b|\bwilcoxon\b"
+        r"|\bmann[- ]whitney\b|\banova\b|\bchi[- ]squared?\b"
+        r"|显著性检验|置换检验", re.I)
+    positive = re.compile(
+        r"\bstatistically\s+significant\b|\bsignificantly\b"
+        r"|\bsignificant\s+(?:difference|improvement|increase|decrease|effect|association|correlation|reduction|gain)s?\b"
+        r"|\bdifferences?\s+(?:is|was|are|were)\s+(?:statistically\s+)?significant\b"
+        r"|(?:统计)?显著(?:的)?(?:性|提升|提高|改善|优于|高于|低于|增加|降低|差异|相关|影响)|差异显著", re.I)
+    negation = re.compile(
+        r"\b(?:not|no|without|non[- ]?)\s+(?:a\s+)?(?:statistically\s+)?$"
+        r"|\b(?:cannot|can't|could not)\s+(?:conclude|establish|claim)[^.;；。]{0,55}$"
+        r"|(?:不(?:具有|存在|呈现|是)?|未(?:观察到|发现|达到|见)?|不能(?:认定|推断|说明))[^。；]{0,12}$", re.I)
+    nonstat = re.compile(r"significant (?:digit|figure|challenge|role)|practical significance|显著性(?:水平|图|检测)", re.I)
+    for begin, _, sentence in sentence_spans(prose):
+        for start, stop, clause in claim_clauses(sentence):
+            offset, end = begin + start, begin + stop
+            raw = evidence_view[offset:end]
+            extra_object_at = max((m.start() for m in EXTRA_COMPARISON_OBJECT.finditer(clause)), default=-1)
+            positive_matches = list(positive.finditer(clause))
+            asserted = any(not negation.search(clause[:m.start()]) and not nonstat.match(clause, m.start()) for m in positive_matches)
+            if asserted:
+                # Inline math is available only inside this clause's source span.
+                has_evidence = bool(test_pattern.search(raw))
+                evidence_denied = bool(re.search(r"(?:no|without|not (?:run|performed|conducted)|plan(?:ned)? to|intend to|will|would|should).{0,65}(?:test|p[- ]value)|(?:未|计划|将).*检验", raw, re.I))
+                if not has_evidence or evidence_denied:
+                    findings.append(dict(type="significance_without_test", item=excerpt(clause),
+                        **source_location(text, offset, end),
+                        note="Significance evidence review: 当前主张所在子句未找到可关联的检验或 p 值，请核对相应结果位置；"
+                        "这不证明作者未做检验。标准差、方差或区间本身不等于显著性证据，"
+                        "也不能自动替换为 consistent。"))
+            for patterns, kind in [(SUPERLATIVE_PATTERNS, "unbounded_claim"), (CAUSAL_PATTERNS, "causal_language")]:
+                for pattern, note in patterns.items():
+                    matches = re.finditer(pattern, clause, re.I)
+                    if any(not (bounded_comparison(clause, m, extra_object_at) if kind == "unbounded_claim"
+                                else nonasserted_cause(clause, m.start())) for m in matches):
+                        findings.append(dict(type=kind, item=excerpt(clause), note=note,
+                                             **source_location(text, offset, end)))
+                        break
     return findings
 
 
@@ -268,23 +364,21 @@ def check_style(text: str) -> List[Dict]:
                 {
                     "type": "filler",
                     "item": match.group(0),
-                    "line": locate(prose, match.start()),
+                    **source_location(text, match.start(), match.end()),
                     "note": note,
                 }
             )
 
-    for sentence in split_sentences(prose):
+    for offset, end, sentence in sentence_spans(prose):
         lowered = sentence.lower()
         hits = [word for word in HEDGE_WORDS if word in lowered]
         if len(hits) >= 3:
-            offset = prose.find(sentence)
             findings.append(
                 {
                     "type": "hedge_stacking",
                     "item": excerpt(sentence),
-                    "line": locate(prose, offset) if offset >= 0 else 0,
-                    "note": f"Stacked hedges ({', '.join(hits[:4])}). One deliberate hedge "
-                    "is stronger than several.",
+                    **source_location(text, offset, end),
+                    "note": f"Stacked hedges ({', '.join(hits[:4])}). Review each hedge separately; changing frequency, strength or scope is L3.",
                 }
             )
 
@@ -292,40 +386,12 @@ def check_style(text: str) -> List[Dict]:
 
 
 def check_tense(text: str) -> List[Dict]:
-    """Paragraphs mixing method-present and experiment-past narration."""
-    findings: List[Dict] = []
-    paragraphs = [p for p in re.split(r"\n{2,}", strip_markup(text)) if p.strip()]
+    """Compatibility entry point: tense correctness requires semantic review.
 
-    past = re.compile(
-        r"\b(?:we|the authors)\s+(?:\w+ed|ran|trained|used|conducted|performed|built|chose|set)\b",
-        re.IGNORECASE,
-    )
-    present = re.compile(
-        r"\b(?:we|the (?:proposed )?"
-        r"(?:method|model|framework|network|encoder|decoder|module|architecture|"
-        r"system|algorithm|approach|branch|backbone))\s+"
-        r"(?:propose|present|introduce|use|extract|employ|adopt|consist|apply|"
-        r"compute|produce|generate|aggregate|predict|learn|take|output)s?\b",
-        re.IGNORECASE,
-    )
-
-    for paragraph in paragraphs:
-        past_hits = past.findall(paragraph)
-        present_hits = present.findall(paragraph)
-        if past_hits and present_hits:
-            offset = text.find(paragraph[:40])
-            findings.append(
-                {
-                    "type": "mixed_tense",
-                    "item": excerpt(paragraph, 90),
-                    "line": locate(text, offset) if offset >= 0 else 0,
-                    "note": "Mixes past-tense experimental narration with present-tense "
-                    "method description. Convention: present for what the method does, "
-                    "past for what was done and found.",
-                }
-            )
-
-    return findings
+    Method-present and experiment-past legitimately coexist. A keyword mixture
+    provides no defensible error criterion, so it produces no automatic finding.
+    """
+    return []
 
 
 def check_length(
@@ -340,7 +406,7 @@ def check_length(
     including them -- so estimating instead of counting reliably overshoots.
     """
     findings: List[Dict] = []
-    prose = strip_markup(text)
+    prose, _, excluded = mask_prose(text)
 
     if per_line:
         for number, line in enumerate(text.splitlines(), start=1):
@@ -372,7 +438,11 @@ def check_length(
 
     words = len(re.findall(r"[A-Za-z][A-Za-z'-]*", prose))
     cjk = len(re.findall(r"[\u4e00-\u9fff]", prose))
-    total_chars = len(prose.strip())
+    included = bytearray(b"1") * len(text)
+    for span in excluded:
+        included[span["start"]:span["end"]] = b"0" * (span["end"] - span["start"])
+    visible = "".join(c for pos, c in enumerate(prose) if included[pos] == ord("1"))
+    total_chars = len(visible.strip())
 
     summary = f"{words} English words"
     if cjk:
@@ -412,11 +482,7 @@ def check_terminology_drift(text: str) -> List[Dict]:
     findings: List[Dict] = []
 
     pairs = [
-        ("feature fusion", "feature aggregation"),
-        ("feature fusion", "feature merging"),
-        ("proposed method", "our method"),
         ("dataset", "data set"),
-        ("baseline", "benchmark method"),
         ("fine-tuning", "finetuning"),
         ("pre-training", "pretraining"),
         ("multi-scale", "multiscale"),
@@ -424,16 +490,15 @@ def check_terminology_drift(text: str) -> List[Dict]:
     ]
 
     for first, second in pairs:
-        first_count = prose.count(first)
-        second_count = prose.count(second)
+        first_count = len(re.findall(r"(?<!\w)" + re.escape(first) + r"(?!\w)", prose))
+        second_count = len(re.findall(r"(?<!\w)" + re.escape(second) + r"(?!\w)", prose))
         if first_count and second_count:
             findings.append(
                 {
                     "type": "terminology_drift",
                     "item": f"'{first}' ({first_count}×) / '{second}' ({second_count}×)",
                     "line": 0,
-                    "note": "Both variants appear. Normalize to the dominant one unless "
-                    "the draft distinguishes them deliberately.",
+                    "note": "Both spelling/style variants appear. Check author terminology and context before proposing changes.",
                 }
             )
 
@@ -494,7 +559,7 @@ def render(results: "OrderedDict[str, List[Dict]]", section: Optional[str]) -> s
                 "",
                 "This scan is rule-based. It cannot see claim strength relative to "
                 "evidence, fabricated content, or whether the argument holds. Those "
-                "still need review.",
+                "still need review. Tense and mathematical symbol definitions are NOT RUN by this scanner.",
             ]
         )
         return "\n".join(lines) + "\n"
@@ -506,9 +571,9 @@ def render(results: "OrderedDict[str, List[Dict]]", section: Optional[str]) -> s
         lines.append("")
         for finding in findings:
             location = f" (line {finding['line']})" if finding.get("line") else ""
-            lines.append(f"- **{finding['item']}**{location}")
+            lines.append(f"- **{markdown_text(finding['item'])}**{location}")
             if finding.get("note"):
-                lines.append(f"  - {finding['note']}")
+                lines.append(f"  - {markdown_text(finding['note'])}")
         lines.append("")
 
     lines.extend(
@@ -549,11 +614,16 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Section context, which adds targeted guidance to the report.",
     )
     parser.add_argument("--json", action="store_true", help="Emit JSON.")
+    parser.add_argument("--strict", action="store_true", help="Exit 1 for review findings, length overruns or insufficient coverage.")
     args = parser.parse_args(argv)
+    if any(value is not None and value <= 0 for value in [args.limit_words, args.limit_chars]):
+        parser.error("Length limits must be positive integers.")
+    if not args.checks.strip():
+        parser.error("At least one check is required.")
 
     try:
         text = read_text(args.file)
-    except OSError as exc:
+    except (OSError, UnicodeError, ValueError) as exc:
         sys.stderr.write(f"Cannot read input: {exc}\n")
         return 2
 
@@ -562,9 +632,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         return 2
 
     if args.checks == "all":
-        selected = list(CHECKS)
+        selected = [name for name in CHECKS if name != "tense"]
     else:
         selected = [name.strip() for name in args.checks.split(",") if name.strip()]
+        if not selected:
+            parser.error("At least one check is required.")
         unknown = [name for name in selected if name not in CHECKS]
         if unknown:
             sys.stderr.write(
@@ -582,12 +654,21 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             text, args.limit_words, args.limit_chars, args.per_line
         )
 
+    prose, warnings, excluded = mask_prose(text)
+    if "tense" in selected:
+        warnings.append({"line": 0, "start": 0, "reason": "NOT RUN: tense correctness requires semantic review"})
+    if not prose.strip():
+        warnings.append({"line": 0, "start": 0, "reason": "No readable prose covered"})
+    if warnings:
+        results["coverage"] = [dict(type="coverage_limit", item=w["reason"],
+            line=w["line"], start=w["start"], note="INSUFFICIENT: this construct needs source review.") for w in warnings]
     if args.json:
         sys.stdout.write(json.dumps(results, ensure_ascii=False, indent=2) + "\n")
     else:
         sys.stdout.write(render(results, args.section))
 
-    return 0
+    issues = any(f["type"] not in {"count", "line_count"} for group in results.values() for f in group)
+    return 1 if args.strict and issues else 0
 
 
 if __name__ == "__main__":

@@ -1,224 +1,89 @@
 # Writing Workflows
 
-How to actually execute each task. Every workflow assumes the fidelity contract in `SKILL.md` is already in force — these add task-specific technique on top of it.
-
-## Contents
-
-- [Polishing](#polishing)
-- [Expansion](#expansion)
-- [Merging](#merging)
-- [Compression to a limit](#compression-to-a-limit)
-- [Translation CN→EN](#translation-cnen)
-- [Translation EN→CN](#translation-encn)
-- [Abstract](#abstract)
-- [Introduction](#introduction)
-- [Related work](#related-work)
-- [Method](#method)
-- [Experiment](#experiment)
-- [Discussion, limitations, future work](#discussion-limitations-future-work)
-- [Title and contributions](#title-and-contributions)
-- [Naturalization](#naturalization)
-- [Prompt optimization](#prompt-optimization)
+所有工作流遵守 SKILL.md 的三区域、L1/L2/L3 与材料边界。先判断本次有依据能写什么，再选择适当结构。多源材料或深度审阅使用 [workflow-context.md](workflow-context.md)，理论、定性、综述和混合研究按 [research-types.md](research-types.md) 适配。
 
 ## Polishing
 
-The most requested task and the easiest to do badly, because "polish" invites uniform smoothing that flattens a paper's argument into pleasant mush.
+通读段落，识别它的主要论点与支持；先修论点位置、信息顺序和真实衔接，再修语法。不要为“学术化”增加机制、对照、性能或新颖性。保留有意义的可能性、频率、范围、否定和因果条件。
 
-1. **Read the whole passage before editing anything.** Find the claim it is making. Local sentence fixes that fight the paragraph's argument are worse than no edit.
-2. **Diagnose before rewriting.** Most drafts fail for one identifiable reason, not forty: buried topic sentence, missing logical connective, hedge stacking, nominalization, or a claim that outruns its evidence. Naming the pattern produces a better fix than sentence-by-sentence grinding, and gives the author something they can apply themselves next time.
-3. **Fix structure first, surface second.** Reordering for a clear topic sentence often dissolves problems that looked like grammar problems.
-4. **Apply the fidelity zones.** Free surface aggressively; load-bearing language only toward accuracy, disclosed; locked zone untouched.
-5. **Re-read for meaning drift.** After rewriting, compare claim strength sentence by sentence against the original. This catch step matters more than any other, because drift accumulates silently across a paragraph.
-6. **Report** per the output contract.
-
-Chinese-authored English drafts concentrate on a handful of patterns — `style-guide-en.md` has the interference list. Recognizing them is usually faster than diagnosing from scratch.
-
-A note on restraint: passages that are already good need little. Returning a lightly-touched draft with "这段结构清晰，仅做了 3 处冠词与时态修正" is a real service. Manufacturing changes to look busy erodes the author's ability to tell which of your edits matter.
+原文已经准确清楚时可以少改或不改。L1 仅统计实际追踪的修改；短文无需完整报告。最后逐句对照科学含义，较长修改在工具可用时做机械核查，并如实说明实际覆盖。
 
 ## Expansion
 
-Users ask to expand for two very different reasons, and confusing them produces useless output.
+扩展可以把已有论证中的步骤讲清楚，或整理作者提供的方法细节；不能用常识推测设计动机、结果原因、研究局限。新增可检验主张按 L3 处理，依据不明则标 `[请补充支持此处的材料]`。纯衔接或复述若不新增主张，不因“新句子”就机械归 L3。
 
-**Reason A — the logic has a gap.** A step is missing between claim and evidence, or motivation is unexplained. This is legitimately fixable: make the implicit reasoning explicit using only what the author already supplied.
-
-**Reason B — they need to hit a length requirement.** Padding is not a service. Say so, and redirect: the honest ways to add length are more detail about the method, explicit limitations, added analysis of existing results, or clarified reasoning. Offer those. Adding empty subordinate clauses makes a paper worse and reviewers notice.
-
-Execution:
-
-1. Identify which gap type is present: background, motivation, mechanism ("why does this work"), implication, or transition.
-2. Expand using only user-supplied content plus generic academic scaffolding.
-3. Mark every added claim that needs evidence with a placeholder — `[请补充支持该结论的实验或引用]`.
-4. Show clearly which sentences are new, so the author can check each one is true. Added sentences are all L3 by definition: they assert something the author did not write.
-
-Never invent a motivation the author did not state. If you cannot tell why they made a design choice, ask — the real reason is almost always more specific and more persuasive than anything you would guess.
+用户为了篇幅扩写时，优先展开已有材料，而非重复结论。缺少实际材料则列出最有价值的补充信息。
 
 ## Merging
 
-1. Identify the shared claim; if there isn't one, merging is the wrong operation — say so.
-2. Choose the strongest topic sentence and build around it.
-3. Remove genuine repetition. Keep every distinct technical condition, even when it looks repetitive; conditions that seem redundant to a language model are often load-bearing to a specialist.
-4. Preserve logical order: problem → approach → evidence → implication.
-5. Report what was cut, so the author can veto. Cuts are the highest-risk part of merging, since deleted content leaves no trace to review.
+确认段落论点是否相连，再选择信息顺序。保留每个独立技术条件和局限；近似措辞不一定是重复。合并后的引用仍应支持各自论断，不能把多个引用集中到一个更广泛的新句子末尾而不核对。
 
 ## Compression to a limit
 
-Abstract word limits, rebuttal character caps, highlight limits.
+先明确用户或 venue 给定的计量单位：英文词、中文字符、含/不含空格，是否含标题、引文、公式、标点。工具计数只是其明确口径，不能冒充所有投稿系统的算法。
 
-1. **Count first, against the venue's actual unit** — words, characters including spaces, or characters excluding spaces. Elsevier highlights are 85 characters *including spaces*; ICML rebuttal rounds are capped in characters. Getting the unit wrong wastes the whole exercise. `scripts/manuscript_audit.py --limit-words N` counts for you.
-2. **Cut in this order**: empty intensifiers → nominalizations → redundant scaffolding (由于……因此) → repeated content → detail that appears elsewhere in the paper.
-3. **Stop before scope conditions and hedges.** When only load-bearing language remains to cut, you have hit the floor. Report the shortfall and let the author decide what claim to drop; do not silently trade accuracy for length.
-4. State the final count so the author can verify without recounting.
+删除顺序通常是无信息修饰 → 名词化 → 重复衔接 → 重复论点 → 可由作者决定移出的细节。保留限定和条件；只有无法安全压缩时，说明超出情况并给可删除论点选项。报告真实计数与方法；无工具不能假称精确核查已完成。
 
 ## Translation CN→EN
 
-Translate the argument, not the string.
+按论证关系翻译，必要时先改源文的信息顺序。术语以作者定义、已提供文献和领域语境为依据；不把词表候选当强制同义关系。
 
-1. **Parse the logical structure first.** Chinese academic prose leans on 由于/因此/从而/进而 chains that map onto far fewer English connectives. A four-clause Chinese sentence is often two clean English sentences.
-2. **Choose terminology deliberately.** Use the field's conventional English term, not a literal rendering. `terminology.md` has common pairs. When a term is ambiguous or the author's field uses a non-obvious convention, put it in the terminology table and let them override.
-3. **Drop ceremonial framing.** 具有重要的理论意义和应用价值, 众所周知, 随着……的快速发展 are conventional in Chinese and read as padding or overclaim in English. Replace with the specific content, or cut. Flag as L3 — this surprises authors.
-4. **Rebuild hedges to English norms.** Chinese hedging can be lighter; English academic writing hedges empirical claims more explicitly. Getting this right is the difference between a native-sounding paper and one that reads as overclaiming.
-5. **Fix information order.** Chinese frequently front-loads conditions; English prefers subject-verb early with conditions following. Mechanical order-preservation is the main cause of "translationese."
-6. Deliver: translation, terminology table, notes on any L3 decision.
+“往往、可能、一定程度、部分”不因英语显得啰嗦就全部删除。确属同义重复时可精简；频率、强度或范围发生改变则为 L3。惯例性大话可按 L3 建议删除或具体化，但具体内容必须由材料支持。
 
-**When the request is "润色成英文"** — Chinese source, English wanted — this workflow is the spine, but run Polishing's diagnostic step first. A structurally weak Chinese paragraph translated faithfully becomes a structurally weak English one; fixing the argument before translating is cheaper than fixing it after.
-
-Report it as a translation. Skip the L1 aggregate line: the English is newly written rather than corrected, so a count of "article fixes" is meaningless. One line saying so is clearer than a fabricated number.
+只有用户明确要英文时执行本工作流。“SCI/投稿”本身不确定译向。交付译文和必要术语/重要译法说明；新写译文不计 L1。
 
 ## Translation EN→CN
 
-1. Preserve technical terms; use the established Chinese rendering rather than inventing one.
-2. Match Chinese academic register — formal, no colloquial explanation unless asked.
-3. Preserve hedges and scope conditions exactly. English hedging that gets dropped in Chinese translation produces an overclaim in the target text.
-4. Keep symbols, equations, and citation markers in original form.
-5. Provide a key-terminology table when the vocabulary is non-obvious.
+保留 hedges、适用范围、否定与比较关系，保持符号和引用。中文解释可以帮助作者理解术语选择，但不要混入目标正文。已有定义优先，医学/统计/工程中的邻近概念不要直接合并。
 
 ## Abstract
 
-The most-read and most-rejected part of a paper. Space is brutally scarce, so every sentence must earn its place.
+根据研究类型组织问题、做法、已有证据和支持范围。常见经验研究可依次写研究问题 → 方法 → 实际结果 → 受限结论；理论工作应保留假设、命题及证明状态，定性研究应体现材料与分析方式，不强求数据集、准确率或消融。
 
-Structure — roughly one to two sentences each:
+作者明确说明实验、分析或证明尚未完成时，这一进度本身就是需要保留的事实。摘要工作稿应在正文中交代，或附醒目的简短工作稿标记，说明哪一部分未完成；只输出正文时，用目标语言的一句简短陈述保留状态。不能只删掉空缺的结果段，让工作稿看起来已完整。可整理已有问题、做法和证据，但不预设待完成部分的结果方向，也不把它写成已发生的发现。
 
-1. Context and the problem, stated concretely
-2. The gap: what existing approaches cannot do
-3. What was done: the approach, named
-4. Evidence: datasets, key results
-5. What it means, scope-bounded
+完成状态未知与作者明确说“未完成”不同：缺少结果材料只能说明当前材料不足，不能据此断言作者没做实验或分析。已提供的实际结果应照常利用；理论、定性或综述按其实际工作保留证明、分析或综合的状态，不额外要求实验。没有提供既有研究的局限，不凭领域常识添“现有方法普遍无法……”。
 
-Rules:
-
-- **No invented numbers, ever.** Missing results become `[请补充主要定量结果，如 Dice/mAP/准确率]`, and say plainly that this is a placeholder.
-- No citations, unless the venue allows them.
-- Define an abbreviation only if it is used again in the abstract; otherwise spell it out.
-- Tense: past for what you did and found, present for what is generally true and what the paper reports.
-- Check the venue's word limit and count against it.
-- Cut every 众所周知 / "With the rapid development of…" opener. It costs 15 words and says nothing.
-
-Verify with `scripts/structure_checker.py --section abstract`.
+篇幅、结构化小标题、引用和缩写要求按目标规则处理；不知道期刊不妨碍起草中性版本。结构脚本只能给关键词覆盖提示。
 
 ## Introduction
 
-The logic chain that reviewers expect:
+把研究问题、已有材料描述的缺口、本文回应和已完成贡献连起来。缺口必须能由实际文献或用户材料支持；不能仅在自拟结论后加 citation-needed 就当成已知事实。
 
-1. Broad importance — brief, one or two sentences, not a textbook review
-2. The specific problem
-3. What has been tried, and what remains unsolved — a gap, not a hit list
-4. Your response to that gap
-5. What you did, in summary
-6. Contributions
-
-Rules:
-
-- The gap must connect to the contribution. If it does not, the introduction motivates a different paper than the one that follows — this is the single most common structural failure.
-- Criticize prior work on specific technical grounds or not at all. Dismissive framing reads badly and reviewers are often the authors of the work being dismissed.
-- 2–4 contributions. Each one a thing you *did*, not a property you claim.
-- Avoid "first" / "novel" / "state-of-the-art" unless verified; see the fidelity protocol.
+没有相关文献时可给结构和待核查论点。有授权检索能力时按 citation-safety 查证；不要无条件拒绝检索。贡献数量服从内容，不为凑三条而发明工作。
 
 ## Related work
 
-The highest fabrication risk in the entire Skill. Load `citation-safety.md`.
-
-Pick an organizing principle and hold it: by method family, by sub-problem, or by limitation addressed. Chronological order is right only when the history itself is the argument.
-
-Without a reference list from the user, do **not** produce a draft with plausible-looking citations. Instead:
-
-- Ask for the references, or
-- Give the structure with explicit `[citation needed: 该类方法的代表工作]` slots
-
-Both are useful. An invented bibliography is not merely useless — it is actively dangerous, because fabricated references survive into submissions when authors trust the output.
-
-End with a transition to the gap, without attacking prior work.
+读取 [citation-safety.md](citation-safety.md)。按实际文献的研究问题、方法或限制组织，避免只列论文名。区分“条目真实”“已读摘要”“全文证据支持”。没有文献时可给检索词、明确槽位的提纲；外部研究的结果、机制与普遍限制也需要依据，不只是参考文献格式需要依据。
 
 ## Method
 
-1. Overview — the pipeline in a few sentences, so the reader has a map
-2. Problem formulation, with notation defined at first use
-3. Architecture or procedure
-4. Components, in the order data flows through them
-5. Objective function or optimization
-6. Training and inference procedure
-7. Complexity or implementation notes, if available
+依实际研究组织问题定义、假设、符号、程序/论证、关键选择与复现信息。不要把所有方法章节变成神经网络架构。作者仅说“使用注意力机制”时，不补头数、维度、机制细节或优越性。
 
-Rules:
+符号首次定义、同符异义需要结合实际文本复核；`manuscript_audit.py` 的缩写提示不实现完整数学符号分析。数学内容保留；疑似推导问题作为疑问。
 
-- **Never invent equations, hyperparameters, or architectural details.** If the author writes "使用注意力机制" without specifics, the draft says that and flags the gap. Inventing "8-head self-attention with 64-dim keys" is fabrication that reads as competence.
-- Reproducibility is the standard: could a competent reader reimplement this? Flag concretely what is missing.
-- Symbols: introduce each once, use consistently, never reuse one symbol for two things. `scripts/manuscript_audit.py` flags first-use problems.
-- Present tense for describing the method; past tense for what was done in experiments.
+## Experiment / Results
 
-## Experiment
+写实际数据、指标、对比、结果与不确定性；保留统计量的对象、单位、条件和数值。作者仅给一个表时只描述已读取的表格，不假装读取隐藏单元格或图像。
 
-Structure: datasets → metrics → implementation details → baselines → main results → ablations → qualitative analysis → failure cases.
+统计显著性要与该主张的分析对应。SD、variance、CI、p-value 不可互换；没有找到检验不证明没做。不要自动替换为 consistent、stable、notable。量化差异只有口径相同且计算得到用户授权时可写入，标明推算口径。
 
-Rules:
-
-- **No invented metric values, dataset sizes, or baseline numbers.** This is the most consequential fabrication risk after citations.
-- Analyze only the numbers the author supplied. If they gave a table, describe what it shows; do not extrapolate a trend across cells you cannot see.
-- "significant" means a statistical test was run. Without one, use "consistent," "notable," or just report the difference.
-- Ablations should isolate one variable each; if the author's ablation confounds two, flag it — a reviewer will.
-- Failure cases and limitations strengthen a paper. Authors under-report them; encourage the opposite.
+消融适合某些研究设计，不强制所有研究包含；若已有对比混合多个改变，可提示其解释限制，不自行认定实验无效。
 
 ## Discussion, limitations, future work
 
-Where papers earn credibility. Hedging here is correct, not weak.
+解释区分直接结果、材料支持的推论和待验证假设。新机制解释须标为候选，不能因为“合理”就当作者发现。局限只能依据实际研究边界，不编“计算更高/样本更小/无法推广”等事实。
 
-Cover: why the method behaves as observed; where it works, bounded by evidence; where it fails; limitations; what follows.
-
-- Ground interpretation in the reported results, not in general plausibility.
-- Limitations must be real. "Our method requires more computation" when computation was never measured is decoration, and reviewers read decoration as evasion.
-- Future work should follow from a stated limitation.
-- Distinguish what the evidence supports from what the authors believe. Both belong; conflating them does not.
+未来计划只写作者明确给定的计划。可提出后续行动建议，但不要自动写成作者会执行。结论不比结果与讨论更强，也不机械降为最弱措辞而抹掉有支持的发现。
 
 ## Title and contributions
 
-**Titles** — produce 4–6 candidates across distinct strategies rather than six paraphrases:
-
-- Descriptive: what the thing is
-- Method-forward: names the technique
-- Problem-forward: names what it solves
-- Finding-forward: states the result, where venue norms allow
-- Short and memorable
-
-Then recommend one, with a reason tied to the venue. Note searchability: the terms someone would use to find this work should appear. Avoid unverifiable superlatives and question-form titles outside venues where they are common.
-
-**Contribution statements** — each should name a thing done, be independently checkable, and be distinct from the others. Rewrite "we propose a novel and effective module" into what the module does and what evidence supports it. Three specific contributions beat five vague ones.
+给少量策略不同的标题，基于实际问题、方法或已支持结果。推荐理由可讨论清晰度和关键词，不保证检索、引用或录用效果。贡献写做了什么及已支持范围，不把 first/novel 当增强气势的形容词。
 
 ## Naturalization
 
-Users ask for text that "reads less like a machine." Take the request seriously and reframe it accurately: you are improving writing quality, not targeting a detector. Detector scores are unreliable in both directions and optimizing against them is both futile and a bad use of the author's time.
-
-What actually makes text read as machine-generated, and what to do:
-
-- **Uniform sentence length.** Vary it. Short sentences after long ones create emphasis.
-- **Even weighting.** Machine text treats every point as equally important. Real authors subordinate, foreground, and skip.
-- **Vague universals.** "Various approaches have been proposed" says nothing. Name them or cut.
-- **Hedge stacking.** "may potentially help to some extent" — pick one hedge.
-- **Connective overuse.** Moreover/Furthermore/Additionally opening consecutive paragraphs.
-- **No commitment.** Real papers argue for a position. Say which interpretation the authors favor.
-
-Fixing these produces text that is both better and less formulaic — the goal the user actually has.
+帮助文本变得具体、清楚和有层次，不针对检测器分数。只依据原文可见问题调整句长、连接词、重复与信息权重；不能从检测结果推断作者身份或文本质量。作者倾向的解释未知时不替其选立场，有含义的 hedges 不因“像机器”而删。
 
 ## Prompt optimization
 
-Rewrite the user's academic-writing prompt so it specifies: task, field, target venue and register, language direction, section, what must be preserved verbatim, evidence available versus missing, desired output format, and integrity constraints.
-
-Return the improved prompt plus a short note on what was missing and why it mattered — the point is to teach the pattern, not to hand over one better prompt.
+可将用户已有任务整理为任务、材料、目标语言、保留内容、证据与输出偏好。不要为所有任务强制补齐领域、期刊和全部上下文字段；缺口只有会改变结果时才问。

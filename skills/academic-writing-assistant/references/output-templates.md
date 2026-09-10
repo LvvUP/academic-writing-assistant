@@ -1,217 +1,74 @@
 # Output Templates
 
-Shapes, not scripts. The purpose is that an author can find the deliverable instantly and audit the changes in about a minute. Adapt freely — a template that fights the task should lose.
-
-Two rules hold across all of them: **manuscript-ready text comes first**, and **L3 changes are never silent**.
-
-## Contents
-
-- [Revision](#revision)
-- [Translation](#translation)
-- [Section draft](#section-draft)
-- [Compression](#compression)
-- [Reviewer response](#reviewer-response)
-- [Title candidates](#title-candidates)
-- [Consistency report](#consistency-report)
-- [Terminology check](#terminology-check)
-- [Cover letter and submission materials](#cover-letter-and-submission-materials)
-- [Prompt optimization](#prompt-optimization)
-- [Scaling down](#scaling-down)
+按实际任务缩放，正文优先。模板中的示例槽必须由已提供信息填充，不能被当成默认事实。
 
 ## Revision
 
-For polishing, expansion, merging, and general editing.
-
 ```text
-## 修改后文本
+[修改后正文]
 
-[clean, paste-ready text — no inline markup, no commentary]
+改动台账（确有重要变化时）
+| 原文片段 | 修改后/候选片段 | L2/L3 | 原因与依据/待确认事项 |
 
-## 改动台账
-
-L1（语法/冠词/时态/拼写）：共 N 处，未逐条列出。
-
-| # | 原文 | 修改后 | 层级 | 原因 |
-|---|---|---|---|---|
-| 1 | [fragment] | [fragment] | L2 | [one line] |
-| 2 | [fragment] | [fragment] | L3 | [one line, and how to revert] |
-
-## 需确认
-
-- [what only the author can resolve]
-- （无则写"暂无"）
+[必要疑问；没有就省略]
 ```
 
-If every change is L1 and the text is short, collapse to the revised text plus one line: "仅作语法与冠词修正（7 处），未改动任何主张。"
+L1 简短汇总，只有实际逐项追踪时才给数量。已有清楚文本可少改或不改。L3 依据不明时，正文保留原义、清楚占位或给明确条件化草稿，不能用台账事后“洗白”新增事实。
+
+## Depth and evidence
+
+快速润色以正文为主；标准修订附必要 L2/L3；深度结构审阅列关键问题、证据位置和方案，只改写用户请求的范围。参见 [workflow-context.md](workflow-context.md)。
+
+主张有争议或使用多源材料时，可把证据表与 L3 台账合并：
+
+| 原文主张 | 实际证据位置 | 改写/候选 | 支持状态 | 需确认 |
+|---|---|---|---|---|
+| [片段] | [用户材料的节/表/行或消息片段] | [片段] | [直接/条件/摘要支持，冲突或不足] | [具体缺口] |
+
+只展示证据与结果，不要求思维链。短句修正没有必要时省略此表。
 
 ## Translation
 
 ```text
-## English Translation
+[用户指定目标语言的译文]
 
-[translation]
-
-## 术语选择
-
-| 中文 | English | 说明 |
-|---|---|---|
-| [term] | [term] | [why this rendering] |
-
-## 翻译说明
-
-- [L3 decisions: dropped ceremonial framing, adjusted hedging, restructured order]
-
-## 需确认
-
-- [ambiguity in the source, or terms the author should confirm against their field]
+[必要术语表：原词 | 译词 | 选择依据/歧义]
+[重要 L2/L3 译法说明]
+[待确认项]
 ```
 
-Reverse the language of the headings for EN→CN.
-
-### The compound case: Chinese in, polished English out
-
-The most frequent request, and it sits between the Revision and Translation shapes. Use the Translation shape as the base and add the change ledger for claim-level decisions, since those are what the author most needs to check:
-
-```text
-## English Translation
-
-[translation]
-
-## 改动台账
-
-（中译英，原文为中文，不计 L1 语法修正）
-
-| # | 原文 | 修改后 | 层级 | 原因 |
-|---|---|---|---|---|
-| 1 | [中文片段] | [English fragment] | L3 | [why] |
-
-## 术语选择
-
-| 中文 | English | 说明 |
-|---|---|---|
-
-## 需确认
-
-- ...
-```
+新写译文不报告 L1 语法修正数。未要求翻译不改变稿件语言。仅提 SCI/投稿不等于英文任务。
 
 ## Section draft
 
-For abstract, introduction, method, experiment, discussion.
-
-```text
-## [Section] Draft
-
-[draft, with placeholders visible: [请补充主要定量结果]]
-
-## 写作逻辑
-
-- [how the draft is organized and why — helps the author adapt it]
-
-## 缺失信息
-
-- [每个占位符对应什么，以及为什么需要]
-```
-
-Placeholders must be impossible to miss. Bracketed Chinese instructions work well because they cannot be mistaken for manuscript text.
+先按给定研究类型和材料写可以确定的部分，再用 `[请补充……]` 标出缺失事实。实验未完成时整句结果留槽，不用“实验表明”预设既成结果。理论、定性研究不强加数据集/消融模板，适配见 [research-types.md](research-types.md)。
 
 ## Compression
 
-```text
-## 压缩后文本（[N] 词 / 限制 [M] 词）
-
-[text]
-
-## 删减内容
-
-- [what was cut, grouped by type]
-
-## 保留说明
-
-- [scope conditions and hedges kept, and why they were not candidates for cutting]
-```
-
-Always state the count. If the limit could not be met without cutting load-bearing language, say so and let the author choose.
+给压缩正文，说明实际计量单位、方法与结果（运行工具则引用真实计数）。若不能在保留关键范围和条件的前提下满足上限，指出仍超多少并提出可删论点，由作者取舍；不静默丢失承重语言。
 
 ## Reviewer response
 
-Follows `reviewer-response.md`. Journal:
-
 ```text
-## 回复信
-
-[editor paragraph]
-
-### R1.1
-**Comment:** [verbatim]
-**Response:** [answer]
-**Revision:** [quoted new text, Section X, lines X–X]
-
-### R1.2
-...
-
-## 需填写
-
-- [every slot the user must complete before sending]
+Comment: [用户提供的审稿意见，保持其含义及标识]
+Response: [作者已确认立场与证据；未知事实显式占位]
+Revision: [已确认完成的修改与真实位置；未完成则不写已完成]
 ```
 
-Conference rebuttal is denser and ordered by impact — no per-comment ceremony.
+确认计划可用 will；只是建议的行动放在正文外并标建议，不能替作者承诺。参见 [reviewer-response.md](reviewer-response.md)。
 
 ## Title candidates
 
-```text
-## 标题候选
+给少量有区别的候选，依据现有方法、问题或已支持结果；可推荐一个并简述理由。不能用 first/novel/SOTA 弥补缺少贡献。
 
-1. **[descriptive]** — [strategy, one line]
-2. **[method-forward]** — [...]
-3. **[problem-forward]** — [...]
-4. **[concise]** — [...]
+## Consistency and terminology
 
-## 推荐
+优先报告主张冲突，再按术语、缩写、符号、时态、引用和数值归类。给真实位置与短引文；说明已读范围和工具检查范围。术语是否同义未知时写“需确认”，不自动按频率统一。
 
-[choice] — [reason tied to venue and searchability]
+## Submission materials
 
-## 说明
+可给 cover letter、highlights、CRediT 或 AI 使用声明的条件化草稿。作者批准、未多投、已复核、利益冲突、伦理号等都必须已确认或显式留槽；“可直接发送”只能在这些事实齐全时使用。参见 [submission-package.md](submission-package.md)。
 
-- [any claim-strength note, e.g. why "first" was avoided]
-```
+## Scaling down / only-body
 
-## Consistency report
-
-Grouped by category, claim inconsistencies first. Format in `consistency-pass.md`.
-
-## Terminology check
-
-```text
-## 建议统一
-
-| 出现的变体 | 建议统一为 | 出现位置 | 说明 |
-|---|---|---|---|
-| A（7 次）/ B（2 次） | A | 3.2 节、4.1 节 | [why] |
-
-## 需作者决定
-
-- [cases where both variants are defensible and it is the author's call]
-```
-
-## Cover letter and submission materials
-
-Return the document ready to send, with clearly marked slots for anything only the author knows (editor name, ethics numbers, prior submission history). Follow with a short list of what must be filled and what to verify against the venue's guide. See `submission-package.md`.
-
-## Prompt optimization
-
-```text
-## 优化后 Prompt
-
-[the improved prompt]
-
-## 补充了什么
-
-- [what was missing and why it changed the output]
-```
-
-## Scaling down
-
-Ceremony should match the size of the task. A one-sentence fix returns the fixed sentence and a clause of explanation — not a table with one row and an empty "需确认" section.
-
-When the user asks for just the text, give just the text. The contract exists to serve the author's ability to check the work; when they have explicitly said they do not need to check it, honoring that is the correct response.
+一句话纠错可只给正文。用户只要正文时，不展示可省略台账；仍需保持事实和 L3 边界。不能安全解决的歧义保留原义、放醒目占位，或加最小必要说明。这种输出偏好不表示作者授权添加未知结论。

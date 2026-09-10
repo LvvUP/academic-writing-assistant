@@ -1,0 +1,96 @@
+name: Verify Skill
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+
+jobs:
+  checks:
+    name: Python ${{ matrix.python }} / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, windows-2022]
+        python: ["3.9", "3.12"]
+        include:
+          - os: macos-14
+            python: "3.12"
+    defaults:
+      run:
+        shell: bash
+    steps:
+      # Official stable v7 release reviewed; see docs/testing.md.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # Node 24 / ESM; hosted runners supply the required runner runtime.
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install fixed development dependencies
+        run: |
+          python -m pip install --only-binary=:all: -r requirements-dev.txt
+      - name: Run deterministic tests
+        run: python -B -m pytest -q -p no:cacheprovider tests/
+      - name: Validate repository and public content
+        run: |
+          python -B skills/academic-writing-assistant/scripts/skill_lint.py .
+          python -B scripts/check_delivery.py .
+          python -B scripts/check_delivery.py . --index
+          git diff --check
+      - name: Export and validate the standalone Skill
+        run: |
+          DELIVERY_EXPORT="$RUNNER_TEMP/skill-export/academic-writing-assistant"
+          python -B scripts/install_skill.py export --destination "$DELIVERY_EXPORT" > "$RUNNER_TEMP/package-export.log"
+          python -B scripts/check_delivery.py "$DELIVERY_EXPORT" --package
+          python -B "$DELIVERY_EXPORT/scripts/skill_lint.py" "$DELIVERY_EXPORT" --package
+
+  secret-scan:
+    name: Secret scan of Git history and exported Skill
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify the official Gitleaks archive before extraction
+        run: |
+          curl --fail --silent --show-error --location --proto '=https' --tlsv1.2 \
+            https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz \
+            --output "$RUNNER_TEMP/gitleaks.tar.gz"
+          echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  $RUNNER_TEMP/gitleaks.tar.gz" | sha256sum --check --status
+          mkdir "$RUNNER_TEMP/gitleaks-bin"
+          tar -xzf "$RUNNER_TEMP/gitleaks.tar.gz" -C "$RUNNER_TEMP/gitleaks-bin" gitleaks
+          "$RUNNER_TEMP/gitleaks-bin/gitleaks" version
+      - name: Scan without exposing matches or uploading reports
+        run: |
+          DELIVERY_EXPORT="$RUNNER_TEMP/scan-export/academic-writing-assistant"
+          python3 -B scripts/install_skill.py export --destination "$DELIVERY_EXPORT" > "$RUNNER_TEMP/scan-export.log"
+          if ! "$RUNNER_TEMP/gitleaks-bin/gitleaks" git . --log-opts="--all" --no-banner --redact=100 \
+            --report-format=json --report-path="$RUNNER_TEMP/gitleaks-history.json" > "$RUNNER_TEMP/gitleaks-history.log" 2>&1; then
+            echo '::error::Git history scan failed or found a potential secret. Reproduce locally; raw matches are not published.'
+            exit 1
+          fi
+          if ! "$RUNNER_TEMP/gitleaks-bin/gitleaks" dir "$DELIVERY_EXPORT" --no-banner --redact=100 \
+            --report-format=json --report-path="$RUNNER_TEMP/gitleaks-export.json" > "$RUNNER_TEMP/gitleaks-export.log" 2>&1; then
+            echo '::error::Export scan failed or found a potential secret. Reproduce locally; raw matches are not published.'
+            exit 1
+          fi
+          echo 'Gitleaks completed; no findings in the scanned history and export.'

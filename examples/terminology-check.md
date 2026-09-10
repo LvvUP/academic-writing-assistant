@@ -1,5 +1,7 @@
 # 术语一致性检查示例
 
+以下为合成材料。表格是人工示范，不是本文件声明已实际运行脚本。
+
 ## Task
 
 Terminology Consistency Checking
@@ -16,7 +18,7 @@ Terminology Consistency Checking
 ## Script
 
 ```bash
-python skills/academic-writing-assistant/scripts/terminology_checker.py draft.md
+python3 -B skills/academic-writing-assistant/scripts/terminology_checker.py draft.md
 ```
 
 ## Expected Output
@@ -26,13 +28,13 @@ python skills/academic-writing-assistant/scripts/terminology_checker.py draft.md
 
 | 出现的变体 | 建议统一为 | 说明 |
 |---|---|---|
-| 目标检测（1 次）/ 对象检测（1 次） | 目标检测 | 中文视觉论文通用"目标检测"；英文对应 object detection |
-| 鲁棒性（1 次）/ 稳健性（1 次） | 鲁棒性 | 工科论文中更常见；若全文已统一用"稳健性"则保持一致 |
-| 遥感图像（1 次）/ 遥感影像（1 次） | 由你决定 | 两者均为标准表述，测绘遥感期刊多用"影像"。一致性比选哪个更重要 |
+| 目标检测（1 次）/ 对象检测（1 次） | 目标检测 | 本句似乎指同一任务；确认后可采用目标检测 / object detection |
+| 鲁棒性（1 次）/ 稳健性（1 次） | 鲁棒性 | 先确认两处是否指同一性质；若有独立定义应保留区别 |
+| 遥感图像（1 次）/ 遥感影像（1 次） | 由你决定 | 本句可作为表达候选；以作者定义与目标规范为准 |
 
 ## 需作者决定
 
-- 遥感图像 / 遥感影像：请按目标期刊的惯例选定一种，全文统一。
+- 遥感图像 / 遥感影像：若本稿中确实等义，可按已有用法选定；否则保留区别。
 
 ## 说明
 

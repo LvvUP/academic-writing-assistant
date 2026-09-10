@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "checked_on": "2026-09-10",
+  "status": "dated_official_source_snapshot",
+  "warning": "These dated notes are lookup aids, not a live policy check. Reopen the official source for the exact venue/year/track. If unavailable, report current policy NOT CHECKED.",
+  "sources": [
+    {
+      "id": "elsevier-highlights",
+      "scope": "Elsevier researcher guidance for highlights; journal exceptions apply",
+      "url": "https://www.elsevier.com/researcher/author/tools-and-resources/highlights",
+      "summary": "General guidance: 3–5 bullets (Cell Press 3–4), at most 85 characters including spaces per bullet. Consult the specific journal guide."
+    },
+    {
+      "id": "elsevier-ai",
+      "scope": "Elsevier journal manuscript preparation guidance; check journal-specific requirements",
+      "url": "https://www.elsevier.com/about/policies-and-standards/generative-ai-policies-for-journals",
+      "summary": "Distinguishes basic spelling/grammar/punctuation checks from broader AI-assisted preparation. Check disclosure scope and placement before references; describe actual use and completed human review."
+    },
+    {
+      "id": "iclr-2026-ai",
+      "scope": "ICLR 2026 author guide; not a rule for other years or venues",
+      "url": "https://iclr.cc/Conferences/2026/AuthorGuide",
+      "summary": "A significant LLM role in ideation or writing that contributes to the work calls for a usage section; the guide allows an appendix outside the page limit. Check the exact author guide for applicability."
+    },
+    {
+      "id": "neurips-2026-main-ai",
+      "scope": "NeurIPS 2026 Main Track Handbook, version 2026.3; not other tracks",
+      "url": "https://neurips.cc/Conferences/2026/MainTrackHandbook",
+      "summary": "Describe important, original or non-standard methodological LLM/agent use in the experimental setup or equivalent. Routine grammar/editing/basic coding assistance is distinguished. Authors remain responsible; review-manipulation instructions are prohibited."
+    }
+  ]
+}

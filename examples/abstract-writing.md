@@ -1,55 +1,38 @@
-# 摘要写作示例（实验结果尚未就绪）
+# 摘要写作示例：结果尚未就绪
 
-## Task
-
-Abstract Writing
-
-## Field
-
-Computer Vision
+以下为合成任务，不代表真实研究。
 
 ## User Input
 
 ```text
-请根据以下信息写一个英文摘要：
-
+请根据以下信息写一个英文摘要，仅输出正文：
 研究方向：小目标检测
 问题：小目标特征弱，容易被复杂背景干扰
 方法：加入上下文增强模块和多尺度特征融合模块
-实验：目前还没有整理最终结果
+实验：还未完成
 ```
 
 ## Expected Output
 
-```markdown
-## Abstract Draft
-
-Small object detection remains difficult because small targets carry limited
-visual evidence and are easily confounded by complex backgrounds. Existing
-detectors typically lose these cues during downsampling. This work proposes a
-detection framework combining a context enhancement module, which strengthens
-surrounding semantic information, with a multi-scale feature fusion module,
-which preserves representation across object scales. Experiments on
-[请填写数据集名称] using [请填写评价指标] show that the method achieves
-[请填写主要数值] compared with [请填写对比方法].
-
-## 写作逻辑
-
-- 问题 → 现有方法的具体不足 → 本文方法 → 实验验证 → 结论
-- 结论句按"待实验数据确定"处理，未预设结果方向
-
-## 缺失信息
-
-- 数据集名称与规模
-- 评价指标（mAP / AP50 / APs）
-- 主要定量结果
-- 对比方法
-- 是否进行显著性检验（决定能否使用 significantly）
-
-注意：以上占位符必须在投稿前替换。当前草稿中没有任何虚构数值。
+```text
+Small object detection is challenging because small objects have weak features
+and are easily affected by complex backgrounds. This study uses a context
+enhancement module and a multi-scale feature fusion module. Experimental
+evaluation remains incomplete.
 ```
 
-## 说明
+## 验收要点
 
-摘要是编造数值风险最高的场景——作者急于看到"完整"的摘要，而一个看起来合理的
-mAP 数字几乎不会被察觉。占位符使用中文方括号，无法被误认为正文。
+- 可按给定问题与模块名称起草；不推测既有方法下采样丢失特征或模块已改善语义。
+- 没有数据集、指标、数值和结果方向的编造。
+- 不用 Experiments show that 把未完成实验写成已发生结论。
+- 即使只输出正文，也保留作者已明确的未完成状态；不能仅省略结果句。
+- 若输入只说“没有提供结果材料”，只能标明材料待补，不能照搬本例的未完成断言。
+
+## 同一规则用于分析工作稿
+
+以下也是合成任务。作者给定：“综述关注远程教学中的同伴反馈，采用主题综合；文献筛选已结束，综合分析尚未完成。请只写一段中文摘要工作稿。”
+
+可输出：“本综述关注远程教学中的同伴反馈，采用主题综合方法。文献筛选已结束，综合分析尚未完成。”
+
+这里保留的是已知的分析状态，不补造综合结论，也不要求该综述开展实验。

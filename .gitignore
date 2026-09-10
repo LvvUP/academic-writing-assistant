@@ -24,3 +24,6 @@ drafts/private/
 *.key
 *.pem
 
+# Local upgrade notes, raw audits, model transcripts and temporary artifacts
+/.internal/
+/.local/
