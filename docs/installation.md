@@ -4,17 +4,16 @@
 
 新建环境建议使用仍受维护的 **Python 3.12**。3.9 是最低 API 要求和兼容性回归目标，已于 2025-10-31 结束上游维护（[Python 官方版本状态](https://devguide.python.org/versions/)）；不需要为本项目替换系统 Python。
 
-当前 0.3.0 开发版本采用 **AGPL-3.0-only**，完整包包含许可证和历史 MIT 声明，见 [许可说明](licensing.md)。安装到已有目标时会拒绝操作，不自动覆盖旧副本。
+当前 0.3.0 版本采用 **AGPL-3.0-only**，完整包包含许可证和必要声明，见 [许可说明](licensing.md)。安装到已有目标时会拒绝操作，不自动覆盖旧副本。
 
-本指南面向尚未合并的 0.3.0 候选分支 `codex/academic-writing-upgrade`，不假定默认分支已有安装工具。该分支公开推送后可按下面的命令克隆；推送前使用维护者提供的候选检出。已有副本先保留本地改动，再选择包含本安装工具的开发分支。
+0.3.0 已合并到默认分支 `main`。以下命令从默认分支取得当前版本；已有副本可先保留本地改动，再切换到 `main` 并更新。
 
 ## 个人安装
 
 取得仓库并进入它的根目录；已有副本可以直接使用：
 
 ```sh
-git clone --branch codex/academic-writing-upgrade \
-  https://github.com/LvvUP/academic-writing-assistant.git
+git clone https://github.com/LvvUP/academic-writing-assistant.git
 cd academic-writing-assistant
 ```
 
@@ -61,7 +60,7 @@ python3 -B "/path/to/academic-writing-assistant/scripts/install_skill.py" instal
   --destination "./.agents/skills/academic-writing-assistant"
 ```
 
-不需要 `sudo`。目标、源文件和它们的祖先目录若为符号链接，工具会拒绝；硬链接、设备文件和 `..` 路径也不接受。请明确选择真实目录，不通过关闭检查来绕过保护。Windows 可用已安装的 Python 启动器替换 `python3`；原生 Windows 测试状态见兼容矩阵。
+不需要 `sudo`。目标、源文件和它们的祖先目录若为符号链接或 Windows 重解析点（包括目录联接 junction），工具会拒绝；硬链接、设备文件和 `..` 路径也不接受。请明确选择真实目录，不通过关闭检查来绕过保护。Windows 可用已安装的 Python 启动器替换 `python3`；原生 Windows 测试状态见兼容矩阵。
 
 ## 调用
 

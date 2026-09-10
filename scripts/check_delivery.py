@@ -49,17 +49,47 @@ def safe_name(name):
     return bool(name) and not path.is_absolute() and str(path) == name and '..' not in path.parts and '\\' not in name and '\x00' not in name
 
 
-def regular_inside(root, path):
-    for part in (path, *path.parents):
-        if part == root:
-            break
-        if part.is_symlink():
-            return False
-    if not path.resolve().is_relative_to(root) or not path.is_file():
+def is_path_alias(info):
+    return (stat.S_ISLNK(info.st_mode)
+            or bool(getattr(info, 'st_file_attributes', 0)
+                    & getattr(stat, 'FILE_ATTRIBUTE_REPARSE_POINT', 0x400)))
+
+
+def safe_directory(path):
+    """Check the lexical root and ancestors before resolving directory aliases."""
+    try:
+        for part in (path, *path.parents):
+            info = part.lstat()
+            if is_path_alias(info) or not stat.S_ISDIR(info.st_mode):
+                return False
+        return True
+    except OSError:
         return False
-    info = path.stat()
-    # An ignored private file can otherwise be read through a public hard link.
-    return stat.S_ISREG(info.st_mode) and info.st_nlink == 1
+
+
+def regular_inside(root, path):
+    try:
+        info = path.lstat()
+        # An ignored private file can otherwise be read through a public alias.
+        return (not is_path_alias(info) and stat.S_ISREG(info.st_mode)
+                and info.st_nlink == 1 and safe_directory(path.parent)
+                and path.resolve().is_relative_to(root))
+    except OSError:
+        return False
+
+
+def read_regular(root, path):
+    if not regular_inside(root, path):
+        raise ValueError('Unsafe delivery file.')
+    before = path.lstat()
+    flags = os.O_RDONLY | getattr(os, 'O_NOFOLLOW', 0) | getattr(os, 'O_NONBLOCK', 0)
+    with os.fdopen(os.open(path, flags), 'rb') as stream:
+        opened = os.fstat(stream.fileno())
+        if (is_path_alias(opened) or not stat.S_ISREG(opened.st_mode)
+                or opened.st_nlink != 1
+                or (opened.st_dev, opened.st_ino) != (before.st_dev, before.st_ino)):
+            raise ValueError('Delivery file changed before reading.')
+        return stream.read(MAX_TEXT_BYTES + 1)
 
 
 def git(root, *args):
@@ -125,13 +155,14 @@ def inspect_file(root, report, name):
     if path.stat().st_size > MAX_TEXT_BYTES:
         issue(report, name, 'file_size_coverage')
         return
-    inspect_content(report, name, path.read_bytes())
+    inspect_content(report, name, read_regular(root, path))
 
 
 def check_repository(root, index=False):
-    root = Path(root).resolve()
-    if not root.is_dir():
+    root = Path(root).absolute()
+    if not safe_directory(root):
         raise ValueError('Selected repository does not exist.')
+    root = root.resolve()
     top = Path(os.fsdecode(git(root, 'rev-parse', '--show-toplevel')).strip()).resolve()
     if top != root:
         raise ValueError('Select the repository root, not a nested directory.')
@@ -170,16 +201,17 @@ def unique_object(pairs):
 
 
 def check_package(root):
-    root = Path(root).resolve()
-    if not root.is_dir():
+    root = Path(root).absolute()
+    if not safe_directory(root):
         raise ValueError('Selected export does not exist.')
+    root = root.resolve()
     report = new_report()
     manifest_path = root / 'package-manifest.json'
     if not regular_inside(root, manifest_path) or manifest_path.stat().st_size > MAX_TEXT_BYTES:
         issue(report, 'package-manifest.json', 'unsafe_manifest')
         return report
     try:
-        data = json.loads(manifest_path.read_bytes().decode('utf-8-sig'), object_pairs_hook=unique_object)
+        data = json.loads(read_regular(root, manifest_path).decode('utf-8-sig'), object_pairs_hook=unique_object)
     except RecursionError:
         raise ValueError('Package manifest nesting exceeds parser limits.') from None
     if (not isinstance(data, dict) or set(data) != {'format', 'skill', 'files'}
@@ -196,7 +228,7 @@ def check_package(root):
         for directory in list(directories):
             path = Path(folder) / directory
             name = path.relative_to(root).as_posix()
-            if private_path(name) or path.is_symlink():
+            if private_path(name) or not safe_directory(path):
                 issue(report, name, 'private_path' if private_path(name) else 'unsafe_file')
                 directories.remove(directory)
         for filename in files:

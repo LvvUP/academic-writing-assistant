@@ -50,7 +50,7 @@ Codex 原生发现最初使用许可与版本元数据更新前的冻结升级�
 | Windows 安装生命周期及变更保护 | **PASS（原生 CI）**：Windows Server 2022 两个 Python 版本实际执行测试、验证和导出；首次失败记录保留 |
 | Linux 文件系统生命周期 | **PASS（原生 CI）**：Ubuntu 22.04 两个 Python 版本实际执行测试、验证和导出 |
 
-首次推送 `a03ac61` 后的 [远程 CI](https://github.com/LvvUP/academic-writing-assistant/actions/runs/34498319298) 中，Ubuntu 3.9.25/x64、3.12.14/x64 与 macOS 3.12.10/arm64 各通过 519 项测试。Windows 3.9.13/x64、3.12.10/x64 各为 478 PASS、41 FAIL，后续包验证步骤被跳过。修复默认文本编码及安装器文件链接计数读取后，提交 `bc54557` 的 [原生 CI](https://github.com/LvvUP/academic-writing-assistant/actions/runs/34500982677) 在同一矩阵的 5 个组合中各为 **579 PASS、0 FAIL、0 SKIP**，仓库验证与 35 文件包导出均实际执行通过，无跳过步骤。原失败保留；这个结论针对 Python 脚本和文件系统，不代替上表的宿主模型行为。完整结果见 [验收记录](validation-0.3.0.md)。
+0.3.0 的 [原生 CI](https://github.com/LvvUP/academic-writing-assistant/actions/runs/34501901857) 在 Ubuntu 的 Python 3.9.25 / 3.12.14、Windows 的 3.9.13 / 3.12.10，以及 macOS arm64 的 3.12.10 上各通过 **579 项测试**，仓库验证与 35 文件包导出均执行通过。这一结论针对 Python 脚本和文件系统；宿主模型行为的验证范围见上表。复跑方式见 [测试指南](testing.md)，历次运行保留在 [GitHub Actions](https://github.com/LvvUP/academic-writing-assistant/actions/workflows/ci.yml)。
 
 安装器不编译或执行源包来获得正文，不运行用户宏，不使用 `shell-escape`。严格拒绝安装目录内额外文件；普通 Python 生成的缓存也会阻止更新/卸载。测试已覆盖这种拒绝与文件保留，处理方式见 [安装排障](installation.md#核查与排障)。
 

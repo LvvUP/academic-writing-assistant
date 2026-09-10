@@ -1,6 +1,6 @@
 # 许可证与第三方声明
 
-当前 **0.3.0 开发版本（Unreleased）** 将项目整体及本次新增、修改的自有内容按 **AGPL-3.0-only** 提供。根目录 [LICENSE](../LICENSE) 与[独立 Skill 包许可证](../skills/academic-writing-assistant/LICENSE) 均为 GNU AGPL 第 3 版标准全文；项目的版本选择见 [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md)。标准全文附录中的通用示例不改变本项目仅选择第 3 版的授予。
+当前 **0.3.0** 将项目整体及本次新增、修改的自有内容按 **AGPL-3.0-only** 提供。根目录 [LICENSE](../LICENSE) 与[独立 Skill 包许可证](../skills/academic-writing-assistant/LICENSE) 均为 GNU AGPL 第 3 版标准全文；项目的版本选择见 [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md)。标准全文附录中的通用示例不改变本项目仅选择第 3 版的授予。
 
 此前版本已经授予的 MIT 权利继续有效。本次保留两条历史版权、完整 MIT 许可及免责声明，不追溯撤销旧许可，不改写 Git 历史。组合在本版本中的历史 MIT 材料继续保留其声明；本次新增内容不因此获得 MIT 授权。
 
@@ -22,12 +22,12 @@
 
 | 组件 | 核对版本 | 上游许可与依据 |
 |---|---|---|
-| pytest | 8.4.2 | [MIT](https://github.com/pytest-dev/pytest/blob/8.4.2/LICENSE) |
+| pytest | 8.4.2（Python 3.9）/ 9.0.3（Python 3.10+） | [MIT（8.4.2）](https://github.com/pytest-dev/pytest/blob/8.4.2/LICENSE) / [MIT（9.0.3）](https://github.com/pytest-dev/pytest/blob/9.0.3/LICENSE) |
 | PyYAML | 6.0.3 | [MIT](https://github.com/yaml/pyyaml/blob/6.0.3/LICENSE) |
 | iniconfig | 2.1.0 | [MIT](https://github.com/pytest-dev/iniconfig/blob/v2.1.0/LICENSE) |
 | packaging | 25.0 | [Apache-2.0 OR BSD-2-Clause](https://github.com/pypa/packaging/blob/25.0/LICENSE)，可任选其一 |
 | pluggy | 1.6.0 | [MIT](https://github.com/pytest-dev/pluggy/blob/1.6.0/LICENSE) |
-| Pygments | 2.19.2 | [BSD-2-Clause](https://github.com/pygments/pygments/blob/2.19.2/LICENSE) |
+| Pygments | 2.20.0 | [BSD-2-Clause](https://github.com/pygments/pygments/blob/2.20.0/LICENSE) |
 | exceptiongroup | 1.3.0；Python <3.11 | [MIT，另含受 PSF-2.0 许可的 CPython 部分](https://github.com/agronholm/exceptiongroup/blob/1.3.0/LICENSE) |
 | tomli | 2.2.1；Python <3.11 | [MIT](https://github.com/hukkin/tomli/blob/2.2.1/LICENSE) |
 | typing_extensions | 4.15.0；Python <3.11 | [PSF-2.0 及随附历史声明](https://github.com/python/typing_extensions/blob/4.15.0/LICENSE) |
@@ -42,6 +42,6 @@
 
 ## English summary
 
-The unreleased 0.3.0 project as a whole and its new changes use **AGPL-3.0-only**. The root and standalone package contain the unmodified GNU license text. Historical MIT notices and grants remain valid; this migration does not revoke earlier permissions or rewrite history. See [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md).
+The 0.3.0 project as a whole and its new changes use **AGPL-3.0-only**. The root and standalone package contain the unmodified GNU license text. Historical MIT notices and grants remain valid; this migration does not revoke earlier permissions or rewrite history. See [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md).
 
 Commercial use is allowed subject to applicable obligations, including corresponding-source requirements for covered distribution and the section 13 offer when users interact remotely with a modified program. Ordinary manuscript output is not automatically covered, and merely invoking this Skill does not automatically license an external model or entire system under AGPL. The separately installed dependencies above retain their own licenses and are not bundled into the minimal Skill package.
