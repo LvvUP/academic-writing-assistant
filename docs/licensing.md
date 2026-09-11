@@ -25,7 +25,7 @@
 | pytest | 8.4.2（Python 3.9）/ 9.0.3（Python 3.10+） | [MIT（8.4.2）](https://github.com/pytest-dev/pytest/blob/8.4.2/LICENSE) / [MIT（9.0.3）](https://github.com/pytest-dev/pytest/blob/9.0.3/LICENSE) |
 | PyYAML | 6.0.3 | [MIT](https://github.com/yaml/pyyaml/blob/6.0.3/LICENSE) |
 | iniconfig | 2.1.0 | [MIT](https://github.com/pytest-dev/iniconfig/blob/v2.1.0/LICENSE) |
-| packaging | 25.0 | [Apache-2.0 OR BSD-2-Clause](https://github.com/pypa/packaging/blob/25.0/LICENSE)，可任选其一 |
+| packaging | 26.3 | [Apache-2.0 OR BSD-2-Clause](https://github.com/pypa/packaging/blob/26.3/LICENSE)，可任选其一 |
 | pluggy | 1.6.0 | [MIT](https://github.com/pytest-dev/pluggy/blob/1.6.0/LICENSE) |
 | Pygments | 2.20.0 | [BSD-2-Clause](https://github.com/pygments/pygments/blob/2.20.0/LICENSE) |
 | exceptiongroup | 1.3.0；Python <3.11 | [MIT，另含受 PSF-2.0 许可的 CPython 部分](https://github.com/agronholm/exceptiongroup/blob/1.3.0/LICENSE) |
