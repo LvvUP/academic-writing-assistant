@@ -32,20 +32,28 @@ class InstallError(Exception):
     """An operation was refused or could not safely complete."""
 
 
+def is_path_alias(info):
+    # Windows junctions keep S_IFDIR, not S_IFLNK. The attribute is available
+    # on all supported Windows Python versions, including Python 3.9.
+    return (stat.S_ISLNK(info.st_mode)
+            or bool(getattr(info, 'st_file_attributes', 0)
+                    & getattr(stat, 'FILE_ATTRIBUTE_REPARSE_POINT', 0x400)))
+
+
 def safe_path(value):
-    """Keep lexical traversal visible, and reject existing symlink ancestors."""
+    """Keep lexical traversal visible; reject symlinks and reparse points."""
     original = Path(value).expanduser()
     if '..' in original.parts:
         raise InstallError('Paths containing .. are refused; provide a direct path.')
     path = Path(os.path.abspath(str(original)))
     for part in [*reversed(path.parents), path]:
         try:
-            mode = part.lstat().st_mode
+            info = part.lstat()
         except FileNotFoundError:
             continue
-        if stat.S_ISLNK(mode):
-            raise InstallError('Symlink path refused: ' + str(part))
-        if part != path and not stat.S_ISDIR(mode):
+        if is_path_alias(info):
+            raise InstallError('Symlink or reparse-point path refused: ' + str(part))
+        if part != path and not stat.S_ISDIR(info.st_mode):
             raise InstallError('A path ancestor is not a directory: ' + str(part))
     return path
 
@@ -73,14 +81,16 @@ def read_regular(path, limit=MAX_FILE_BYTES):
         info = path.lstat()
     except FileNotFoundError:
         raise InstallError('Required file is missing: ' + str(path)) from None
-    if not stat.S_ISREG(info.st_mode) or info.st_nlink != 1:
+    if is_path_alias(info) or not stat.S_ISREG(info.st_mode) or info.st_nlink != 1:
         raise InstallError('Only regular files without hard links are accepted: ' + str(path))
     if info.st_size > limit:
         raise InstallError('File exceeds the local size limit: ' + str(path))
     flags = os.O_RDONLY | getattr(os, 'O_NOFOLLOW', 0) | getattr(os, 'O_NONBLOCK', 0)
     with os.fdopen(os.open(path, flags), 'rb') as handle:
         opened = os.fstat(handle.fileno())
-        if (opened.st_dev, opened.st_ino) != (info.st_dev, info.st_ino):
+        if (is_path_alias(opened) or not stat.S_ISREG(opened.st_mode)
+                or opened.st_nlink != 1
+                or (opened.st_dev, opened.st_ino) != (info.st_dev, info.st_ino)):
             raise InstallError('File changed while being opened: ' + str(path))
         data = handle.read(limit + 1)
     if len(data) > limit or len(data) != info.st_size:
@@ -184,8 +194,8 @@ def inventory(root, max_entries):
                 # Windows DirEntry.stat caches zero link/inode/device fields.
                 # Fetch full, non-following metadata before enforcing nlink == 1.
                 info = path.lstat()
-                if stat.S_ISLNK(info.st_mode):
-                    raise InstallError('Installation contains a symlink: ' + relative)
+                if is_path_alias(info):
+                    raise InstallError('Installation contains a symlink or reparse point: ' + relative)
                 if stat.S_ISDIR(info.st_mode):
                     directories.add(relative)
                     pending.append(path)
@@ -445,7 +455,7 @@ def main(argv=None):
         parser.error('export requires an explicit --destination')
     try:
         target = select_destination(args.destination, args.host, args.home_root)
-        source = Path(__file__).resolve().parents[1] / 'skills' / SKILL_NAME
+        source = safe_path(Path(__file__).absolute()).parents[1] / 'skills' / SKILL_NAME
         if args.action == 'uninstall':
             result = uninstall(target)
         else:

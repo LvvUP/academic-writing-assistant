@@ -36,10 +36,28 @@ PUBLIC_DIRS = {'skills', 'assets', 'docs', 'examples', 'evals', 'tests', 'script
 
 
 
+def is_path_alias(info):
+    return (stat.S_ISLNK(info.st_mode)
+            or bool(getattr(info, 'st_file_attributes', 0)
+                    & getattr(stat, 'FILE_ATTRIBUTE_REPARSE_POINT', 0x400)))
+
+
 def safe_ancestors(path):
     """Reject directory aliases before any file contents are opened."""
     try:
-        return all(stat.S_ISDIR(parent.lstat().st_mode) for parent in path.absolute().parents)
+        for parent in path.absolute().parents:
+            info = parent.lstat()
+            if is_path_alias(info) or not stat.S_ISDIR(info.st_mode):
+                return False
+        return True
+    except OSError:
+        return False
+
+
+def safe_directory(path):
+    try:
+        info = path.lstat()
+        return not is_path_alias(info) and stat.S_ISDIR(info.st_mode) and safe_ancestors(path)
     except OSError:
         return False
 
@@ -48,7 +66,7 @@ def safe_public_file(path, root):
     """A public filename must identify one regular inode inside a real root."""
     try:
         info = path.lstat()
-        return (stat.S_ISREG(info.st_mode) and info.st_nlink == 1
+        return (not is_path_alias(info) and stat.S_ISREG(info.st_mode) and info.st_nlink == 1
                 and safe_ancestors(path)
                 and path.resolve().is_relative_to(root.resolve()))
     except (OSError, RuntimeError):
@@ -62,7 +80,7 @@ def read_public_text(path, root):
     flags = os.O_RDONLY | getattr(os, 'O_NOFOLLOW', 0) | getattr(os, 'O_NONBLOCK', 0)
     with os.fdopen(os.open(path, flags), 'rb') as stream:
         opened = os.fstat(stream.fileno())
-        if (not stat.S_ISREG(opened.st_mode) or opened.st_nlink != 1
+        if (is_path_alias(opened) or not stat.S_ISREG(opened.st_mode) or opened.st_nlink != 1
                 or (opened.st_dev, opened.st_ino) != (before.st_dev, before.st_ino)):
             raise ValueError('Public file changed before reading; retry after inspecting it.')
         return stream.read().decode('utf-8-sig')
@@ -123,6 +141,9 @@ def validate_frontmatter(text, directory_name):
 
 def public_files(root):
     """Do not open ignored/private content just to lint public documentation."""
+    root = Path(root).absolute()
+    if not safe_directory(root):
+        return []
     root = root.resolve()
     paths = []
     if (root / '.git').exists():
@@ -132,12 +153,16 @@ def public_files(root):
     else:
         # Exported archives have no Git index. Restrict traversal to public trees.
         for path in root.iterdir() if root.is_dir() else []:
-            if path.is_symlink():
+            if is_path_alias(path.lstat()):
                 continue
             if path.is_file() and not path.name.startswith('.env'):
                 paths.append(path)
-            elif path.is_dir() and path.name in PUBLIC_DIRS:
-                paths.extend(p for p in path.rglob('*') if p.is_file())
+            elif safe_directory(path) and path.name in PUBLIC_DIRS:
+                for folder, directories, files in os.walk(path, followlinks=False):
+                    directories[:] = [name for name in directories
+                                      if name not in PRIVATE_PARTS and not name.startswith('.env')
+                                      and safe_directory(Path(folder) / name)]
+                    paths.extend(Path(folder) / name for name in files)
     return sorted(set(p for p in paths if p.is_file() and not p.is_symlink()
                       and not any(part in PRIVATE_PARTS for part in p.relative_to(root).parts)
                       and not any(part.startswith('.env') for part in p.relative_to(root).parts)))
@@ -372,7 +397,7 @@ def markdown_resource_links(text):
 
 def check(root, package=False):
     root = Path(root).absolute()
-    if not root.is_dir() or root.is_symlink() or not safe_ancestors(root):
+    if not safe_directory(root):
         return ['Validation root is missing, not a directory, or has a linked ancestor.']
     root = root.resolve()
     skill = root if package else root / 'skills/academic-writing-assistant'

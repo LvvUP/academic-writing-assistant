@@ -46,11 +46,11 @@ def test_tracked_private_paths_rejected_without_reading(guard, repo, monkeypatch
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text('Synthetic private fixture.', encoding='utf-8')
     subprocess.run(['git', '-C', str(repo), 'add', '-f', '--', name], check=True)
-    original = Path.read_bytes
-    def observe(path):
-        assert path != target, 'Private contents should not be opened.'
-        return original(path)
-    monkeypatch.setattr(Path, 'read_bytes', observe)
+    original = os.open
+    def observe(path, *args, **kwargs):
+        assert Path(path) != target, 'Private contents should not be opened.'
+        return original(path, *args, **kwargs)
+    monkeypatch.setattr(os, 'open', observe)
     report = guard.check_repository(repo)
     assert report['status'] == 'FAIL'
     assert any(item['path'] == name for item in report['issues'])
@@ -59,11 +59,11 @@ def test_tracked_private_paths_rejected_without_reading(guard, repo, monkeypatch
 def test_ignored_private_contents_never_opened(guard, repo, monkeypatch):
     private = repo / 'ignored-note.md'
     private.write_text('Synthetic private data.', encoding='utf-8')
-    original = Path.read_bytes
-    def observe(path):
-        assert path != private
-        return original(path)
-    monkeypatch.setattr(Path, 'read_bytes', observe)
+    original = os.open
+    def observe(path, *args, **kwargs):
+        assert Path(path) != private
+        return original(path, *args, **kwargs)
+    monkeypatch.setattr(os, 'open', observe)
     assert guard.check_repository(repo)['status'] == 'PASS'
 
 
@@ -205,11 +205,11 @@ def test_hardlink_alias_is_rejected_before_content_read(guard, repo, monkeypatch
         }), encoding='utf-8')
     alias = root / ('SKILL.md' if package_mode else 'docs/alias.md')
     os.link(target, alias)
-    original = Path.read_bytes
-    def observe(path):
-        assert path not in (target, alias), 'Private inode aliases must not be opened.'
-        return original(path)
-    monkeypatch.setattr(Path, 'read_bytes', observe)
+    original = os.open
+    def observe(path, *args, **kwargs):
+        assert Path(path) not in (target, alias), 'Private inode aliases must not be opened.'
+        return original(path, *args, **kwargs)
+    monkeypatch.setattr(os, 'open', observe)
     report = guard.check_package(root) if package_mode else guard.check_repository(root)
     assert report['status'] == 'FAIL'
     assert any(x['rule'] == 'unsafe_file' for x in report['issues'])
