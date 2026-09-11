@@ -4,7 +4,7 @@
 
 稿件脚本只需 Python 标准库。开发测试使用 [requirements-dev.txt](../requirements-dev.txt) 中固定版本的 pytest、PyYAML 及依赖；Python 3.9 使用条件依赖，Windows 使用 colorama。建议在自己的虚拟环境安装，避免更改全局环境。
 
-Python 3.10+ 使用 pytest 9.0.3；Python 3.9 保留其最后支持的 8.4.2。仓库根目录的 `pytest.ini` 确保从根目录或 `tests/` 运行时都加载 `conftest.py`，为默认测试调用建立独占临时目录，并在结束时清理，避开旧版 pytest 的可预测共享目录问题（[CVE-2025-71176 上游修复](https://github.com/pytest-dev/pytest/pull/14343)）。这是本仓库测试的缓解措施，未修补第三方 pytest 包本身；其他项目中的旧版 pytest 不受此保护。显式使用 `--basetemp` 时请指定可安全清空的专用目录。Pygments 已更新到包含 [ADL 正则修复](https://github.com/pygments/pygments/pull/3064) 的 2.20.0。
+Python 3.10+ 使用 pytest 9.1.1；Python 3.9 保留其最后支持的 8.4.2。仓库根目录的 `pytest.ini` 确保从根目录或 `tests/` 运行时都加载 `conftest.py`，为默认测试调用建立独占临时目录，并在结束时清理，避开旧版 pytest 的可预测共享目录问题（[CVE-2025-71176 上游修复](https://github.com/pytest-dev/pytest/pull/14343)）。这是本仓库测试的缓解措施，未修补第三方 pytest 包本身；其他项目中的旧版 pytest 不受此保护。显式使用 `--basetemp` 时请指定可安全清空的专用目录。Pygments 已更新到包含 [ADL 正则修复](https://github.com/pygments/pygments/pull/3064) 的 2.20.0。
 
 ```sh
 python3 -m venv .internal/dev-venv

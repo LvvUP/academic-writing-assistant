@@ -3,7 +3,7 @@
 # pytest 9 fixes CVE-2025-71176 but requires Python 3.10+.
 # Python 3.9 tests use the private temporary directory in conftest.py.
 pytest==8.4.2; python_version < "3.10"
-pytest==9.0.3; python_version >= "3.10"
+pytest==9.1.1; python_version >= "3.10"
 PyYAML==6.0.3
 iniconfig==2.1.0
 packaging==26.3
