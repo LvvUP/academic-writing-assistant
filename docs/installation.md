@@ -96,6 +96,7 @@ Windows 可用 `python` 或 `py -3` 代替 `python3`，`--home-root` 使用 `%US
 - **出现两份同名 Skill：** 有些 Agent 会读取多个目录，见 [避免重复安装](compatibility.md#避免重复安装)。
 - **安装脚本提示目标已存在：** 说明该位置已有副本。请先确认它的来源并自行备份，脚本不会自动覆盖。
 - **安装脚本提示有额外文件或 `__pycache__`：** 运行脚本时 Python 可能生成缓存。确认后把这些文件移出 Skill 目录再重试；日常运行脚本时加 `-B` 可避免生成缓存。
+- **macOS 提示 `Symlink or reparse-point path refused: /tmp`：** macOS 的 `/tmp`、`/var` 本身是符号链接，安装脚本出于安全考虑会拒绝。请把仓库克隆到用户主目录下的普通文件夹再运行。
 - **没有 Python：** 不影响写作功能，只是无法运行可选的机械核查脚本。
 
 ## English quick start
