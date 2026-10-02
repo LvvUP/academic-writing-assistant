@@ -1,124 +1,206 @@
-# Field Adapter
+# Field Adapter / 学科适配
 
-Use these field notes as possible review questions, not claims about what every reviewer demands. Apply only what fits the research design and supplied material; a concern is a prompt to inspect evidence, not a reason to invent a limitation or predict acceptance.
+本文件是各学科的**审读提示**，不是对审稿人要求的断言。只采用与当前研究设计和已给材料相符的条目；提示的作用是“去核对证据”，而不是替作者添加局限、补写方法或预测录用。
 
-Use the entries below to know what to watch for and what to flag. Never introduce a field-specific claim the user's text does not support — knowing what reviewers want is not permission to assert it on the author's behalf.
+知道某领域常被追问什么，不等于可以替作者在正文中声称已经做到。领域常识带来的新限制、新机制或新条件同样属于新增内容，按 L3 作为建议列出。
 
-## Contents
+## 目录
 
-- [Working without a listed field](#working-without-a-listed-field)
-- [Computer vision](#computer-vision)
-- [Machine learning and AI](#machine-learning-and-ai)
-- [Natural language processing and LLMs](#natural-language-processing-and-llms)
-- [Medical imaging and clinical research](#medical-imaging-and-clinical-research)
-- [Remote sensing](#remote-sensing)
-- [Robotics](#robotics)
-- [Data mining and recommendation](#data-mining-and-recommendation)
-- [Bioinformatics](#bioinformatics)
-- [Materials science and chemistry](#materials-science-and-chemistry)
-- [Social sciences, education, management](#social-sciences-education-management)
+- [通用流程：任何学科都适用](#通用流程任何学科都适用)
+- [学科速查表](#学科速查表)
+- [人文学科（文学、历史、哲学、语言学、艺术）](#人文学科)
+- [法学](#法学)
+- [经济学与管理学](#经济学与管理学)
+- [社会科学（社会学、政治学、传播学、公共管理）](#社会科学)
+- [教育学与心理学](#教育学与心理学)
+- [医学、护理、药学与公共卫生](#医学护理药学与公共卫生)
+- [生命科学与农学](#生命科学与农学)
+- [物理、化学与材料](#物理化学与材料)
+- [数学与统计](#数学与统计)
+- [地球与环境科学（含地理、遥感、生态）](#地球与环境科学)
+- [工程技术](#工程技术)
+- [计算机与人工智能](#计算机与人工智能)
 
-## Working without a listed field
+## 通用流程：任何学科都适用
 
-The list is a set of presets, not a boundary. For any unlisted field, the same procedure works:
+列表只是预设，不是边界。未列出的学科、交叉学科或作者自定义范式都按同一流程处理：
 
-1. Prefer the user's stated field. Otherwise infer from terminology and say so in one line.
-2. Select relevant checks from the research design and material; ask only when a missing convention would materially change the task.
-3. Keep claims bounded to the evidence in front of you.
-4. Use the author's definitions. Confirm two terms denote the same concept before suggesting normalization; frequency does not establish equivalence.
+1. **识别学科与研究类型。** 用户说明优先；否则根据术语推断，并用一句话说明推断。学科标签不唯一决定写法，研究类型见 [research-types.md](research-types.md)。
+2. **结构跟随学科惯例和作者模板。** 不把 IMRaD（引言—方法—结果—讨论）强加给人文、法学、理论或设计类论文。
+3. **识别证据形式。** 实验数据、统计推断、访谈与田野材料、史料与文本、法条与判例、数学证明、设计原型、案例材料各有不同的支持方式；主张强度跟随实际证据形式。
+4. **保留原有引用体系。** 顺序编码、作者—年份、脚注/尾注都可能是正确选择；格式转换只在授权时进行，见 [citation-formats.md](citation-formats.md)。
+5. **术语以作者定义为准。** 跨学科同形词常不同义（如“信度/可靠性”“试验/实验”“显著/明显”）；确认同一概念后才统一。
+6. **只在会改变结果时提问。** 缺少某学科惯例信息时，先继续可以保真的部分。
 
-Follow supplied conventions rather than imposing empirical IMRaD; relevant distinctions include: pure mathematics (proof structure), law (citation systems), humanities (argumentative rather than IMRaD structure), qualitative social science (positionality, reflexivity).
+## 学科速查表
 
-## Computer vision
+| 学科大类 | 常见组织方式 | 主要证据形式 | 需特别留意的承重语言 | 常见引用体系（以目标期刊为准） |
+|---|---|---|---|---|
+| 人文学科 | 问题—论证—结论，章节按论点展开 | 史料、文本、文献、田野记录 | 阐释 vs 定论、“首次发现”、动机归因 | 脚注/尾注、Chicago、MLA、GB/T 7714 |
+| 法学 | 问题—规范分析—比较/实证—对策 | 法条、判例、立法资料、实证数据 | 应当/可以/不得/必须、应然 vs 实然 | 脚注为主 |
+| 经济学与管理学 | 引言—文献与假设—数据与识别—结果—稳健性—结论 | 观测数据、准实验、案例 | 因果 vs 相关、显著性、政策含义 | 作者—年份为主 |
+| 社会科学 | 理论框架—假设或研究问题—方法—发现—讨论 | 调查、访谈、文本、观察 | 推广范围、因果表述、代表性 | 作者—年份（APA 等） |
+| 教育学与心理学 | 引言—方法（被试、工具、程序）—结果—讨论 | 实验、准实验、量表、课堂观察 | 效应量、因果、“显著提高” | APA 为主 |
+| 医学与公共卫生 | IMRaD、结构化摘要 | 临床试验、队列、病例、影像 | 关联 vs 因果、“临床适用”、外推 | 顺序编码（Vancouver/AMA 等） |
+| 生命科学与农学 | IMRaD | 实验、田间试验、组学数据 | 机制推断、重复次数、物种范围 | 作者—年份或顺序编码 |
+| 物理、化学与材料 | IMRaD 或理论—计算—实验 | 实验测量、表征、计算模拟 | 机理、性能外推、不确定度 | 顺序编码为主 |
+| 数学与统计 | 定义—引理—定理—证明 | 证明、模拟 | 条件、存在性 vs 唯一性、“显然” | 顺序编码或作者—年份 |
+| 地球与环境科学 | IMRaD | 观测、遥感、模式模拟、情景 | 时空范围、预测 vs 情景预估 | 作者—年份为主 |
+| 工程技术 | 问题—方法/设计—试验或仿真验证—结论 | 试验、仿真、原型、规范 | “满足要求”、安全、适用条件 | 顺序编码为主 |
+| 计算机与人工智能 | 引言—相关工作—方法—实验—结论 | 基准测试、消融、用户研究 | SOTA、泛化、鲁棒性、实时性 | 顺序编码为主 |
 
-**Possible review questions:** unfair comparison (different backbone, different training budget, different input resolution), benchmark overfitting, missing ablations, claims of robustness with no corruption or distribution-shift testing, cherry-picked qualitative figures.
+## 人文学科
 
-**Watch for:** "state-of-the-art" without naming the comparison set or date; robustness claimed from clean-benchmark results; efficiency claims with no FLOPs, parameters, or measured latency; ablations that change two things at once.
+**常见审读问题：** 论点是否清楚、是否由材料支撑；史料来源与版本是否可靠；是否回应了既有研究；概念界定是否稳定；是否以今律古或过度阐释。
 
-**Terminology:** feature extraction, feature fusion, object detection, semantic/instance segmentation, attention mechanism, backbone, ablation study, zero-shot, fine-tuning.
+**写作中留意：**
 
-## Machine learning and AI
+- 人文论文的证据是文本、史料与论证本身。不要求实验、样本量或统计检验，也不机械套用“研究方法”章节。
+- 引文（含古籍、外文、档案）逐字保留，标点、异体字、版本信息和页码属于锁定区；作者授权节译、意译时说明。
+- 阐释、推测与定论分开：“或可理解为”“似乎反映出”是有意义的限定，不能顺手改成“证明了”。
+- 不为历史人物、作者或群体补写未经材料支持的动机、心理与因果。
+- 人名、地名、年号、朝代纪年与公元纪年的换算、译名与转写体系（如汉语拼音、威妥玛拼音）按作者选择保留；疑似错误标疑问。
+- 哲学与理论概念的译名常有学派差异，以作者采用的译法为准，可在首次出现时括注原文。
 
-**Possible review questions:** unstated assumptions, generalization claims from a single dataset, missing seed variance and error bars, tuning the proposed method harder than the baselines, "theoretical justification" that does not connect to the algorithm actually implemented.
+## 法学
 
-**Watch for:** "prove" applied to empirical results; "converges" without conditions; a statistical significance claim without an associated analysis in the available material; conflating theoretical assumptions with experimental conditions; claims of general-purpose capability from narrow benchmarks.
+**常见审读问题：** 法条援引是否准确且为现行有效版本；规范分析与价值判断是否区分；比较法材料是否可靠；对策建议是否有论证支持。
 
-**Terminology:** objective function, generalization, regularization, convergence, distribution shift, sample complexity, inductive bias.
+**写作中留意：**
 
-## Natural language processing and LLMs
+- 法律名称、条、款、项、目、修正年份、司法解释文号、案号与判决要点属于锁定区，不凭记忆补写或“更正”。
+- “应当、可以、不得、必须、视为、推定”具有不同的规范效力，属于承重语言；英译时 shall / may / must not / is deemed / is presumed 等不能随意互换。
+- 区分应然（规范主张）与实然（现状描述、实证发现）；不把作者的立法建议写成现行规定。
+- 法学写作常用脚注引证，保留作者的引证体系与说明性注释。
+- 不同法域的概念（如“物权”与 property right）未必对应，翻译时保留原文或加注，不强行等同。
 
-**Possible review questions:** data contamination (test data in pretraining), prompt sensitivity presented as model capability, single-run results from a stochastic system, evaluation by an LLM judge without human validation, unfair inference-budget comparisons.
+## 经济学与管理学
 
-**Watch for:** claims of "understanding" or "reasoning" where the evidence is task performance; benchmark scores without decoding parameters, prompt, and version; missing contamination analysis for recent benchmarks; unstated model version — behavior shifts across releases, so a claim about "GPT-4" without a date is unreproducible.
+**常见审读问题：** 识别策略与内生性；样本选择与数据来源；稳健性与异质性检验；机制检验是否充分；统计显著与经济意义是否区分；管理启示是否超出样本范围。
 
-**Terminology:** in-context learning, chain-of-thought, instruction tuning, RLHF, retrieval-augmented generation, hallucination, contamination, prompt sensitivity.
+**写作中留意：**
 
-## Medical imaging and clinical research
+- 回归结果默认支持“相关”或“在识别假设下的因果”；“导致、促进、抑制”的强度应与识别策略对应。不替作者补写工具变量、双重差分、断点回归等未提供的设计。
+- 系数、标准误、显著性星号、样本量、固定效应与聚类口径属于锁定区；“在 1% 水平上显著”不能改成“显著且稳健”。
+- 政策建议与管理启示只能从已报告结果推出，不扩大到其他地区、行业或时期。
+- 案例研究（单案例或多案例）的结论是分析性推广，不写成统计意义上的普遍规律。
+- 中文经济学写作中“稳健性检验”是通行说法，不要与计算机领域的“鲁棒性”混用为两个概念，但也不要擅自统一作者已明确区分的用法。
 
-The most consequential field for claim discipline. Overclaiming is not just a reviewing problem here — it can influence clinical practice.
+## 社会科学
 
-**Possible review questions:** single-center data with no external validation, patient-level versus image-level data leakage, missing demographic breakdown, no comparison against clinician performance, class imbalance masked by accuracy, absent ethics statement.
+**常见审读问题：** 观测数据的因果解释；构念效度；样本代表性与招募方式；共同方法偏差；单一国家/文化背景的推广；定性材料的透明度。
 
-**Consider when relevant to the actual claim and study design:**
+**写作中留意：**
 
-- Diagnostic or prognostic claims whose stated scope exceeds the provided validation
-- "clinically applicable," "can assist diagnosis," "reduces workload" without a study measuring it
-- Any suggestion of replacing or matching clinicians without a reader study
-- Internal validation reported as if it were external
-- Correlation phrased as causation — especially frequent in Chinese-to-English translation of 导致
-- Missing ethics approval, consent, or data-governance statements
+- 没有说明识别假设和对应证据时，“影响、导致、塑造”等因果表述需要核对。
+- 样本描述缺少人口学信息或招募方式时，提示补充，不自行编写。
+- 只报告 p 值、缺少效应量时可以提示，不代为计算或补写。
+- 理论框架、假设与讨论、局限的组织方式常与理工科 IMRaD 不同，跟随作者结构。
+- 定性研究的编码、饱和、成员核查、伦理审查等只能写作者实际完成的部分，见 [research-types.md](research-types.md)。
 
-**Terminology:** lesion detection, organ segmentation, external validation, inter-observer variability, sensitivity/specificity, DSC, AUC, retrospective/prospective, ground truth (prefer "reference standard" in clinical venues).
+## 教育学与心理学
 
-## Remote sensing
+**常见审读问题：** 被试来源与分组方式；测量工具的信效度；实验或准实验设计的对照条件；效应量与置信区间；预注册；横断面数据的因果解释。
 
-**Possible review questions:** geographic generalization from one region, temporal generalization from one season, sensor transfer, spatial autocorrelation between train and test tiles, class imbalance across land-cover types.
+**写作中留意：**
 
-**Watch for:** performance claims that do not name the region, sensor, resolution, and acquisition period; "applicable to remote sensing images" as an unbounded claim; missing spatial resolution or band information; train/test splits that leak through spatially adjacent tiles — a common and often unnoticed flaw.
+- “显著提高了学生的……”需要与实际检验、对照组和测量时点对应；单组前后测、无对照设计不宜直接写成干预效果。
+- 量表名称、版本、条目数、计分方式、Cronbach's α 等属于锁定区。
+- 心理测量中的“信度（reliability）”“效度（validity）”是专门概念，不要与日常意义的“可靠性”“有效性”随意互换。
+- “被试”“参与者”“研究对象”的选用可跟随作者或目标期刊（不少期刊倾向 participants），不擅自全文替换。
+- 中介、调节效应的表述与所用检验方法对应；横断面中介分析不等于时间先后上的因果链。
 
-**Terminology:** remote sensing image (统一 vs 遥感影像), change detection, spatial/spectral resolution, multi-source fusion, land cover classification, domain adaptation, ground sample distance.
+## 医学、护理、药学与公共卫生
 
-## Robotics
+改写主张时后果最重的领域之一：过度表述不只影响审稿，还可能影响临床实践与公众健康。
 
-**Possible review questions:** simulation-only results presented as deployable, missing real-time and latency measurement, safety claims without failure analysis, small numbers of physical trials, unreported hardware.
+**常见审读问题：** 研究设计（随机对照试验、队列、病例对照、横断面、病例报告）与结论强度是否匹配；单中心与外部验证；混杂因素控制；样本量；结局指标定义；伦理审批、知情同意和临床试验注册。
 
-**Watch for:** sim-to-real gap unacknowledged; "real-time" without a latency figure and a requirement to compare it against; success rates with no trial count; safety claims from limited testing.
+**写作中留意：**
 
-**Terminology:** perception, SLAM, motion planning, trajectory optimization, sim-to-real transfer, sensor fusion, control frequency, success rate.
+- 观察性研究的“关联”不能改成“导致”或“降低风险”，尤其在中译英处理“导致、引起”时。
+- “可用于临床”“可辅助诊断”“减轻工作量”等需要有对应研究支持；没有读者研究或前瞻性验证时不写“可替代医生”。
+- 内部验证不能表述为外部验证；回顾性研究不写成前瞻性研究。
+- 伦理批号、试验注册号、剂量、给药途径、HR/OR/RR 与 95% CI 属于锁定区。
+- 区分发病率与患病率、病死率与死亡率、敏感度与特异度等不同概念。
+- 中文医学期刊常用“差异有统计学意义”描述统计检验结果，并与“差异明显/显著”的日常含义区分；具体以目标期刊要求为准。
+- 如作者或期刊要求，可对照相应报告规范（如 CONSORT、STROBE、STARD、PRISMA、CARE、TRIPOD）提示可能遗漏的报告项；未见某项内容不等于作者没有做。
 
-## Data mining and recommendation
+**医学影像补充：** 患者级与图像级数据泄漏、人口学分层、与临床医生表现的比较、类别不平衡被准确率掩盖。临床语境中“ground truth”常改称 reference standard，但这是作者与期刊的选择。术语：病灶检测、器官分割、外部验证、观察者间差异、DSC、AUC。
 
-**Possible review questions:** offline metrics presented as business impact, causal language for associational findings, scalability claimed but not measured, popularity bias, temporal leakage in splits.
+## 生命科学与农学
 
-**Watch for:** "increases user engagement" from an offline evaluation; "leads to" for correlational results; scalability claims without complexity analysis or a runtime curve; random splits where a temporal split is required.
+**常见审读问题：** 生物学重复与技术重复的次数；对照设置；统计方法与多重比较校正；从相关性组学数据推断机制；田间试验的年份、地点与环境条件。
 
-**Terminology:** pattern mining, anomaly detection, graph representation learning, cold start, implicit feedback, CTR, scalability, sparsity.
+**写作中留意：**
 
-## Bioinformatics
+- 物种拉丁学名、品种、菌株、细胞系、基因与蛋白名称（及其斜体、大小写规范）、试剂货号属于锁定区。
+- “调控、介导、驱动”等机制性表述需要功能实验支持；仅有表达相关性时保留“相关”。
+- 温室或单一年份田间试验结果不外推到所有环境与年份。
 
-**Possible review questions:** multiple-testing correction, batch effects, small validation cohorts, biological interpretation unsupported by experiment, cross-validation without an independent cohort.
+**生物信息学补充：** FDR 等多重检验校正方法须写明；批次效应处理；独立验证队列；单一队列的生物标志物主张。术语：差异表达、批次效应、通路富集、多组学整合、单细胞。
 
-**Watch for:** "significant" without a correction method named; biomarker claims from a single cohort; mechanistic claims from correlational omics; missing batch-effect handling; sample sizes too small for the claims made.
+## 物理、化学与材料
 
-**Terminology:** differential expression, batch effect, FDR correction, validation cohort, pathway enrichment, multi-omics integration, single-cell.
+**常见审读问题：** 测量不确定度与有效数字；合成或制备条件是否完整；表征手段能否支持结构结论；机理是否有直接证据；性能是否超出测试条件外推。
 
-## Materials science and chemistry
+**写作中留意：**
 
-**Possible review questions:** incomplete synthesis conditions, characterization insufficient to support a structural claim, mechanisms proposed without direct evidence, no reproducibility information, performance outside tested conditions.
+- 数值精度、有效数字、单位、误差范围与测试条件属于锁定区；不自动四舍五入或换算单位。
+- 由间接表征推出的机理保留“可能、推测”；不改成“证实”。
+- 化合物命名、晶体结构、空间群、化学式上下标保持原样。
+- 理论计算与实验结果分别表述；计算预测不写成实验观测。
 
-**Watch for:** mechanism claims from indirect characterization; performance extrapolated beyond the tested temperature, pressure, or concentration range; missing synthesis parameters that make the work unreproducible; single-sample results with no repeats.
+术语：构效关系、表征、微观结构、相组成、合成条件、循环稳定性。
 
-**Terminology:** structure-property relationship, characterization, microstructure, phase composition, synthesis conditions, cyclic stability.
+## 数学与统计
 
-## Social sciences, education, management
+**常见审读问题：** 定义是否完备；定理条件是否充分且必要；证明是否有跳步；记号前后是否一致；模拟设置能否支持方法比较结论。
 
-**Possible review questions:** causal claims from observational data, construct validity, sample representativeness, common method bias, preregistration status where relevant, generalizing from one cultural context.
+**写作中留意：**
 
-**Watch for:** causal interpretations such as "affects" or "leads to" without stated identification assumptions and supporting evidence; sample described without demographics or recruitment method; effect sizes omitted in favor of p-values; unacknowledged single-country or single-institution scope.
+- 定理、引理的全部条件属于承重语言；摘要和结论中不能丢掉“有限、紧致、独立同分布、充分大”等条件。
+- 存在性、唯一性、收敛性、最优性是不同结论，不互相替换。
+- 不补写证明步骤，也不替作者添加“显然、易证”；证明缺口指出位置。
+- 已给出完整证明的结论不机械弱化为“may”。
 
-**Terminology:** construct validity, mediation/moderation, common method variance, effect size, sampling frame, self-report bias.
+## 地球与环境科学
 
-Note the structural difference: many venues in these fields use theoretical framing, hypotheses, and limitations sections that operate differently from IMRaD. Follow the author's structure rather than imposing a science-paper shape.
+**常见审读问题：** 研究区与时段的代表性；数据来源与版本（再分析资料、卫星产品、观测站）；不确定性分析；模式与情景设置；尺度效应。
 
+**写作中留意：**
 
-These checks do not establish scientific validity. Do not infer absent ethics approval, unperformed tests or missing analyses merely because they are not present in the supplied excerpt. Preserve theoretical assumptions and qualitative evidence on their own terms.
+- 研究区域、时段、空间分辨率、数据产品版本属于锁定区；结论不扩大到未研究的区域与时段。
+- 基于情景的“预估（projection）”与“预测（prediction/forecast）”不同，不随意互换。
+- 相关性分析不写成驱动机制；归因结论与所用方法对应。
+
+**遥感补充：** 单一区域、单一季节、单一传感器的泛化；训练与测试样本的空间自相关与相邻瓦片泄漏；地物类别不平衡。性能主张应说明区域、传感器、分辨率与采集时段。术语：变化检测、空间/光谱分辨率、多源融合、土地覆盖分类、地面采样距离。
+
+## 工程技术
+
+**常见审读问题：** 试验或仿真条件；仿真模型是否经试验验证；安全系数与规范依据；样本数与重复性；“满足要求”的判据是什么。
+
+**写作中留意：**
+
+- 规范与标准编号（如国家标准、行业标准）、材料牌号、设备型号、工况参数属于锁定区。
+- “满足工程要求”“具有良好的应用前景”需要对应判据或材料；缺少时保留原意或提示补充。
+- 仿真结果与试验结果分别表述；“实时”需要延迟或频率数值以及对应要求。
+- 安全性、可靠性结论不能由有限次试验推广为普遍保证。
+
+## 计算机与人工智能
+
+**常见审读问题：** 比较是否公平（骨干网络、训练预算、输入分辨率、推理预算）；单数据集泛化；随机种子与方差；基线是否充分调参；消融是否同时改变多处；数据污染。
+
+**写作中留意：**
+
+- “state-of-the-art”需要说明比较集合与时间；鲁棒性主张需要分布偏移或扰动测试；效率主张需要 FLOPs、参数量或实测延迟。
+- 机器学习中“prove”只用于真正的证明；“收敛”需要条件；统计显著性需要对应检验。
+- 大模型研究：任务表现不等于“理解”或“推理”；需记录解码参数、提示与模型版本，不同时间发布的同名模型行为可能不同；LLM 评审需要人工校验说明。
+- 机器人：仿真结果不写成可部署；成功率需要试验次数；安全主张需要失败分析。
+- 数据挖掘与推荐：离线指标不写成业务增长；随机划分与时间划分的差异；可扩展性需要复杂度分析或运行时间曲线。
+
+术语：特征融合、目标检测、语义/实例分割、消融实验、零样本、微调、分布偏移、上下文学习、检索增强生成、幻觉、冷启动、SLAM、sim-to-real。
+
+---
+
+以上提示不构成科学有效性认证。不要仅因节选中未出现伦理审批、检验或分析，就推断作者没有做；理论假设、质性证据与史料论证按其自身标准对待。

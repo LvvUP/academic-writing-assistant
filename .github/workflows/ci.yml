@@ -32,7 +32,7 @@ jobs:
       run:
         shell: bash
     steps:
-      # Official stable v7 release reviewed; see docs/testing.md.
+      # Official stable v7 release, pinned by commit SHA.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false

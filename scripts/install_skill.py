@@ -3,6 +3,8 @@
 
 Only explicit package files are copied. Updates/removal require an unchanged
 installation receipt. The receipt records local ownership, not authenticity.
+An existing copy is replaced only on request, and then moved to a backup
+folder rather than deleted.
 """
 from __future__ import annotations
 
@@ -16,12 +18,28 @@ import shutil
 import stat
 import sys
 import tempfile
+import time
 
 SKILL_NAME = 'academic-writing-assistant'
 TOOL_ID = 'academic-writing-assistant/install_skill'
 RECEIPT_NAME = '.academic-writing-assistant-install.json'
-HOST_PATHS = {'codex': '.agents/skills', 'claude': '.claude/skills',
-              'cursor': '.cursor/skills', 'grok-build': '.grok/skills'}
+BACKUP_DIR_NAME = '.academic-writing-assistant-backups'
+# User-level Skill directory of each supported host, relative to --home-root.
+HOST_PATHS = {'claude': '.claude/skills', 'codex': '.agents/skills',
+              'cursor': '.cursor/skills', 'grok-build': '.grok/skills',
+              'opencode': '.config/opencode/skills'}
+HOST_NAMES = {'claude': 'Claude Code', 'codex': 'Codex', 'cursor': 'Cursor',
+              'grok-build': 'Grok Build', 'opencode': 'OpenCode'}
+# User-level directories each host documents loading. Several hosts read more
+# than their own directory, so a second copy elsewhere can appear twice; the
+# installer only reports such copies and never touches them.
+HOST_READS = {
+    'claude': ('.claude/skills',),
+    'codex': ('.agents/skills', '.codex/skills'),
+    'cursor': ('.cursor/skills', '.agents/skills', '.claude/skills', '.codex/skills'),
+    'grok-build': ('.grok/skills', '.agents/skills', '.claude/skills'),
+    'opencode': ('.config/opencode/skills', '.agents/skills', '.claude/skills'),
+}
 MANIFEST_NAME = 'package-manifest.json'
 IS_WINDOWS = os.name == 'nt'
 MAX_FILE_BYTES = 16 * 1024 * 1024
@@ -58,6 +76,20 @@ def safe_path(value):
     return path
 
 
+def resolved_root(value):
+    """Resolve aliases in a root the caller chose explicitly; check below it strictly.
+
+    Only the home directory and the running installer's own repository are
+    resolved. System aliases such as macOS /tmp -> /private/tmp would otherwise
+    block a normal temporary clone. Everything beneath the resolved root, i.e.
+    host directories, package files and the destination, still refuses aliases.
+    """
+    original = Path(value).expanduser()
+    if '..' in original.parts:
+        raise InstallError('Paths containing .. are refused; provide a direct path.')
+    return safe_path(os.path.realpath(str(original)))
+
+
 def selected_target(value):
     target = safe_path(value)
     if target.name != SKILL_NAME:
@@ -72,7 +104,57 @@ def select_destination(destination=None, host=None, home_root=None):
         return selected_target(destination)
     if host not in HOST_PATHS or home_root is None:
         raise InstallError('Supply --destination, or both --host and --home-root.')
-    return selected_target(safe_path(home_root) / HOST_PATHS[host] / SKILL_NAME)
+    return selected_target(resolved_root(home_root) / HOST_PATHS[host] / SKILL_NAME)
+
+
+def installer_source(entry):
+    """Locate the package next to this installer, resolving only the repository root."""
+    entry = Path(os.path.abspath(str(entry)))
+    repository = resolved_root(entry.parent.parent)
+    # The installer itself and the package below the repository root must not be aliases.
+    safe_path(repository / entry.parent.name / entry.name)
+    return safe_path(repository / 'skills' / SKILL_NAME)
+
+
+def skill_version(data):
+    """Return metadata.version from SKILL.md frontmatter bytes, or None."""
+    # Git on Windows may check SKILL.md out with CRLF line endings.
+    text = data.decode('utf-8', 'replace').replace('\r\n', '\n').replace('\r', '\n')
+    frontmatter = re.match(r'---[ \t]*\n(.*?)\n---', text, re.S)
+    if not frontmatter:
+        return None
+    found = re.search(r'^metadata:[ \t]*$(?:\n[ \t]+.*$)*?\n[ \t]+version:[ \t]*["\']?([0-9A-Za-z.+-]+)["\']?[ \t]*$',
+                      frontmatter.group(1), re.M)
+    return found.group(1) if found else None
+
+
+def installed_version(target):
+    try:
+        return skill_version(read_regular(target / 'SKILL.md', 1024 * 1024))
+    except (InstallError, OSError):
+        return None
+
+
+def other_copies(home_root, host, target):
+    """Report copies in the other known user-level directories, read-only."""
+    home = resolved_root(home_root)
+    own = HOST_PATHS[host]
+    owners = {relative: name for name, relative in HOST_PATHS.items()}
+    found = []
+    for relative in sorted({path for reads in HOST_READS.values() for path in reads}):
+        path = home / relative / SKILL_NAME
+        if relative == own or not os.path.lexists(str(path)):
+            continue
+        if os.path.realpath(str(path)) == os.path.realpath(str(target)):
+            continue  # The same directory reached through a user-made alias.
+        found.append({
+            'path': str(path),
+            'managed': os.path.lexists(str(path / RECEIPT_NAME)),
+            'host': owners.get(relative),
+            'listed_twice_in': [HOST_NAMES[name] for name, reads in HOST_READS.items()
+                                if relative in reads and own in reads],
+        })
+    return found
 
 
 def read_regular(path, limit=MAX_FILE_BYTES):
@@ -219,6 +301,8 @@ def verify_installation(target):
     target = safe_path(target)
     if not target.is_dir():
         raise InstallError('No managed installation directory exists at this destination.')
+    if not os.path.lexists(str(target / RECEIPT_NAME)):
+        raise InstallError('This copy was not installed by this tool (it has no installation record): ' + str(target))
     raw = read_regular(target / RECEIPT_NAME, 128 * 1024)
     try:
         receipt = json.loads(raw.decode('utf-8'), object_pairs_hook=unique_mapping)
@@ -335,11 +419,23 @@ def clean_container(container):
         shutil.rmtree(container)
 
 
+def existing_destination_message(target, managed):
+    where = ' at ' + str(target)
+    if not managed:
+        return 'Destination already exists' + where + '; choose a new directory.'
+    if not target.is_dir():
+        return 'Destination exists and is not a directory' + where + '; no files were overwritten.'
+    if os.path.lexists(str(target / RECEIPT_NAME)):
+        return 'Already installed' + where + ' by this tool; run update with the same options instead.'
+    return ('A copy not installed by this tool already exists' + where + '; nothing was changed. Run update '
+            'with the same options plus --backup-existing to move it to a backup folder and install a managed copy.')
+
+
 def create(source, destination, managed):
     target = selected_target(destination)
     compatible_paths(source, target)
-    if target.exists():
-        raise InstallError('Destination already exists; choose a new directory or use update for a managed installation.')
+    if os.path.lexists(str(target)):
+        raise InstallError(existing_destination_message(target, managed))
     payload = package_payload(source)
     make_parents(target.parent)
     container, staged = stage_payload(target.parent, payload, managed)
@@ -347,7 +443,8 @@ def create(source, destination, managed):
         _publish(staged, target)
     finally:
         clean_container(container)
-    return {'status': 'installed' if managed else 'exported', 'destination': str(target), 'files': len(payload)}
+    return {'status': 'installed' if managed else 'exported', 'destination': str(target),
+            'files': len(payload), 'version': skill_version(payload['SKILL.md'])}
 
 
 def install(source, destination):
@@ -389,10 +486,59 @@ def park_existing(target, expected):
     return container, previous
 
 
-def update(source, destination):
+def replace_with_backup(source, target):
+    """Move an unrecognized or modified copy to a backup folder, then install.
+
+    The previous copy is renamed as a whole, never deleted or merged. The backup
+    folder sits next to the host's skills directory, outside it, so hosts do not
+    load the old copy as a second Skill with the same name.
+    """
+    info = target.lstat()
+    if is_path_alias(info) or not stat.S_ISDIR(info.st_mode):
+        raise InstallError('The existing destination is not a plain directory; inspect it manually.')
+    payload = package_payload(source)
+    previous_version = installed_version(target)
+    container, staged = stage_payload(target.parent, payload, True)
+    try:
+        backups = target.parent.parent / BACKUP_DIR_NAME
+        make_parents(backups)
+        holder = Path(tempfile.mkdtemp(prefix=time.strftime('%Y%m%d-%H%M%S-'), dir=str(backups)))
+        backup = holder / SKILL_NAME
+        try:
+            safe_path(target)
+            target.rename(backup)
+        except BaseException:
+            holder.rmdir()
+            raise
+        try:
+            _publish(staged, target)
+        except (OSError, InstallError) as exc:
+            try:
+                _publish(backup, target)
+            except (OSError, InstallError):
+                raise InstallError('Update stopped; your previous copy is preserved at ' + str(backup)) from exc
+            holder.rmdir()
+            raise InstallError('Update failed; your previous copy was restored.') from exc
+    finally:
+        clean_container(container)
+    return {'status': 'updated', 'destination': str(target), 'files': len(payload),
+            'version': skill_version(payload['SKILL.md']), 'previous_version': previous_version,
+            'backup': str(backup)}
+
+
+def update(source, destination, backup_existing=False):
     target = selected_target(destination)
     compatible_paths(source, target)
-    original = verify_installation(target)
+    try:
+        original = verify_installation(target)
+    except InstallError as exc:
+        if not os.path.lexists(str(target)):
+            raise InstallError('Nothing is installed at this destination yet; run install with the same options.') from None
+        if backup_existing:
+            return replace_with_backup(source, target)
+        raise InstallError(str(exc).rstrip('.') + '. Nothing was changed. To keep this copy as a backup and '
+                           'install a fresh managed copy, rerun update with --backup-existing.') from None
+    previous_version = installed_version(target)
     payload = package_payload(source)
     container, staged = stage_payload(target.parent, payload, True)
     backup_container = previous = None
@@ -414,7 +560,8 @@ def update(source, destination):
         clean_container(container)
         if backup_container is not None and backup_container.exists() and not any(backup_container.iterdir()):
             backup_container.rmdir()
-    return {'status': 'updated', 'destination': str(target), 'files': len(payload)}
+    return {'status': 'updated', 'destination': str(target), 'files': len(payload),
+            'version': skill_version(payload['SKILL.md']), 'previous_version': previous_version}
 
 
 def uninstall(destination):
@@ -439,13 +586,41 @@ def configure_utf8_output():
             reconfigure(encoding='utf-8', errors='backslashreplace')
 
 
+def describe(result):
+    """Plain-text result: status line, then any backup and duplicate-copy notes."""
+    details = []
+    if result.get('previous_version') and result.get('version'):
+        details.append(result['previous_version'] + ' -> ' + result['version'])
+    elif result.get('version'):
+        details.append('version ' + result['version'])
+    details.append(str(result['files']) + ' package files')
+    lines = [result['status'] + ': ' + result['destination'] + ' (' + ', '.join(details) + ')']
+    if result.get('backup'):
+        lines.append('previous copy moved to: ' + result['backup'])
+    for copy in result.get('other_copies', ()):
+        note = 'note: another copy exists at ' + copy['path']
+        if not copy['managed']:
+            note += ' (not installed by this tool)'
+        elif copy['host']:
+            note += ' (keep it current with update --host ' + copy['host'] + ')'
+        if copy['listed_twice_in']:
+            note += '; ' + ', '.join(copy['listed_twice_in']) + ' may list the Skill twice'
+        lines.append(note + '.')
+    return '\n'.join(lines)
+
+
 def main(argv=None):
     configure_utf8_output()
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=('install', 'update', 'uninstall', 'export'))
     parser.add_argument('--destination', type=Path, help='Exact Skill directory, relative to your current working directory if not absolute.')
-    parser.add_argument('--host', choices=tuple(HOST_PATHS))
+    parser.add_argument('--host', choices=tuple(HOST_PATHS),
+                        help='Install into this host\'s user-level directory below --home-root: '
+                             + ', '.join(name + ' -> ' + path for name, path in HOST_PATHS.items()) + '.')
     parser.add_argument('--home-root', type=Path, help='Explicit home directory used with --host; no environment variables are changed.')
+    parser.add_argument('--backup-existing', action='store_true',
+                        help='update only: if the existing copy was not installed by this tool or was modified, '
+                             'move it to a backup folder (nothing is deleted) and install a managed copy.')
     parser.add_argument('--json', action='store_true', help='Print a structured result.')
     args = parser.parse_args(argv)
     if (args.destination is not None and (args.host is not None or args.home_root is not None)
@@ -453,13 +628,19 @@ def main(argv=None):
         parser.error('choose --destination or both --host and --home-root')
     if args.action == 'export' and args.destination is None:
         parser.error('export requires an explicit --destination')
+    if args.backup_existing and args.action != 'update':
+        parser.error('--backup-existing is only valid with update')
     try:
         target = select_destination(args.destination, args.host, args.home_root)
-        source = safe_path(Path(__file__).absolute()).parents[1] / 'skills' / SKILL_NAME
+        source = installer_source(__file__)
         if args.action == 'uninstall':
             result = uninstall(target)
+        elif args.action == 'update':
+            result = update(source, target, args.backup_existing)
         else:
-            result = {'install': install, 'update': update, 'export': export}[args.action](source, target)
+            result = {'install': install, 'export': export}[args.action](source, target)
+        if args.host is not None and args.action in ('install', 'update'):
+            result['other_copies'] = other_copies(args.home_root, args.host, target)
     except (InstallError, OSError) as exc:
         message = str(exc).splitlines()[0]
         if args.json:
@@ -467,8 +648,7 @@ def main(argv=None):
         else:
             print('install_skill: ' + message, file=sys.stderr)
         return 1
-    print(json.dumps(result, ensure_ascii=False) if args.json else
-          result['status'] + ': ' + result['destination'] + ' (' + str(result['files']) + ' package files)')
+    print(json.dumps(result, ensure_ascii=False) if args.json else describe(result))
     return 0
 
 

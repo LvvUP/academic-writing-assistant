@@ -257,3 +257,25 @@ def test_ordinary_count_adjective_is_not_an_unknown_unit():
     report = fidelity.build_report(text, text)
     assert not report['_meta']['coverage_insufficient']
     assert report['numbers']['before_items'][0]['value'] == '5'
+
+
+@pytest.mark.parametrize('before,after,category', [
+    ('根据《劳动合同法》第十条规定。', '根据《劳动合同法》第十一条规定。', 'structural_references'),
+    ('详见第3章。', '详见第4章。', 'structural_references'),
+    ('该观点（张三，2020）仍有争议。', '该观点（张三，2021）仍有争议。', 'author_year_citations'),
+    ('该观点（张三等，2020）仍有争议。', '该观点（李四等，2020）仍有争议。', 'author_year_citations'),
+    ('依据《史记》记载。', '依据《汉书》记载。', 'named_entities'),
+])
+def test_chinese_legal_and_humanities_references_are_protected(before, after, category):
+    report = fidelity.build_report(before, after)
+    assert report[category]['missing'] and report[category]['added']
+
+
+@pytest.mark.parametrize('before,after', [
+    ('依据第十二条。', '依据第12条。'),
+    ('依据第十二条。', '依据第１２条。'),
+    ('该观点（张三，2020）仍有争议。', '该观点(张三, 2020)仍有争议。'),
+])
+def test_chinese_reference_layout_variants_are_equivalent(before, after):
+    report = fidelity.build_report(before, after)
+    assert not changed(report)

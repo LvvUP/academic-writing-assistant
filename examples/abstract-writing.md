@@ -21,7 +21,7 @@ enhancement module and a multi-scale feature fusion module. Experimental
 evaluation remains incomplete.
 ```
 
-## 验收要点
+## 要点
 
 - 可按给定问题与模块名称起草；不推测既有方法下采样丢失特征或模块已改善语义。
 - 没有数据集、指标、数值和结果方向的编造。
