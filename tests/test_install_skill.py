@@ -728,6 +728,7 @@ def test_backup_existing_is_only_accepted_by_update(tmp_path):
 def test_skill_version_reads_only_frontmatter_metadata():
     text = '---\nname: x\nmetadata:\n  author: someone\n  version: "1.2.3"\n---\nversion: 9.9.9\n'
     assert installer.skill_version(text.encode('utf-8')) == '1.2.3'
+    assert installer.skill_version(text.replace('\n', '\r\n').encode('utf-8')) == '1.2.3'
     assert installer.skill_version(b'---\nname: x\n---\n  version: 9.9.9\n') is None
     assert installer.skill_version(b'no frontmatter') is None
 

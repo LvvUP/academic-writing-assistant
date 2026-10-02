@@ -118,11 +118,12 @@ def installer_source(entry):
 
 def skill_version(data):
     """Return metadata.version from SKILL.md frontmatter bytes, or None."""
-    text = data.decode('utf-8', 'replace')
-    frontmatter = re.match(r'---[ \t]*\r?\n(.*?)\r?\n---', text, re.S)
+    # Git on Windows may check SKILL.md out with CRLF line endings.
+    text = data.decode('utf-8', 'replace').replace('\r\n', '\n').replace('\r', '\n')
+    frontmatter = re.match(r'---[ \t]*\n(.*?)\n---', text, re.S)
     if not frontmatter:
         return None
-    found = re.search(r'^metadata:[ \t]*$(?:\r?\n[ \t]+.*$)*?\r?\n[ \t]+version:[ \t]*["\']?([0-9A-Za-z.+-]+)["\']?[ \t]*$',
+    found = re.search(r'^metadata:[ \t]*$(?:\n[ \t]+.*$)*?\n[ \t]+version:[ \t]*["\']?([0-9A-Za-z.+-]+)["\']?[ \t]*$',
                       frontmatter.group(1), re.M)
     return found.group(1) if found else None
 
