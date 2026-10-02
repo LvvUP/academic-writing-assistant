@@ -202,11 +202,7 @@ def test_failed_update_restores_previous_installation(source, tmp_path, monkeypa
 @pytest.mark.parametrize("host,relative", [
     ("codex", ".agents/skills"), ("claude", ".claude/skills"),
     ("cursor", ".cursor/skills"), ("grok-build", ".grok/skills"),
-    ("workbuddy", ".workbuddy/skills"), ("codebuddy", ".codebuddy/skills"),
-    ("gemini", ".gemini/skills"), ("copilot", ".copilot/skills"),
-    ("opencode", ".config/opencode/skills"), ("trae", ".trae/skills"),
-    ("trae-cn", ".trae-cn/skills"), ("qoder", ".qoder/skills"),
-    ("kiro", ".kiro/skills"), ("windsurf", ".codeium/windsurf/skills"),
+    ("opencode", ".config/opencode/skills"),
 ])
 def test_host_mapping_uses_explicit_home_without_environment_changes(tmp_path, host, relative):
     before = dict(os.environ)
@@ -598,3 +594,161 @@ def test_cli_usage_error_is_utf8_under_cp1252_redirection(tmp_path):
     assert result.returncode == 2
     assert '无效操作' in stderr and 'Traceback' not in stderr
     assert not list(tmp_path.iterdir())
+
+
+def make_tool(root, source):
+    """A minimal clone: installer plus package, as a user's temporary checkout."""
+    (root / 'scripts').mkdir(parents=True)
+    shutil.copyfile(ENTRY, root / 'scripts/install_skill.py')
+    shutil.copytree(source, root / 'skills' / installer.SKILL_NAME)
+    return root / 'scripts/install_skill.py'
+
+
+def symlink_or_skip(link, target, directory=True):
+    try:
+        link.symlink_to(target, target_is_directory=directory)
+    except (OSError, NotImplementedError):
+        pytest.skip('This host cannot create symlinks for this fixture.')
+
+
+def run_cli(entry, *args, cwd=None):
+    return subprocess.run([sys.executable, '-B', str(entry), *args], cwd=cwd,
+                          text=True, capture_output=True, encoding='utf-8')
+
+
+def test_cli_accepts_aliased_clone_and_home_roots(source, tmp_path):
+    # macOS /tmp and /var are system symlinks; a clone reached through one must work.
+    real = tmp_path.resolve() / 'real'
+    make_tool(real / 'clone', source)
+    (real / 'home').mkdir()
+    alias = tmp_path.resolve() / 'alias'
+    symlink_or_skip(alias, real)
+    result = run_cli(alias / 'clone/scripts/install_skill.py', 'install', '--host', 'claude',
+                     '--home-root', str(alias / 'home'), '--json')
+    assert result.returncode == 0, result.stderr
+    installed = real / 'home/.claude/skills' / installer.SKILL_NAME
+    assert json.loads(result.stdout)['destination'] == str(installed)
+    assert set(inventory(installed)) == set(PACKAGE_FILES) | {installer.RECEIPT_NAME}
+
+
+@pytest.mark.parametrize('location', ['package', 'host-directory', 'installer'])
+def test_cli_still_refuses_aliases_below_resolved_roots(source, tmp_path, location):
+    clone = tmp_path.resolve() / 'clone'
+    entry = make_tool(clone, source)
+    home = tmp_path.resolve() / 'home'
+    home.mkdir()
+    outside = tmp_path.resolve() / 'outside'
+    outside.mkdir()
+    if location == 'package':
+        package = clone / 'skills' / installer.SKILL_NAME
+        package.rename(outside / installer.SKILL_NAME)
+        symlink_or_skip(package, outside / installer.SKILL_NAME)
+    elif location == 'host-directory':
+        (home / '.claude').mkdir()
+        symlink_or_skip(home / '.claude/skills', outside)
+    else:
+        entry.rename(outside / 'install_skill.py')
+        symlink_or_skip(entry, outside / 'install_skill.py', directory=False)
+    before = inventory(outside)
+    result = run_cli(entry, 'install', '--host', 'claude', '--home-root', str(home), '--json')
+    assert result.returncode == 1, result.stdout
+    assert json.loads(result.stderr)['status'] == 'refused'
+    assert inventory(outside) == before
+    assert not (outside / installer.SKILL_NAME / installer.RECEIPT_NAME).exists()
+
+
+def test_existing_destination_messages_name_the_next_step(source, tmp_path):
+    target = destination(tmp_path)
+    installer.install(source, target)
+    with pytest.raises(installer.InstallError, match='run update'):
+        installer.install(source, target)
+    manual = tmp_path.resolve() / 'manual home/.claude/skills' / installer.SKILL_NAME
+    shutil.copytree(source, manual)
+    with pytest.raises(installer.InstallError, match='--backup-existing'):
+        installer.install(source, manual)
+    with pytest.raises(installer.InstallError, match='run install'):
+        installer.update(source, tmp_path.resolve() / 'empty home/.grok/skills' / installer.SKILL_NAME)
+
+
+@pytest.mark.parametrize('previous', ['manual_copy', 'modified', 'python_cache'])
+def test_backup_existing_moves_old_copy_and_installs_managed_copy(source, tmp_path, previous):
+    target = destination(tmp_path)
+    if previous == 'manual_copy':
+        shutil.copytree(source, target)
+        (target / 'my-notes.md').write_text('SYNTHETIC USER NOTES', encoding='utf-8')
+    else:
+        installer.install(source, target)
+        if previous == 'modified':
+            (target / 'SKILL.md').write_text('SYNTHETIC USER EDIT', encoding='utf-8')
+        else:
+            (target / 'scripts/__pycache__').mkdir()
+            (target / 'scripts/__pycache__/cache.pyc').write_bytes(b'synthetic cache')
+    before = inventory(target)
+    with pytest.raises(installer.InstallError, match='--backup-existing'):
+        installer.update(source, target)
+    assert inventory(target) == before
+    result = installer.update(source, target, backup_existing=True)
+    backup = Path(result['backup'])
+    assert inventory(backup) == before
+    assert backup.parent.parent == target.parent.parent / installer.BACKUP_DIR_NAME
+    assert target.parent not in backup.parents, 'A backup inside a skills directory would load twice.'
+    installer.verify_installation(target)
+    installer.update(source, target)
+    installer.uninstall(target)
+    assert inventory(backup) == before
+
+
+def test_backup_existing_restores_old_copy_when_install_fails(source, tmp_path, monkeypatch):
+    target = destination(tmp_path)
+    shutil.copytree(source, target)
+    before = inventory(target)
+    publish = installer._publish
+    failed = False
+    def fail_once(staged, destination):
+        nonlocal failed
+        if not failed:
+            failed = True
+            raise OSError('synthetic failure while publishing')
+        return publish(staged, destination)
+    monkeypatch.setattr(installer, '_publish', fail_once)
+    with pytest.raises(installer.InstallError, match='restored'):
+        installer.update(source, target, backup_existing=True)
+    assert inventory(target) == before
+    assert not any((target.parent.parent / installer.BACKUP_DIR_NAME).iterdir())
+    assert not list(target.parent.glob('.awa-*'))
+
+
+def test_backup_existing_is_only_accepted_by_update(tmp_path):
+    result = run_cli(ENTRY, 'install', '--host', 'codex', '--home-root', str(tmp_path.resolve()),
+                     '--backup-existing', cwd=tmp_path)
+    assert result.returncode == 2
+    assert not list(tmp_path.iterdir())
+
+
+def test_skill_version_reads_only_frontmatter_metadata():
+    text = '---\nname: x\nmetadata:\n  author: someone\n  version: "1.2.3"\n---\nversion: 9.9.9\n'
+    assert installer.skill_version(text.encode('utf-8')) == '1.2.3'
+    assert installer.skill_version(b'---\nname: x\n---\n  version: 9.9.9\n') is None
+    assert installer.skill_version(b'no frontmatter') is None
+
+
+def test_cli_reports_version_and_other_copies_read_by_the_same_hosts(tmp_path):
+    home = tmp_path.resolve() / 'isolated home'
+    other = home / '.agents/skills' / installer.SKILL_NAME
+    other.mkdir(parents=True)
+    (other / 'SKILL.md').write_text('SYNTHETIC MANUAL COPY', encoding='utf-8')
+    expected = installer.skill_version((ROOT / 'skills' / installer.SKILL_NAME / 'SKILL.md').read_bytes())
+    assert expected
+    args = ['--host', 'claude', '--home-root', str(home)]
+    result = run_cli(ENTRY, 'install', *args, '--json', cwd=tmp_path)
+    assert result.returncode == 0, result.stderr
+    data = json.loads(result.stdout)
+    assert data['version'] == expected
+    assert data['other_copies'] == [{'path': str(other), 'managed': False, 'host': 'codex',
+                                     'listed_twice_in': ['Cursor', 'Grok Build', 'OpenCode']}]
+    result = run_cli(ENTRY, 'update', *args, cwd=tmp_path)
+    assert result.returncode == 0, result.stderr
+    assert expected + ' -> ' + expected in result.stdout
+    assert 'Cursor, Grok Build, OpenCode may list the Skill twice' in result.stdout
+    assert (other / 'SKILL.md').read_text(encoding='utf-8') == 'SYNTHETIC MANUAL COPY'
+    assert run_cli(ENTRY, 'uninstall', *args, cwd=tmp_path).returncode == 0

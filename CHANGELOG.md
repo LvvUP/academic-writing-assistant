@@ -23,9 +23,12 @@
 
 ### 安装与文档
 
-- 推荐用一段提示词让 AI Agent 自行安装；同时支持 `npx skills`、安装脚本和手动复制。
-- `install_skill.py` 新增 WorkBuddy、CodeBuddy、Gemini CLI、GitHub Copilot、OpenCode、Trae、Qoder、Kiro、Windsurf 的安装目录。
-- README 重写，示例覆盖多个学科；兼容说明覆盖 Claude Code、Codex、Cursor、Grok Build、WorkBuddy 等常见 Agent，并说明如何避免重复安装。
+- **统一安装方式**：推荐把一段提示词发给 AI Agent，由它运行仓库自带的 `install_skill.py`；自己在终端安装用的也是同一个脚本，两种方式装出的副本都能安全更新和卸载。
+- 支持 Claude Code、Codex、Cursor、Grok Build 和新增的 OpenCode。
+- 新增 `update --backup-existing`：手动复制、其他工具安装或被修改过的旧副本会整体移到 Skills 目录之外的备份文件夹（不删除），再换成脚本管理的副本。
+- 安装和更新会报告版本号（更新时显示新旧版本），并列出其他目录中可能被同一 Agent 重复加载的同名副本。
+- 从 macOS `/tmp` 等经过系统符号链接的位置运行安装脚本不再被拒绝；Skills 目录与安装包内部的符号链接仍然拒绝。
+- README 重写，示例覆盖多个学科；兼容说明聚焦五个支持的 Agent，并说明如何避免重复安装。
 
 ## 0.3.0
 

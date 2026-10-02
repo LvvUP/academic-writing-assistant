@@ -10,7 +10,7 @@
 ### Let AI edit your paper without editing your data or conclusions
 
 A **discipline-agnostic academic writing Skill** for Chinese and English manuscripts: polishing · CN↔EN translation · section drafting · theses and grant proposals · reviewer responses · submission materials<br>
-Works across the sciences, engineering, medicine, economics, social sciences, humanities and law — one Skill for Claude Code, Codex, Cursor, Grok Build, WorkBuddy and other AI agents.
+Works across the sciences, engineering, medicine, economics, social sciences, humanities and law — one Skill for Claude Code, Codex, Cursor, Grok Build and OpenCode.
 
 [![Version](https://img.shields.io/badge/version-0.4.0-2563EB)](CHANGELOG.md)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-2563EB)](LICENSE)
@@ -41,46 +41,43 @@ Academic Writing Assistant gives your agent a **fidelity contract**: improve the
 
 ## 🚀 Install
 
-### Option 1: paste a prompt into your AI agent (recommended)
+Supports **Claude Code, Codex, Cursor, Grok Build and OpenCode**.
 
-Send this to Claude Code, Codex, Cursor, Grok Build, WorkBuddy or any agent that supports Skills:
+### Option 1: send this to your AI agent (recommended)
 
 ```text
-Please install (or update, if already installed) the academic writing Skill "academic-writing-assistant".
-Source: https://github.com/LvvUP/academic-writing-assistant (main branch). I only need its skills/academic-writing-assistant/ folder.
-1. Work out which agent you are running in and find its user-level skills directory (on Windows, ~ = %USERPROFILE%). Hints:
-   Claude Code ~/.claude/skills · Codex ~/.agents/skills · Cursor ~/.cursor/skills · Grok Build ~/.grok/skills
-   WorkBuddy ~/.workbuddy/skills or ~/.codebuddy/skills (whichever you actually load) · Gemini CLI ~/.gemini/skills · GitHub Copilot ~/.copilot/skills
-   For other agents follow their official docs (most read ~/.agents/skills). If unsure, ask me; don't guess.
-2. Shallow-clone (git clone --depth 1) or download the ZIP into a temp directory, then copy that whole folder to "<skills dir>/academic-writing-assistant/", keeping the folder name. Don't run any script from the repo and don't use sudo.
-3. If a skill with the same name already exists in the target or in any other skills directory you load, tell me its version, move the old folder to a backup outside every skills directory, then put the new one in place, so there are never two copies.
-4. Afterwards confirm SKILL.md exists, delete the temp directory, and tell me the install path, version, whether I need to restart or open a new session, and how to invoke it.
+Please install (or update, if already installed) the academic writing Skill "academic-writing-assistant", using only the repository's own installer:
+1. Work out which agent you are and pick --host: Claude Code → claude, Codex → codex, Cursor → cursor, Grok Build → grok-build, OpenCode → opencode. If you are none of these, tell me and stop.
+2. git clone --depth 1 https://github.com/LvvUP/academic-writing-assistant (main branch) into a temporary folder and run there (Python 3.9+; on Windows `py -3` can replace python3):
+   python3 -B scripts/install_skill.py install --host <value above> --home-root "$HOME"
+3. If it says the Skill is already installed, run it again with update instead of install. If it asks for --backup-existing, add that flag and run again (the old copy is moved to a backup folder, not deleted). For any other error, show it to me and stop: don't copy or delete files by hand, don't bypass the checks, don't use sudo.
+4. Afterwards, delete the temporary folder, tell me the install path, version and any notes the script printed, and how to invoke the Skill and whether I need a new session.
 ```
 
-The agent works out which platform it is running on and puts the Skill in the right place. Send the same prompt again whenever you want to update.
+The agent downloads the repository, runs the bundled installer and reports the result. To update later, send the same message again.
 
 <details>
-<summary><strong>Option 2: command line</strong></summary>
+<summary><strong>Option 2: run the same installer yourself</strong></summary>
 
-**One command for many agents** (requires Node.js; uses the open-source [skills](https://github.com/vercel-labs/skills) CLI and lets you pick which agents to install for):
-
-```sh
-npx skills add LvvUP/academic-writing-assistant -g
-```
-
-**Bundled installer** (Python 3.9+; supports safe update and uninstall):
+Requires Git and Python 3.9+:
 
 ```sh
-git clone https://github.com/LvvUP/academic-writing-assistant.git
+git clone --depth 1 https://github.com/LvvUP/academic-writing-assistant.git
 cd academic-writing-assistant
 python3 -B scripts/install_skill.py install --host claude --home-root "$HOME"
 ```
 
-`--host` accepts `claude`, `codex`, `cursor`, `grok-build`, `workbuddy`, `codebuddy`, `gemini`, `copilot`, `opencode`, `trae`, `trae-cn`, `qoder`, `kiro` and `windsurf`.
+Replace `claude` with your agent:
 
-**Manual:** copy the whole `skills/academic-writing-assistant/` folder into your agent's skills directory.
+| Agent | `--host` | Install location |
+|---|---|---|
+| Claude Code | `claude` | `~/.claude/skills/academic-writing-assistant` |
+| Codex | `codex` | `~/.agents/skills/academic-writing-assistant` |
+| Cursor | `cursor` | `~/.cursor/skills/academic-writing-assistant` |
+| Grok Build | `grok-build` | `~/.grok/skills/academic-writing-assistant` |
+| OpenCode | `opencode` | `~/.config/opencode/skills/academic-writing-assistant` |
 
-See [compatibility](docs/compatibility.md) for each agent's directory and invocation, and the [installation guide](docs/installation.md) for update and uninstall.
+To update, use `update` instead of `install`; to remove, use `uninstall`. On Windows, `py -3` can replace `python3`. Both options use the same installer, so either one can update a copy installed by the other. See the [installation guide](docs/installation.md) for details.
 
 </details>
 
@@ -94,7 +91,7 @@ Open a new session and describe your writing task in plain language — the agen
 [paste your text]
 ```
 
-> Most agents use `/academic-writing-assistant`; Codex uses `$academic-writing-assistant`. You can also just describe your writing task.
+> Claude Code and Grok Build use `/academic-writing-assistant`; Codex uses `$academic-writing-assistant`; in Cursor, type `/` in the Agent input and pick the Skill; in OpenCode, just describe the task and it loads automatically.
 
 ## ✨ Examples
 

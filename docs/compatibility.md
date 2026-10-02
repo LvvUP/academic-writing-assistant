@@ -1,44 +1,36 @@
 # 兼容说明 / Compatibility
 
-本项目遵循开放的 [Agent Skills 规范](https://agentskills.io/specification)：一个包含 `SKILL.md` 的文件夹，外加按需读取的 `references/`、`scripts/` 和 `assets/`。所有支持该规范的 AI Agent 共用同一份 Skill，无需为不同平台维护不同版本。
+本项目遵循开放的 [Agent Skills 规范](https://agentskills.io/specification)：一个包含 `SKILL.md` 的文件夹，外加按需读取的 `references/`、`scripts/` 和 `assets/`。五个支持的 Agent 共用同一份 Skill，无需为不同平台维护不同版本。
 
-## 各 Agent 的 Skills 目录
+## 支持的 Agent
 
-把 `skills/academic-writing-assistant/` 整个文件夹放到下表中的**用户级目录**，即可在该 Agent 的所有项目中使用；放到**项目级目录**则只在该项目中生效。Windows 下 `~` 指 `%USERPROFILE%`。
+安装脚本把 Skill 放到下表的**用户级目录**，在该 Agent 的所有项目中可用；用 `--destination` 放到**项目级目录**则只在该项目中生效。Windows 下 `~` 指 `%USERPROFILE%`。
 
-| Agent | 用户级目录 | 项目级目录 | 调用方式 |
-|---|---|---|---|
-| Claude Code | `~/.claude/skills/` | `.claude/skills/` | `/academic-writing-assistant` 或自动调用 |
-| Codex | `~/.agents/skills/` | `.agents/skills/` | `$academic-writing-assistant`、`/skills` 或自动调用 |
-| Cursor | `~/.cursor/skills/` | `.cursor/skills/` | 在 Agent 输入框输入 `/` 选择，或自动调用 |
-| Grok Build | `~/.grok/skills/` | `.grok/skills/` | `/academic-writing-assistant` 或自动调用 |
-| WorkBuddy | `~/.workbuddy/skills/` 或 `~/.codebuddy/skills/` | `.codebuddy/skills/` | 对话中自动调用；也可在应用内技能市场上传技能包 |
-| CodeBuddy | `~/.codebuddy/skills/` | `.codebuddy/skills/` | 自动调用 |
-| Gemini CLI | `~/.gemini/skills/` | `.gemini/skills/` | 自动调用 |
-| GitHub Copilot | `~/.copilot/skills/` | `.github/skills/` | `/academic-writing-assistant` 或自动调用 |
-| OpenCode | `~/.config/opencode/skills/` | `.opencode/skills/` | 自动调用 |
-| Windsurf | `~/.codeium/windsurf/skills/` | `.windsurf/skills/` | `@academic-writing-assistant` 或自动调用 |
-| Kiro | `~/.kiro/skills/` | `.kiro/skills/` | `/academic-writing-assistant` 或自动调用 |
-| Cline | `~/.cline/skills/` | `.cline/skills/` | `/academic-writing-assistant` 或自动调用 |
-| Roo Code | `~/.roo/skills/` | `.roo/skills/` | 自动调用 |
-| Trae / Trae CN | `~/.trae/skills/` / `~/.trae-cn/skills/` | `.trae/skills/` | 自动调用 |
-| Qoder | `~/.qoder/skills/` | `.qoder/skills/` | 自动调用 |
-| 其他支持 Agent Skills 的工具 | 多数读取 `~/.agents/skills/` | `.agents/skills/` | 以该工具文档为准 |
+| Agent | `--host` | 用户级目录 | 项目级目录 | 还会读取的用户级目录 | 调用方式 |
+|---|---|---|---|---|---|
+| [Claude Code](https://code.claude.com/docs/en/skills) | `claude` | `~/.claude/skills/` | `.claude/skills/` | — | `/academic-writing-assistant` 或自动调用 |
+| [Codex](https://learn.chatgpt.com/docs/build-skills) | `codex` | `~/.agents/skills/` | `.agents/skills/` | `~/.codex/skills/`（旧目录） | `$academic-writing-assistant`、`/skills` 或自动调用 |
+| [Cursor](https://cursor.com/docs/skills) | `cursor` | `~/.cursor/skills/` | `.cursor/skills/` 或 `.agents/skills/` | `~/.agents/skills/`、`~/.claude/skills/`、`~/.codex/skills/` | 在 Agent 输入框输入 `/` 选择，或自动调用 |
+| [Grok Build](https://docs.x.ai/build/features/skills-plugins-marketplaces) | `grok-build` | `~/.grok/skills/` | `.grok/skills/` | `~/.agents/skills/`；也会读取 Claude Code 的 Skills | `/academic-writing-assistant` 或自动调用 |
+| [OpenCode](https://opencode.ai/docs/skills/) | `opencode` | `~/.config/opencode/skills/` | `.opencode/skills/` | `~/.agents/skills/`、`~/.claude/skills/` | 描述任务后由 Agent 自动加载 |
 
 说明：
 
-- 各产品更新较快，目录与调用方式以其官方文档为准。WorkBuddy 官方文档说明会加载用户级 `.codebuddy` 配置中的技能，社区教程多使用 `~/.workbuddy/skills/`；如果放入后没有出现在技能列表中，换另一个目录并重启 WorkBuddy。Trae、Qoder 的目录参照 [skills CLI](https://github.com/vercel-labs/skills) 的约定。
-- 新放入的 Skill 通常需要新开会话，部分 Agent 需要重启后才会出现在列表中。
+- 目录与调用方式依据上表链接的官方文档（2026 年 10 月核对）。各产品更新较快，以其最新文档为准。
+- 新装的 Skill 何时出现：Claude Code 在当前会话中即可识别（若 `~/.claude/skills/` 是新建的，运行 `/reload-skills`）；Codex 文档建议看不到时重启；其他 Agent 建议新开会话。
 - 文件夹名必须保持为 `academic-writing-assistant`，与 `SKILL.md` 中的 `name` 一致。
+- 其他支持 Agent Skills 的工具目前不在官方支持范围内。需要时可用安装脚本的 `--destination` 指定其 Skills 目录，但未经本项目验证。
 
 ## 避免重复安装
 
-不少 Agent 会同时读取多个目录。例如 Cursor 也会读取 `~/.claude/skills/`，GitHub Copilot、Grok Build、OpenCode 等也会读取 `~/.agents/skills/`。如果你为多个 Agent 分别安装，某个 Agent 中可能出现两份同名 Skill。
+上表"还会读取"一列说明：同一份 Skill 可能被多个 Agent 看到。为多个 Agent 分别安装时，某些 Agent 中会出现两份同名 Skill。安装脚本会在输出的 `note` 中列出这类副本，但不会改动它们。
 
 建议：
 
-- 只在实际使用的 Agent 目录中安装一份；需要多个 Agent 共用时，优先放在它们都会读取的目录。
-- 更新时直接替换原文件夹。备份旧版本时，把它移到**所有 Skills 目录之外**，不要在 Skills 目录里保留改名的副本。
+- 同时使用 Claude Code 与 Cursor / OpenCode / Grok Build：只装 `--host claude` 一份，其他几个都会读取它。
+- 同时使用 Codex 与 Cursor / OpenCode / Grok Build：只装 `--host codex` 一份。
+- 同时使用 Claude Code 与 Codex：需要两份（Codex 不读取 `~/.claude/skills/`，Claude Code 不读取 `~/.agents/skills/`）。Cursor 等可能显示两份，内容相同；更新时用两个 `--host` 分别 `update`，保持版本一致。
+- 不要把旧版本改名后留在 Skills 目录里；`update --backup-existing` 会把旧副本移到 Skills 目录之外。
 
 ## 能力差异
 

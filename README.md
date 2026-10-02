@@ -10,7 +10,7 @@
 ### 让 AI 帮你改论文，但不改你的数据和结论
 
 面向中文科研作者的**通用学术写作 Skill**：论文润色 · 中英互译 · 章节起草 · 学位论文与基金申请 · 审稿回复 · 投稿材料<br>
-适用于理工、医学、经管、社科、人文、法学等各学科，一份 Skill 可在 Claude Code、Codex、Cursor、Grok Build、WorkBuddy 等多种 AI Agent 中使用。
+适用于理工、医学、经管、社科、人文、法学等各学科，一份 Skill 可在 Claude Code、Codex、Cursor、Grok Build、OpenCode 中使用。
 
 [![Version](https://img.shields.io/badge/version-0.4.0-2563EB)](CHANGELOG.md)
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-2563EB)](LICENSE)
@@ -41,46 +41,43 @@ Academic Writing Assistant 给 AI 一份**保真契约**：语言可以大胆改
 
 ## 🚀 快速安装
 
-### 方式一：复制提示词，发给你的 AI Agent（推荐）
+支持 **Claude Code、Codex、Cursor、Grok Build、OpenCode**。
 
-在 Claude Code、Codex、Cursor、Grok Build、WorkBuddy 等任意支持 Skills 的 Agent 中，发送下面这段话即可：
+### 方式一：把下面这段话发给你的 AI Agent（推荐）
 
 ```text
-请帮我安装（已安装则更新）学术写作 Skill「academic-writing-assistant」。
-来源：https://github.com/LvvUP/academic-writing-assistant （main 分支），只需要其中的 skills/academic-writing-assistant/ 文件夹。
-1. 判断你运行在哪个 Agent，确定它的用户级 Skills 目录（Windows 下 ~ 即 %USERPROFILE%）。参考：
-   Claude Code ~/.claude/skills · Codex ~/.agents/skills · Cursor ~/.cursor/skills · Grok Build ~/.grok/skills
-   WorkBuddy ~/.workbuddy/skills 或 ~/.codebuddy/skills（以你实际加载的为准）· Gemini CLI ~/.gemini/skills · GitHub Copilot ~/.copilot/skills
-   其他 Agent 以其官方文档为准（多数支持 ~/.agents/skills）；无法确定时先问我，不要猜。
-2. 用 git clone --depth 1 或下载 ZIP 到临时目录，把该文件夹完整复制为“Skills 目录/academic-writing-assistant/”，文件夹名保持不变。不要运行仓库里的脚本，不要使用 sudo。
-3. 如果目标位置或你会读取的其他 Skills 目录里已有同名 Skill，先告诉我旧版本号，把旧文件夹移到所有 Skills 目录之外备份，再放入新版，避免出现两份。
-4. 完成后确认 SKILL.md 存在并删除临时目录，告诉我安装路径、版本号、是否需要重启或新开会话，以及调用方式。
+请帮我安装（已安装则更新）学术写作 Skill「academic-writing-assistant」，全程只用仓库自带的安装脚本：
+1. 判断你是哪个 Agent，确定 --host：Claude Code → claude，Codex → codex，Cursor → cursor，Grok Build → grok-build，OpenCode → opencode。不是这五个就告诉我并停止。
+2. 把 https://github.com/LvvUP/academic-writing-assistant（main 分支）git clone --depth 1 到一个临时文件夹，在其中运行（需 Python 3.9+；Windows 可用 py -3 代替 python3）：
+   python3 -B scripts/install_skill.py install --host <上面的值> --home-root "$HOME"
+3. 如果提示已安装，把 install 换成 update 再运行；如果提示需要 --backup-existing，加上它再运行（旧副本会移到备份文件夹，不会删除）。遇到其他错误就原样告诉我并停止：不要手动复制或删除文件、不要绕过检查、不要用 sudo。
+4. 完成后删除临时文件夹，把脚本输出的安装路径、版本和 note 提示告诉我，并说明调用方式、是否需要新开会话。
 ```
 
-Agent 会自己判断所在平台、下载并放到正确位置。以后想更新，再发送一次同样的提示词即可。
+Agent 会下载仓库、运行自带的安装脚本，并告诉你结果。以后想更新，再发送一次同样的话即可。
 
 <details>
-<summary><strong>方式二：命令行安装</strong></summary>
+<summary><strong>方式二：自己在终端运行同一个脚本</strong></summary>
 
-**一条命令安装到多种 Agent**（需要 Node.js，使用开源的 [skills](https://github.com/vercel-labs/skills) 工具，运行后可选择要安装到哪些 Agent）：
-
-```sh
-npx skills add LvvUP/academic-writing-assistant -g
-```
-
-**使用仓库自带的安装脚本**（需要 Python 3.9+，支持安全更新与卸载）：
+需要 Git 和 Python 3.9+：
 
 ```sh
-git clone https://github.com/LvvUP/academic-writing-assistant.git
+git clone --depth 1 https://github.com/LvvUP/academic-writing-assistant.git
 cd academic-writing-assistant
 python3 -B scripts/install_skill.py install --host claude --home-root "$HOME"
 ```
 
-`--host` 可选 `claude`、`codex`、`cursor`、`grok-build`、`workbuddy`、`codebuddy`、`gemini`、`copilot`、`opencode`、`trae`、`trae-cn`、`qoder`、`kiro`、`windsurf`。
+把 `claude` 换成你使用的 Agent：
 
-**手动安装**：下载仓库，把 `skills/academic-writing-assistant/` 整个文件夹复制到对应 Agent 的 Skills 目录即可。
+| Agent | `--host` | 安装位置 |
+|---|---|---|
+| Claude Code | `claude` | `~/.claude/skills/academic-writing-assistant` |
+| Codex | `codex` | `~/.agents/skills/academic-writing-assistant` |
+| Cursor | `cursor` | `~/.cursor/skills/academic-writing-assistant` |
+| Grok Build | `grok-build` | `~/.grok/skills/academic-writing-assistant` |
+| OpenCode | `opencode` | `~/.config/opencode/skills/academic-writing-assistant` |
 
-各 Agent 的目录与调用方式见 [兼容说明](docs/compatibility.md)，更新与卸载见 [安装指南](docs/installation.md)。
+更新时把 `install` 换成 `update`，卸载用 `uninstall`。Windows 可用 `py -3` 代替 `python3`。两种方式用的是同一个脚本，装出来的副本可以互相更新。更多说明见 [安装指南](docs/installation.md)。
 
 </details>
 
@@ -94,7 +91,7 @@ python3 -B scripts/install_skill.py install --host claude --home-root "$HOME"
 [粘贴你的文本]
 ```
 
-> 多数 Agent 使用 `/academic-writing-assistant`，Codex 使用 `$academic-writing-assistant`。不写也可以，直接描述写作任务即可。
+> Claude Code、Grok Build 使用 `/academic-writing-assistant`；Codex 使用 `$academic-writing-assistant`；Cursor 在 Agent 输入框输入 `/` 后选择；OpenCode 直接描述任务即可自动加载。
 
 ## ✨ 效果示例
 

@@ -1,110 +1,110 @@
 # 安装、更新与卸载
 
-核心写作只需要你的 AI Agent 能加载 `SKILL.md`。下面四种方式任选其一；各 Agent 的目录见 [兼容说明](compatibility.md)。
+本项目只有一种安装方式：仓库自带的 `scripts/install_skill.py`。你可以让 AI Agent 替你运行它，也可以自己在终端运行，两者装出来的副本完全一样，都能安全地更新和卸载。
 
-## 方式一：让 Agent 自己安装（推荐）
+支持 **Claude Code、Codex、Cursor、Grok Build、OpenCode**。安装脚本需要 Python 3.9 或更新版本，只使用标准库，不联网。各 Agent 的目录与调用方式见 [兼容说明](compatibility.md)。
+
+## 让 Agent 替你安装（推荐）
 
 把下面这段话发给你的 Agent：
 
 ```text
-请帮我安装（已安装则更新）学术写作 Skill「academic-writing-assistant」。
-来源：https://github.com/LvvUP/academic-writing-assistant （main 分支），只需要其中的 skills/academic-writing-assistant/ 文件夹。
-1. 判断你运行在哪个 Agent，确定它的用户级 Skills 目录（Windows 下 ~ 即 %USERPROFILE%）。参考：
-   Claude Code ~/.claude/skills · Codex ~/.agents/skills · Cursor ~/.cursor/skills · Grok Build ~/.grok/skills
-   WorkBuddy ~/.workbuddy/skills 或 ~/.codebuddy/skills（以你实际加载的为准）· Gemini CLI ~/.gemini/skills · GitHub Copilot ~/.copilot/skills
-   其他 Agent 以其官方文档为准（多数支持 ~/.agents/skills）；无法确定时先问我，不要猜。
-2. 用 git clone --depth 1 或下载 ZIP 到临时目录，把该文件夹完整复制为“Skills 目录/academic-writing-assistant/”，文件夹名保持不变。不要运行仓库里的脚本，不要使用 sudo。
-3. 如果目标位置或你会读取的其他 Skills 目录里已有同名 Skill，先告诉我旧版本号，把旧文件夹移到所有 Skills 目录之外备份，再放入新版，避免出现两份。
-4. 完成后确认 SKILL.md 存在并删除临时目录，告诉我安装路径、版本号、是否需要重启或新开会话，以及调用方式。
+请帮我安装（已安装则更新）学术写作 Skill「academic-writing-assistant」，全程只用仓库自带的安装脚本：
+1. 判断你是哪个 Agent，确定 --host：Claude Code → claude，Codex → codex，Cursor → cursor，Grok Build → grok-build，OpenCode → opencode。不是这五个就告诉我并停止。
+2. 把 https://github.com/LvvUP/academic-writing-assistant（main 分支）git clone --depth 1 到一个临时文件夹，在其中运行（需 Python 3.9+；Windows 可用 py -3 代替 python3）：
+   python3 -B scripts/install_skill.py install --host <上面的值> --home-root "$HOME"
+3. 如果提示已安装，把 install 换成 update 再运行；如果提示需要 --backup-existing，加上它再运行（旧副本会移到备份文件夹，不会删除）。遇到其他错误就原样告诉我并停止：不要手动复制或删除文件、不要绕过检查、不要用 sudo。
+4. 完成后删除临时文件夹，把脚本输出的安装路径、版本和 note 提示告诉我，并说明调用方式、是否需要新开会话。
 ```
 
-**更新：** 再发送一次同样的提示词。**卸载：** 让 Agent 删除对应 Skills 目录中的 `academic-writing-assistant` 文件夹。
+**更新：** 再发送一次同样的话。脚本每次从新下载的仓库读取最新版本，不需要长期保留仓库副本。
 
-## 方式二：skills CLI（一条命令，多种 Agent）
-
-需要 Node.js。[skills](https://github.com/vercel-labs/skills) 是一个开源的跨 Agent 安装工具，运行后可选择要安装到哪些 Agent：
+## 自己在终端运行
 
 ```sh
-npx skills add LvvUP/academic-writing-assistant -g
-```
-
-- `-g` 安装到用户级目录；省略则安装到当前项目。
-- `-a` 指定 Agent，例如 `-a claude-code codex cursor`。
-- 更新：`npx skills update`；卸载：`npx skills remove academic-writing-assistant`。具体参数以该工具的说明为准。
-
-## 方式三：仓库自带的安装脚本
-
-需要 Python 3.9 或更新版本。脚本只使用标准库、不联网，会记录安装清单，以便安全地更新和卸载：
-
-```sh
-git clone https://github.com/LvvUP/academic-writing-assistant.git
+git clone --depth 1 https://github.com/LvvUP/academic-writing-assistant.git
 cd academic-writing-assistant
 python3 -B scripts/install_skill.py install --host claude --home-root "$HOME"
 ```
 
-| `--host` | 安装位置（相对于 `--home-root`） |
-|---|---|
-| `claude` | `.claude/skills/academic-writing-assistant` |
-| `codex` | `.agents/skills/academic-writing-assistant` |
-| `cursor` | `.cursor/skills/academic-writing-assistant` |
-| `grok-build` | `.grok/skills/academic-writing-assistant` |
-| `workbuddy` | `.workbuddy/skills/academic-writing-assistant`（若 WorkBuddy 未识别，可改用 `codebuddy`） |
-| `codebuddy` | `.codebuddy/skills/academic-writing-assistant` |
-| `gemini` | `.gemini/skills/academic-writing-assistant` |
-| `copilot` | `.copilot/skills/academic-writing-assistant` |
-| `opencode` | `.config/opencode/skills/academic-writing-assistant` |
-| `trae` / `trae-cn` | `.trae/skills/…` / `.trae-cn/skills/…` |
-| `qoder` | `.qoder/skills/academic-writing-assistant` |
-| `kiro` | `.kiro/skills/academic-writing-assistant` |
-| `windsurf` | `.codeium/windsurf/skills/academic-writing-assistant` |
+| Agent | `--host` | 安装位置（相对于 `--home-root`） |
+|---|---|---|
+| Claude Code | `claude` | `.claude/skills/academic-writing-assistant` |
+| Codex | `codex` | `.agents/skills/academic-writing-assistant` |
+| Cursor | `cursor` | `.cursor/skills/academic-writing-assistant` |
+| Grok Build | `grok-build` | `.grok/skills/academic-writing-assistant` |
+| OpenCode | `opencode` | `.config/opencode/skills/academic-writing-assistant` |
 
-安装到项目目录或其他位置时，用 `--destination` 指定完整路径（路径末尾必须是 `academic-writing-assistant`）：
+更新与卸载使用相同的参数：
+
+```sh
+git pull --ff-only    # 或重新 clone 一份
+python3 -B scripts/install_skill.py update --host claude --home-root "$HOME"
+python3 -B scripts/install_skill.py uninstall --host claude --home-root "$HOME"
+```
+
+Windows 可用 `py -3` 或 `python` 代替 `python3`。PowerShell 中 `"$HOME"` 可直接使用；cmd 中请写 `"%USERPROFILE%"`。加 `--json` 可得到结构化结果。
+
+成功时脚本会输出安装路径和版本，更新时显示 `旧版本 -> 新版本`。
+
+### 安装到项目目录
+
+只想在某个项目中使用时，用 `--destination` 指定完整路径（末尾必须是 `academic-writing-assistant`）：
 
 ```sh
 python3 -B scripts/install_skill.py install \
   --destination "/path/to/project/.claude/skills/academic-writing-assistant"
 ```
 
-更新与卸载（先在仓库中 `git pull` 获取新版本）：
+`update`、`uninstall` 使用同一个 `--destination`。各 Agent 的项目级目录见 [兼容说明](compatibility.md)。
+
+## 已有旧副本：`--backup-existing`
+
+如果目标位置已有一份不是由本脚本安装的副本（例如以前手动复制、用 `npx skills` 等其他工具安装），或者副本里的文件被修改过、多了 `__pycache__` 等文件，`install` 和 `update` 都会拒绝并说明原因，不会改动任何文件。
+
+确认要换成新版本时运行：
 
 ```sh
-git pull --ff-only
-python3 -B scripts/install_skill.py update --host claude --home-root "$HOME"
-python3 -B scripts/install_skill.py uninstall --host claude --home-root "$HOME"
+python3 -B scripts/install_skill.py update --host claude --home-root "$HOME" --backup-existing
 ```
 
-Windows 可用 `python` 或 `py -3` 代替 `python3`，`--home-root` 使用 `%USERPROFILE%`。
+脚本会把整个旧文件夹**移到**备份位置（不删除、不合并），再安装一份由脚本管理的新副本。备份位于 Skills 目录之外，例如 `~/.claude/.academic-writing-assistant-backups/<时间>/academic-writing-assistant`，所以 Agent 不会把它当成第二份 Skill。确认不再需要后，你可以自行删除备份。安装失败时，旧副本会被放回原处。
 
-**安全保护：**
+## 输出中的 note：其他位置的同名副本
 
-- 目标已存在时拒绝安装，不会覆盖已有文件夹。
-- 更新与卸载前逐一核对安装记录中的文件哈希；你修改过或新增的文件会让操作停止，不会被覆盖或删除。
-- 拒绝符号链接、Windows 目录联接和 `..` 路径；不需要 `sudo`。
+有些 Agent 会同时读取多个目录。例如 Cursor、OpenCode 也读取 `~/.claude/skills` 和 `~/.agents/skills`。安装或更新后，如果这些目录里还有本 Skill 的其他副本，脚本会列出来并说明哪些 Agent 可能显示两份：
+
+```text
+note: another copy exists at ~/.agents/skills/academic-writing-assistant (keep it current with update --host codex); Cursor, Grok Build, OpenCode may list the Skill twice.
+```
+
+脚本不会动这些副本。同时使用多个 Agent 时，可参考 [避免重复安装](compatibility.md#避免重复安装) 决定保留哪几份；保留多份时，用对应的 `--host` 分别更新。
+
+## 安全保护
+
 - 只复制 [包清单](../skills/academic-writing-assistant/package-manifest.json) 列出的文件，不包含测试、文档或缓存。
-
-脚本只管理由它自己安装的副本。用提示词、skills CLI 或手动复制安装的副本，请用相同方式更新；如果想改用脚本管理，先把旧副本移到所有 Skills 目录之外，再用脚本重新安装。
-
-## 方式四：手动安装
-
-1. 下载仓库（`git clone` 或在 GitHub 页面下载 ZIP）。
-2. 把 `skills/academic-writing-assistant/` **整个文件夹**复制到对应 Agent 的 Skills 目录。只复制 `SKILL.md` 会缺少参考规则和脚本。
-3. 新开会话或重启 Agent。
+- 目标已存在时 `install` 拒绝操作；`update` 和 `uninstall` 会先逐一核对安装记录中的文件哈希，你修改或新增的文件会让操作停止。
+- `--backup-existing` 只移动旧副本，从不删除。
+- Skills 目录和安装包内部的符号链接、Windows 目录联接、硬链接和 `..` 路径都会被拒绝。仓库所在位置和 `--home-root` 本身会先解析为真实路径，因此从 macOS 的 `/tmp` 等系统链接位置运行也没有问题。
+- 不需要 `sudo`，不修改 Agent 的设置。
 
 ## 常见问题
 
-- **Agent 里看不到这个 Skill：** 确认路径为 `Skills 目录/academic-writing-assistant/SKILL.md`，文件夹名没有被改动；然后新开会话或重启 Agent。
-- **出现两份同名 Skill：** 有些 Agent 会读取多个目录，见 [避免重复安装](compatibility.md#避免重复安装)。
-- **安装脚本提示目标已存在：** 说明该位置已有副本。请先确认它的来源并自行备份，脚本不会自动覆盖。
-- **安装脚本提示有额外文件或 `__pycache__`：** 运行脚本时 Python 可能生成缓存。确认后把这些文件移出 Skill 目录再重试；日常运行脚本时加 `-B` 可避免生成缓存。
-- **macOS 提示 `Symlink or reparse-point path refused: /tmp`：** macOS 的 `/tmp`、`/var` 本身是符号链接，安装脚本出于安全考虑会拒绝。请把仓库克隆到用户主目录下的普通文件夹再运行。
-- **没有 Python：** 不影响写作功能，只是无法运行可选的机械核查脚本。
+- **Agent 里看不到这个 Skill：** 确认 `SKILL.md` 位于上表中的安装位置，然后新开会话或重启 Agent。
+- **提示 `Already installed ... by this tool`：** 已经安装过，把 `install` 换成 `update`。
+- **提示需要 `--backup-existing`：** 见上文 [已有旧副本](#已有旧副本--backup-existing)。
+- **提示 `Symlink or reparse-point path refused`：** Skills 目录本身是符号链接（例如把 `~/.agents/skills` 链接到别处）。脚本出于安全考虑不会写入，请改用真实目录，或用 `--destination` 指定链接指向的真实路径。
+- **使用的 Agent 不在这五个之中：** 目前不提供官方支持。如果它支持 Agent Skills，可以用 `--destination` 安装到它的 Skills 目录。
+- **没有 Python：** 安装脚本需要 Python 3.9+。安装后的写作功能本身不依赖 Python，只有可选的机械核查脚本需要它。
+
+脚本退出码：`0` 成功；`1` 拒绝操作或文件系统错误（错误信息说明原因，已有文件不会被删除）；`2` 参数用法错误。
 
 ## English quick start
 
-Paste the install prompt from the [README](../README_EN.md#-install) into your agent, or run `npx skills add LvvUP/academic-writing-assistant -g`, or use the bundled installer:
+There is one installation method: the bundled `scripts/install_skill.py`, run either by your agent (paste the prompt from the [README](../README_EN.md#-install)) or by you:
 
 ```sh
 python3 -B scripts/install_skill.py install --host claude --home-root "$HOME"
 ```
 
-The installer refuses existing destinations, verifies file hashes before update and uninstall, rejects symlinks and copies only the files listed in the package manifest. Copies installed by prompt, the skills CLI or by hand should be updated the same way they were installed.
+`--host` is one of `claude`, `codex`, `cursor`, `grok-build` or `opencode`. Use `update` / `uninstall` with the same options. The installer copies only the files in the package manifest and verifies hashes before updating or removing. A copy it did not install (or one that was modified) is never overwritten; `update --backup-existing` moves it to a backup folder outside the skills directory and installs a managed copy. After install and update it reports the version and lists other copies that some agents may also load.
