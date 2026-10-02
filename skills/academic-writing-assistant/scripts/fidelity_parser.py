@@ -69,6 +69,14 @@ UNIT = re.compile(
 )
 STRUCTURE = re.compile(r'(?<![A-Za-z])(?P<kind>Section|Sect\.|Sec\.|Table|Tab\.|Figure|Fig\.|Equation|Eq\.|Algorithm|Alg\.|Appendix|Chapter|表|图|公式|附录|章节)\s*~?\s*\(?(?P<id>\d+(?:\.\d+)*|[A-Z](?:\.\d+)*)\)?', re.IGNORECASE)
 BRACKET = re.compile(r'(?<!\\)\[(\d+(?:\s*[-,–]\s*\d+)*)\]')
+# 第十条 / 第3章 / 第二款: ordinal references common in law, theses and humanities.
+CN_ORDINAL = re.compile(r'第(?P<id>[0-9０-９]+|[零〇一二两三四五六七八九十百千]+)(?P<kind>章|节|条|款|项|目|编|篇|卷|册|页|部分)')
+CN_DIGITS = {'零': 0, '〇': 0, '一': 1, '二': 2, '两': 2, '三': 3, '四': 4, '五': 5, '六': 6, '七': 7, '八': 8, '九': 9}
+CN_SCALES = {'十': 10, '百': 100, '千': 1000}
+# （张三，2020） / (李四等, 2021a): Chinese author-year citations in either bracket width.
+CN_AUTHOR_YEAR = re.compile(r'[（(]([\u4e00-\u9fff·]{1,12}(?:等|和[\u4e00-\u9fff·]{1,12}|、[\u4e00-\u9fff·]{1,12})*[，,]\s*\d{4}[a-z]?)[)）]')
+# 《劳动合同法》 / 《史记》: titles of laws, books and journals are fixed names.
+CN_TITLE = re.compile(r'《[^《》\n]{1,80}》')
 AUTHOR_YEAR = re.compile(r"\(([A-Z][A-Za-z\u00C0-\u024F'’\-]+(?:\s+(?:et\s+al\.?|and|&)\s*[A-Za-z\u00C0-\u024F'’\-]*)?,?\s*\d{4}[a-z]?)\)")
 ENTITY = re.compile(r'(?<![\w-])([A-Z][A-Za-z]*(?:-[A-Z0-9][A-Za-z0-9]*)+|[A-Z]{2,}[A-Za-z0-9]*|[A-Z][a-z]+[A-Z][A-Za-z0-9]*|[A-Z][A-Za-z]+\d+[A-Za-z0-9]*)(?![\w-])')
 
@@ -461,6 +469,12 @@ class Scanner:
         for match in STRUCTURE.finditer(text):
             self.add('structural_references', match.start(), match.end(), match.group('kind').lower() + ':' + match.group('id'))
             mask_region(chars, match.start(), match.end())
+        for match in CN_ORDINAL.finditer(text):
+            self.add('structural_references', match.start(), match.end(), match.group('kind') + ':' + chinese_ordinal(match.group('id')))
+            mask_region(chars, match.start(), match.end())
+        for match in CN_TITLE.finditer(text):
+            self.add('named_entities', match.start(), match.end(), match.group(0))
+            mask_region(chars, match.start(), match.end())
         text = self.intervals(''.join(chars))
         chars = list(text)
         for match in BRACKET.finditer(text):
@@ -472,6 +486,10 @@ class Scanner:
             mask_region(chars, match.start(), match.end())
         for match in AUTHOR_YEAR.finditer(text):
             self.add('author_year_citations', match.start(), match.end(), re.sub(r'\s+', ' ', match.group(0)))
+            mask_region(chars, match.start(), match.end())
+        for match in CN_AUTHOR_YEAR.finditer(text):
+            # Bracket width and comma width are layout; author and year are not.
+            self.add('author_year_citations', match.start(), match.end(), '(' + re.sub(r'\s*[，,]\s*', ', ', match.group(1)) + ')')
             mask_region(chars, match.start(), match.end())
         text = ''.join(chars)
         for match in ENTITY.finditer(text):
@@ -651,6 +669,21 @@ class Scanner:
         if not total:
             coverage['warnings'] = self.warnings + [{'kind': 'zero_coverage', 'start': 0, 'end': len(self.text), 'detail': 'No supported protected items were recognized.'}]
         return Extraction(self.items, coverage)
+
+
+def chinese_ordinal(value: str) -> str:
+    """第十二条 and 第12条 name the same article; other spellings stay distinct."""
+    value = fold_width(value)
+    if value.isdigit():
+        return str(int(value))
+    total, digit = 0, None
+    for char in value:
+        if char in CN_DIGITS:
+            digit = CN_DIGITS[char]
+        else:
+            total += (1 if digit is None else digit) * CN_SCALES[char]
+            digit = None
+    return str(total + (digit or 0))
 
 
 def normalize_atom(value: str) -> str:

@@ -396,3 +396,17 @@ def test_final_claims_later_outcome_cannot_supply_earlier_significance():
     assert findings[0]['end'] < text.index('outcome A')
     assert 'p = 0.01' not in findings[0]['source']
     assert findings[0]['source'] == text[:findings[0]['end']]
+
+
+def test_word_count_keeps_accented_words_whole_and_counts_numbers():
+    text = 'We recruited 25 participants from a naïve cohort in Zürich; accuracy rose to 93.2% in 2024.'
+    summary = audit.check_length(text, None, None, False)[0]['item']
+    assert summary.startswith('16 English words')
+
+
+def test_word_limit_counts_chinese_characters_and_embedded_numbers():
+    text = '本研究调查了 300 名教师（r = 0.32）。'
+    result = audit.check_length(text, 10, None, False)
+    assert result[0]['item'].startswith('3 English words')
+    assert '9 Chinese characters' in result[0]['item']
+    assert any(f['type'] == 'over_word_limit' and f['item'] == '12 / 10' for f in result)

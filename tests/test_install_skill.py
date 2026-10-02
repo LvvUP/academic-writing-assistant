@@ -202,6 +202,11 @@ def test_failed_update_restores_previous_installation(source, tmp_path, monkeypa
 @pytest.mark.parametrize("host,relative", [
     ("codex", ".agents/skills"), ("claude", ".claude/skills"),
     ("cursor", ".cursor/skills"), ("grok-build", ".grok/skills"),
+    ("workbuddy", ".workbuddy/skills"), ("codebuddy", ".codebuddy/skills"),
+    ("gemini", ".gemini/skills"), ("copilot", ".copilot/skills"),
+    ("opencode", ".config/opencode/skills"), ("trae", ".trae/skills"),
+    ("trae-cn", ".trae-cn/skills"), ("qoder", ".qoder/skills"),
+    ("kiro", ".kiro/skills"), ("windsurf", ".codeium/windsurf/skills"),
 ])
 def test_host_mapping_uses_explicit_home_without_environment_changes(tmp_path, host, relative):
     before = dict(os.environ)

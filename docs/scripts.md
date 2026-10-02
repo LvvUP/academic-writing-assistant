@@ -23,7 +23,7 @@ python3 -B <skill-root>/scripts/fidelity_check.py --before original.tex --after 
 python3 -B <skill-root>/scripts/fidelity_check.py --before original.tex --after revised.tex --strict
 ```
 
-保留旧类别字段，新增 `_meta`（schema version 2）与来源位置、原始片段、重复项和上下文信息。检查范围包括带符号及指数的数值、常用单位、比较符、百分比/百分点、区间、引用键与命令、结构引用类型、公式和静态可定位的宏参数。不同科学含义不会仅因格式归一化被判等。
+保留旧类别字段，新增 `_meta`（schema version 2）与来源位置、原始片段、重复项和上下文信息。检查范围包括带符号及指数的数值、常用单位、比较符、百分比/百分点、区间、引用键与命令、结构引用类型、公式和静态可定位的宏参数。中文稿件另外识别“第十条”“第3章”等序号引用（“第十二条”与“第12条”视为同一项）、“（张三，2020）”等中文作者—年份引用，以及《书名号》中的法律、著作和期刊名称。不同科学含义不会仅因格式归一化被判等。
 
 `numbers` 中的一项可以是完整数值关系，不等于一个独立标量：先读取各操作数的数值、幂和单位，再保留连接它们的运算符。例如 `5 ms ± 1 ms` 计为一项，两次出现仍计两项；`±`/`∓`、乘除和数值左右的比较方向不会被忽略。Unicode 负号与 ASCII 减号可归一，减法 `5 - 3` 不与文字范围 `5 to 3` 判等。数字/单位间空白、`\pm` 与 `±` 等明确等价写法允许归一，不进行单位换算或推导数值等价。
 
@@ -50,7 +50,7 @@ python3 -B <skill-root>/scripts/manuscript_audit.py highlights.txt --limit-chars
 - 文风与术语：提示可疑冗余和配置的英文用法差异，修改仍需判断原义。
 - 时态：自动时态审计目前 **NOT RUN**；正常方法现在时与实验过去时混用不报错。显式请求 `--checks tense` 会报告未实现覆盖，严格模式退出 1。
 
-词数按报告列出的英文词与 CJK 字符口径估算；字符上限含空格，逐行模式分别核对各行。它们不是所有投稿系统的统一计数算法。85 字符仅在目标要求适用时使用，政策范围见 [policy-sources.md](../skills/academic-writing-assistant/references/policy-sources.md)。
+词数按报告列出的口径估算：英文词含数字（如 25、93.2），带重音符号的拉丁字母词计为一个词，中文按汉字逐字计数；字符上限含空格，逐行模式分别核对各行。它们不是所有投稿系统的统一计数算法。85 字符仅在目标要求适用时使用，政策范围见 [policy-sources.md](../skills/academic-writing-assistant/references/policy-sources.md)。
 
 ## 术语关系
 

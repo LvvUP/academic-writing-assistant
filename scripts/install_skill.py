@@ -21,7 +21,12 @@ SKILL_NAME = 'academic-writing-assistant'
 TOOL_ID = 'academic-writing-assistant/install_skill'
 RECEIPT_NAME = '.academic-writing-assistant-install.json'
 HOST_PATHS = {'codex': '.agents/skills', 'claude': '.claude/skills',
-              'cursor': '.cursor/skills', 'grok-build': '.grok/skills'}
+              'cursor': '.cursor/skills', 'grok-build': '.grok/skills',
+              'workbuddy': '.workbuddy/skills', 'codebuddy': '.codebuddy/skills',
+              'gemini': '.gemini/skills', 'copilot': '.copilot/skills',
+              'opencode': '.config/opencode/skills', 'trae': '.trae/skills',
+              'trae-cn': '.trae-cn/skills', 'qoder': '.qoder/skills',
+              'kiro': '.kiro/skills', 'windsurf': '.codeium/windsurf/skills'}
 MANIFEST_NAME = 'package-manifest.json'
 IS_WINDOWS = os.name == 'nt'
 MAX_FILE_BYTES = 16 * 1024 * 1024

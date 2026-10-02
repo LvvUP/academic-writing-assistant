@@ -100,6 +100,14 @@ HEDGE_WORDS = (
     "可能", "或许", "一定程度", "有所", "较为", "往往",
 )
 
+# Word-processor style tokens: accented Latin letters stay inside one word and
+# numbers such as 25, 93.2 or 1,000 count as words, as most submission systems do.
+LATIN_LETTERS = "A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F"
+WORD_PATTERN = re.compile(
+    "[0-9" + LATIN_LETTERS + "](?:[0-9" + LATIN_LETTERS + "'\u2019-]|[.,](?=[0-9]))*"
+)
+CJK_PATTERN = re.compile("[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]")
+
 
 def read_text(path: Optional[str]) -> str:
     return read_input(path)
@@ -436,15 +444,15 @@ def check_length(
                 )
         return findings
 
-    words = len(re.findall(r"[A-Za-z][A-Za-z'-]*", prose))
-    cjk = len(re.findall(r"[\u4e00-\u9fff]", prose))
+    words = len(WORD_PATTERN.findall(prose))
+    cjk = len(CJK_PATTERN.findall(prose))
     included = bytearray(b"1") * len(text)
     for span in excluded:
         included[span["start"]:span["end"]] = b"0" * (span["end"] - span["start"])
     visible = "".join(c for pos, c in enumerate(prose) if included[pos] == ord("1"))
     total_chars = len(visible.strip())
 
-    summary = f"{words} English words"
+    summary = f"{words} English words (numbers included)"
     if cjk:
         summary += f", {cjk} Chinese characters"
     summary += f", {total_chars} characters including spaces"

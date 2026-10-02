@@ -1,7 +1,7 @@
 {
   "name": "academic-writing-assistant",
-  "version": "0.3.0",
-  "description": "面向中文科研作者的通用学术写作 Skill，支持论文润色、中英互译、审稿回复与保真核查。",
+  "version": "0.4.0",
+  "description": "通用学术写作 Skill：论文润色、中英互译、章节起草、学位论文与基金申请、审稿回复与投稿材料，不改数据、不编文献、不夸大结论，适用于各学科。",
   "author": {
     "name": "Academic Writing Assistant contributors",
     "url": "https://github.com/LvvUP"
@@ -11,14 +11,17 @@
   "license": "AGPL-3.0-only",
   "keywords": [
     "agent-skills",
-    "scientific-writing",
     "academic-writing",
+    "scientific-writing",
     "research-paper",
+    "paper-polishing",
     "translation",
-    "polishing",
     "chinese-academic-writing",
+    "thesis",
+    "grant-proposal",
     "reviewer-response",
     "rebuttal",
+    "citation",
     "latex",
     "manuscript",
     "peer-review"
@@ -27,7 +30,7 @@
   "interface": {
     "displayName": "Academic Writing Assistant",
     "shortDescription": "论文润色、中英互译、审稿回复与保真核查",
-    "longDescription": "面向中英文学术论文的通用 Skill。通过锁定区、承重语言与自由表层、L1/L2/L3 改动分级和重要改动台账，帮助作者核对事实、数值及证据边界。支持分层写作模式、来源核验、按研究类型审阅及本地机械检查；具体能力取决于宿主，实际兼容状态见仓库文档。",
+    "longDescription": "面向中英文学术写作的通用 Skill，适用于理工、医学、经管、社科、人文、法学等各学科。支持论文润色、中英互译、章节起草、学位论文与开题报告、基金申请书、审稿回复、投稿材料与引用格式整理。通过锁定区、承重语言与自由表层的保真契约，以及 L1/L2/L3 改动分级和重要改动台账，确保数值、引用与结论强度不被悄悄改变。",
     "developerName": "Academic Writing Assistant contributors",
     "category": "Productivity",
     "capabilities": [
@@ -35,9 +38,9 @@
       "Write"
     ],
     "defaultPrompt": [
-      "请快速润色这段中文学术文本，保留事实、数值和限定条件。",
-      "请把这段中文学术文本翻译成英文，保留 LaTeX、引用键及术语。",
-      "请根据已提供证据起草审稿回复，区分已完成工作、计划与未知信息。"
+      "请润色这段学术文本，保留数值、引用和结论范围，并说明重要改动。",
+      "请把这段中文学术文本翻译成英文，保留术语、引用与 LaTeX。",
+      "请根据我提供的材料起草审稿回复，区分已完成的修改与计划。"
     ],
     "brandColor": "#2563EB",
     "composerIcon": "./assets/logo/revision-compass.png",

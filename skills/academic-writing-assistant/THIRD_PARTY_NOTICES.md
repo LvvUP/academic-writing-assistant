@@ -1,12 +1,12 @@
 # Copyright and third-party notices
 
-Academic Writing Assistant 0.3.0 (development version; not a tagged release).
+Academic Writing Assistant 0.4.0.
 Copyright (c) 2026 LvvUP
 Copyright (c) 2026 Academic Writing Assistant contributors
 
 SPDX-License-Identifier: AGPL-3.0-only
 
-The project as a whole, including the changes in version 0.3.0, is provided
+The project as a whole, including the changes in version 0.4.0, is provided
 under the GNU Affero General Public License, version 3 only. See LICENSE for
 the unmodified standard license text. The application example in its appendix
 does not change this project's version-3-only choice.

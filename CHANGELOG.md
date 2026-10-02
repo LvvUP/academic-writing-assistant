@@ -1,99 +1,59 @@
 # 变更日志 / Changelog
 
-## 维护更新
+## 0.4.0
 
-- 重写中文优先的双语 README，补充论文润色、中英翻译和审稿回复示例，安装说明同步默认分支。
-- 一次性验收流水与旧评估徽章移出当前公开文件清单；保留可复用文档、测试、示例和公开评估摘要。
-- 安装、更新、卸载、导出与交付校验拒绝 Windows 重解析点，补充目录联接边界回归。
-- 升级开发测试依赖，并为 Python 3.9 测试隔离临时目录；适用范围见[测试指南](docs/testing.md)。
+面向所有学科的通用版本，并大幅简化安装。
+
+### 写作能力
+
+- **全学科适配**：学科适配重写为 12 个学科大类（人文、法学、经管、社科、教育心理、医学与公共卫生、生命科学与农学、理化材料、数学统计、地球环境、工程、计算机与人工智能），并给出未列学科的通用流程。
+- **新增学位论文、开题报告与基金申请书工作流**：区分计划、预期与已完成，研究基础与成果清单只使用作者提供的事实。
+- **新增引用格式指南**：顺序编码、作者—年份、脚注体系，GB/T 7714、APA、IEEE、Vancouver、Chicago 等常见要点；格式转换只使用已提供的元数据。
+- **研究类型扩展**：新增定量观察与调查、人文与法学阐释、案例研究、设计与工程实现四类。
+- **中文写作指南扩充**：口语化、空泛开头、“的”字堆叠、欧化长句等常见问题；标点、数字、单位与中文摘要要点；“显著”的统计含义与日常含义。
+- **英文写作指南扩充**：中文作者常见英文问题（不可数名词复数、冠词、空泛开头、悬垂修饰等）及对应的保真边界。
+- **承重语言补充**：法律规范效力（应当/可以/不得）、人文阐释性限定纳入保护范围。
+- 新增经济学、法学、历史学、开题报告的合成示例。
+
+### 核查脚本
+
+- `fidelity_check.py` 识别中文法条与章节序号（如“第十条”“第3章”，并将“第十二条”与“第12条”视为同一项）、中文作者—年份引用（如“（张三，2020）”）和书名号标题（如《劳动合同法》）。
+- `manuscript_audit.py` 的词数统计将数字计为词，带重音符号的拉丁字母词（如 naïve）不再被拆分，CJK 扩展区汉字计入字数。
+- 术语表新增统计、医学与公共卫生、心理与教育、经济与管理词组，提示“发病率/患病率”“信度/可靠性”等不应混用的概念。
+
+### 安装与文档
+
+- 推荐用一段提示词让 AI Agent 自行安装；同时支持 `npx skills`、安装脚本和手动复制。
+- `install_skill.py` 新增 WorkBuddy、CodeBuddy、Gemini CLI、GitHub Copilot、OpenCode、Trae、Qoder、Kiro、Windsurf 的安装目录。
+- README 重写，示例覆盖多个学科；兼容说明覆盖 Claude Code、Codex、Cursor、Grok Build、WorkBuddy 等常见 Agent，并说明如何避免重复安装。
 
 ## 0.3.0
 
-0.3.0 已通过 [PR #2](https://github.com/LvvUP/academic-writing-assistant/pull/2) 合并到 `main`。主要更新如下；后续方向见 [路线图](ROADMAP.md)。
-
-### 写作与证据
-
-- 保留三区域、L1/L2/L3 和重要改动台账，统一仅正文输出、语言路由、条件稿与作者确认规则。
-- 明确区分统计依据未提供与未做检验、相关与因果、作者原值与推算值、百分点与相对百分比，以及已完成工作与未来计划。
-- 引入按任务缩放的快速润色、标准修订和深度结构审阅，以及关键主张到实际证据位置的对应。
-- 实际利用可读表格、全文与来源；按元数据、摘要、全文分别报告核验范围，检索遵守用户来源限制与外传授权。
-- 增加理论、定性与综述适配及合成示例；作者术语优先，相关概念不再作为等价词直接统一。
-- 修正摘要工作稿遗漏明确未完成状态的规则：仅正文也保留已知进度，不能由结果材料缺失推断研究未完成。
-- 投稿政策按来源、年份、轨道和核验日期记录；声明与审稿回复不补造作者行为、伦理审批或未来承诺。
-
-### 脚本与接口
-
-- 改进数值、符号、单位、比较、区间、重复项、引用和 LaTeX 静态解析；报告来源位置、原文片段及部分上下文变化。
-- 保真 JSON 保留原类别并新增 `_meta`（schema version 2）。结果区分 `UNCHANGED_WITHIN_COVERAGE`、`REVIEW_NEEDED` 与 `INSUFFICIENT`；无可检查项不再表示整稿通过。
-- 四个稿件入口统一 UTF-8/BOM、标准输入、`--json`、`--strict` 和输入错误处理。保真前后文件最多一个可使用标准输入。
-- 修正稿件审计中的正文提取、统计线索范围与计量边界；缩写提示不等于数学符号定义检查。自动时态审计未实现，显式 `--checks tense` 报告未检查，严格模式退出 1。
-- 术语检查区分等价写法、文风偏好与相关概念，保留原文位置并改进重叠匹配；`--map` 使用完整自定义词表替换默认词表。
-- 结构检查新增 `--research-type`，覆盖经验、理论、综述与定性研究；改进占位识别与长文本处理，关键词提示不构成质量评分。
-- 保留旧章节与术语兼容入口。稿件脚本默认扫描完成退出 0，严格模式发现问题或覆盖不足退出 1，输入或运行错误退出 2；详见 [接口说明](docs/scripts.md)。
-
-### 安装、测试与公开交付
-
-- 增加显式包清单，以及安装、更新、卸载和独立导出工具；拒绝覆盖未知目标，按安装记录与文件内容保护已有改动。
-- 以单一核心适配宿主路径和能力降级，分别报告官方说明、目录映射、原生发现与实际模型调用结果。未运行环境保留未验证状态。
-- 增加确定性边界回归、固定开发依赖、最小权限 CI、SHA 固定的 Actions 和校验归档的密钥扫描配置。
-- 增加工作树、暂存区与独立包交付守卫；私人资料、原始记录与公开文档分开管理，忽略规则不替代 Git 历史检查。
-- 增加可复跑的合成行为评估协议与 [实际结果](evals/results-2026-09-10.md)。保留初始升级版 23 PASS / 1 FAIL 的原始 24 项结果，修复后定向验证另列，不据此宣称总体优于基线。
-- 整理中文优先的公开文档、贡献与验证说明，合并重复路线图。平台与原生宿主测试边界见 [兼容矩阵](docs/compatibility.md)。
-
-### 许可
-
-- 当前版本采用 **AGPL-3.0-only**，独立 Skill 包包含许可及必要历史/第三方声明。
-- 保留历史 MIT 版本已经授予的权利与必要版权声明。版本边界与外部材料说明见 [许可说明](docs/licensing.md) 和 [声明清单](THIRD_PARTY_NOTICES.md)。
-
-## 历史记录说明
-
-以下 0.2.0、0.1.0 内容按历史原文保留，不作为当前工具能力保证。旧条目中的“验证保留”、符号与时态检查等表述，须结合当前 [脚本覆盖边界](docs/scripts.md) 理解；例如自动时态审计未实现，机械比对不能证明全文科学语义。历史提及的 85 字符或其他投稿要求也不是所有 venue 的通用规则，使用前按 [政策来源](skills/academic-writing-assistant/references/policy-sources.md) 核查。
+- 保留三区域、L1/L2/L3 与重要改动台账，统一“只输出正文”、证据不足、作者行为和引用检索的规则。
+- 区分统计依据未提供与未做检验、相关与因果、作者原值与推算值、百分点与相对百分比、已完成工作与未来计划。
+- 引入快速润色、标准修订和深度结构审阅三种力度，以及关键主张到证据位置的对应。
+- 增加理论、定性与综述研究的适配和示例；作者术语优先。
+- 改进数值、单位、比较、区间、引用和 LaTeX 的静态保真比对；结果区分“覆盖范围内未变”“需要核对”“覆盖不足”。
+- 统一四个稿件脚本的 UTF-8 输入、`--json`、`--strict` 与退出码。
+- 增加清单驱动的安装、更新、卸载与导出工具，保护用户已修改的文件。
+- 当前版本采用 **AGPL-3.0-only**；保留历史 MIT 版本已授予的权利与声明，见 [许可说明](docs/licensing.md)。
 
 ## 0.2.0
 
 Reframes the Skill around fidelity: how far a revision may move a sentence
 before it changes what the author is claiming, and how the author audits that.
 
-### Added
-
 - **Fidelity contract** in `SKILL.md`: locked zone / load-bearing language /
   free surface, with L1–L3 change tiers and a change ledger.
-- `references/fidelity-protocol.md` — worked examples of the zones and tiers,
-  including cases where an edit should not be made.
-- `references/submission-package.md` — cover letters, highlights (85-character
-  limit), generative-AI disclosure statements, CRediT contribution statements.
-- `references/latex-and-formats.md` — editing `.tex` source without breaking
-  `\cite{}`, `\ref{}`, math, or custom macros; Word and Markdown handling.
-- `references/consistency-pass.md` — whole-draft terminology, abbreviation,
-  symbol, tense, number, and claim-strength consistency.
-- `scripts/fidelity_check.py` — verifies that citations, cross-references,
-  numbers, math blocks, and macros survived a rewrite.
-- `scripts/manuscript_audit.py` — abbreviation first-use, terminology drift,
-  significance language without a test, unbounded claims, causal overreach,
-  hedge stacking, tense mixing, and word/character limits.
-
-### Changed
-
-- `references/reviewer-response.md` now separates journal response letters from
-  conference rebuttals, which differ in length budget, tense, and structure.
-- `references/field-adapter.md` records what each field's reviewers attack
-  rather than listing vocabulary; adds NLP/LLM and social sciences.
-- `references/writing-workflows.md` rewritten around technique; adds
-  compression to a limit.
-- `references/style-guide-en.md` adds systematic Chinese-interference patterns.
-- `references/style-guide-zh.md` adds thesis-versus-journal conventions.
-- `references/task-router.md` covers bare-text input and requests to redirect.
-- `scripts/structure_checker.py` adds related_work and conclusion sections,
-  placeholder detection, and JSON output.
-- `scripts/terminology_checker.py` reports occurrence counts and the dominant
-  variant; the terminology map roughly doubles in coverage.
-- READMEs rewritten in both languages, with the Revision Compass logo retained.
+- New references for fidelity examples, submission materials, LaTeX and
+  document formats, and whole-draft consistency.
+- `scripts/fidelity_check.py` and `scripts/manuscript_audit.py`.
+- Reviewer-response guidance separates journal response letters from
+  conference rebuttals; field adapter, writing workflows and style guides
+  rewritten.
 
 ## 0.1.0
 
-- Initial release.
-- Academic Writing Assistant Skill with task routing, field adaptation, writing
-  workflows, output templates, quality checklist, citation safety rules, and
-  style guides.
-- Terminology, section-structure, and repository lint helper scripts.
-- Examples, tests, docs, and open-source governance files.
+- Initial release: task routing, field adaptation, writing workflows, output
+  templates, quality checklist, citation safety rules and style guides.
+- Terminology, section-structure and repository lint helper scripts.

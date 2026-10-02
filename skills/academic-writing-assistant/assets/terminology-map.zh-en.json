@@ -311,5 +311,115 @@
       "note": "同指同一组比较实验时可统一译法；不同实验设计仍须保留区别。",
       "relation": "style_preference"
     }
+  ],
+  "statistics_general": [
+    {
+      "recommended_zh": "样本量",
+      "variants_zh": [
+        "样本量",
+        "样本数",
+        "样本容量"
+      ],
+      "en": "sample size",
+      "note": "同指研究纳入的样本规模时可按作者或目标期刊习惯统一；“样本数”在部分语境中可能指样本组数或批次数，需结合上下文确认。",
+      "relation": "style_preference"
+    },
+    {
+      "recommended_zh": "统计学意义",
+      "variants_zh": [
+        "统计学意义",
+        "统计显著性"
+      ],
+      "en": "statistical significance",
+      "note": "两者通常指同一统计检验结论；不少中文医学期刊习惯写作“差异有统计学意义”。不要据此把日常语义的“显著/明显”改写成统计结论。",
+      "relation": "style_preference"
+    },
+    {
+      "recommended_zh": "置信区间",
+      "variants_zh": [
+        "置信区间",
+        "可信区间"
+      ],
+      "en": "confidence interval",
+      "note": "频率学派的置信区间与贝叶斯的可信区间（credible interval）含义不同；部分医学文献也用“可信区间”指 confidence interval。按作者实际统计方法确认，不自动统一。",
+      "relation": "related_concepts"
+    }
+  ],
+  "medicine_public_health": [
+    {
+      "recommended_zh": "发病率",
+      "variants_zh": [
+        "发病率",
+        "患病率"
+      ],
+      "en": "incidence",
+      "note": "发病率（incidence）指一段时间内新发病例的比例，患病率（prevalence）指某时点或时期内现患病例的比例，是不同指标，不能互换。",
+      "relation": "related_concepts"
+    },
+    {
+      "recommended_zh": "病死率",
+      "variants_zh": [
+        "病死率",
+        "死亡率"
+      ],
+      "en": "case fatality rate",
+      "note": "病死率（case fatality rate）以患者为分母，死亡率（mortality rate）通常以人群为分母，是不同指标。",
+      "relation": "related_concepts"
+    },
+    {
+      "recommended_zh": "临床试验",
+      "variants_zh": [
+        "临床试验",
+        "临床实验"
+      ],
+      "en": "clinical trial",
+      "note": "临床研究中的 trial 通常译作“试验”；“实验”多指实验室 experiment。确认作者所指的研究类型后再统一。",
+      "relation": "style_preference"
+    }
+  ],
+  "psychology_education": [
+    {
+      "recommended_zh": "信度",
+      "variants_zh": [
+        "信度",
+        "可靠性"
+      ],
+      "en": "reliability",
+      "note": "心理测量与教育测量中 reliability 通常称“信度”；工程中的“可靠性”是另一概念。确认语境后再统一。",
+      "relation": "related_concepts"
+    },
+    {
+      "recommended_zh": "效度",
+      "variants_zh": [
+        "效度",
+        "有效性"
+      ],
+      "en": "validity",
+      "note": "测量学中的 validity 通常称“效度”；“有效性”常对应 effectiveness 或 efficacy，含义不同。",
+      "relation": "related_concepts"
+    },
+    {
+      "recommended_zh": "被试",
+      "variants_zh": [
+        "被试",
+        "参与者",
+        "研究对象"
+      ],
+      "en": "participants",
+      "note": "三者常指同一批研究参与者，可按学科或目标期刊习惯选择并全文一致；不改变人数、纳入标准等事实。",
+      "relation": "style_preference"
+    }
+  ],
+  "economics_management": [
+    {
+      "recommended_zh": "稳健性检验",
+      "variants_zh": [
+        "稳健性检验",
+        "鲁棒性检验"
+      ],
+      "en": "robustness check",
+      "note": "经济学与管理学中文写作通常称“稳健性检验”；同指 robustness check 时可统一，不改变检验内容。",
+      "relation": "style_preference"
+    }
   ]
 }
