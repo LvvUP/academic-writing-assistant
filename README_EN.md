@@ -167,11 +167,18 @@ Open a new session and describe your writing task in plain language — the agen
 
 ## 🧭 Disciplines
 
-Built-in writing guidance for 12 discipline families; anything else follows a general procedure that respects your field's conventions and structure:
+Built-in writing guidance for 12 discipline families; anything else follows a general procedure that respects your field's conventions and structure.
 
-> Humanities · Law · Economics & management · Social sciences · Education & psychology · Medicine & public health · Life sciences & agriculture · Physics, chemistry & materials · Mathematics & statistics · Earth & environmental sciences · Engineering · Computer science & AI
+| Area | Discipline families |
+|---|---|
+| 📚 Humanities & social sciences | Humanities · Law · Economics & management · Social sciences · Education & psychology |
+| 🩺 Medicine & life sciences | Medicine & public health · Life sciences & agriculture |
+| 🔬 Natural sciences & mathematics | Physics, chemistry & materials · Mathematics & statistics · Earth & environmental sciences |
+| ⚙️ Engineering & computing | Engineering · Computer science & AI |
 
-Research types are handled on their own terms too: experimental, survey and econometric, qualitative, theoretical, review, humanities and legal interpretation, case study and design research. A history paper will not be asked for an "experimental setup", and interview themes will not become population percentages.
+**Research types are handled on their own terms too:** experimental · survey and econometric · qualitative · theoretical · review · humanities and legal interpretation · case study · design research
+
+> A history paper will not be asked for an "experimental setup", and interview themes will not become population percentages.
 
 ## 🛡️ The fidelity contract
 
@@ -233,4 +240,4 @@ If this Skill helps your writing, please give it a ⭐ **star** so more research
 
 ## 📄 License
 
-**AGPL-3.0-only** — see [LICENSE](LICENSE) and the [licensing notes](docs/licensing.md). Permissions granted under earlier MIT versions remain valid.
+**AGPL-3.0-only** — see [LICENSE](LICENSE) and the [licensing notes](docs/licensing.md).
