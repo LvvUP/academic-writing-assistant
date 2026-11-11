@@ -26,7 +26,7 @@ jobs:
         os: [ubuntu-22.04, windows-2022]
         python: ["3.9", "3.12"]
         include:
-          - os: macos-14
+          - os: macos-15
             python: "3.12"
     defaults:
       run:
