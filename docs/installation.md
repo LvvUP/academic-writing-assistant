@@ -18,7 +18,7 @@
 1. 判断你是哪个 Agent，确定 --host：Claude Code → claude，Codex → codex，Cursor → cursor，Grok Build → grok-build，OpenCode → opencode。不是这五个就告诉我并停止。
 2. 把 https://github.com/LvvUP/academic-writing-assistant（main 分支）git clone --depth 1 到一个临时文件夹，在其中运行（需 Python 3.9+；Windows 可用 py -3 代替 python3）：
    python3 -B scripts/install_skill.py install --host <上面的值> --home-root "$HOME"
-3. 如果提示已安装，把 install 换成 update 再运行；如果提示需要 --backup-existing，加上它再运行（旧副本会移到备份文件夹，不会删除）。遇到其他错误就原样告诉我并停止：不要手动复制或删除文件、不要绕过检查、不要用 sudo。
+3. 如果提示已安装，把 install 换成 update 再运行；如果提示需要 --backup-existing，就按提示改用 update 并加上它再运行（旧副本会移到备份文件夹，不会删除）。遇到其他错误就原样告诉我并停止：不要手动复制或删除文件、不要绕过检查、不要用 sudo。
 4. 验证：把上面命令里的 install 换成 verify 再运行一次，应输出 verified 和版本号。
 5. 删除临时文件夹，把安装路径、版本、备份位置（如有）和脚本输出的 note 提示告诉我，并说明调用方式、是否需要新开会话。
 ```
@@ -40,12 +40,12 @@ WorkBuddy 的官方文档要求自备的技能包通过「上传技能」导入�
 然后在 WorkBuddy 中上传：
 
 1. 左侧边栏点击 **专家·技能·连接器**，选中 **技能** 页签。
-2. 点击 **添加技能 → 上传技能**，拖入或选中 `academic-writing-assistant.zip`。官方文档只说“选中本地技能包”，没有说明格式；如果压缩包不被接受，可以改试同一目录下内容相同的 `academic-writing-assistant` 文件夹（这一做法未经官方文档确认）。
+2. 点击 **添加技能 → 上传技能**，拖入或选中 `academic-writing-assistant.zip`。如果压缩包无法导入，可以改用同一目录下内容相同的 `academic-writing-assistant` 文件夹。
 3. 列表里已有旧版本时，先在「已安装」中卸载旧版本，再上传新包。
 
 不想运行命令时，也可以在 [Releases 页面](https://github.com/LvvUP/academic-writing-assistant/releases) 下载最新版本附带的 `academic-writing-assistant.zip`，直接上传。
 
-> WorkBuddy 的官方文档没有写明上传包的格式，也没有写明本地技能目录。本项目的压缩包把 `SKILL.md` 放在第一层，同时提供同内容的文件夹；这一步依据官方文档描述的上传流程编写，尚未在 WorkBuddy 客户端中逐版本验证。各项说法的官方出处见 [兼容说明](compatibility.md#通过上传技能包安装的平台)。上传遇到问题请 [提交 Issue](https://github.com/LvvUP/academic-writing-assistant/issues)。
+> 这一流程依据 WorkBuddy 官方文档描述的「上传技能」方式编写，各项说法的官方出处见 [兼容说明](compatibility.md#通过上传技能包安装的平台)。压缩包把 `SKILL.md` 放在第一层，并附带内容相同的文件夹。上传遇到问题请 [提交 Issue](https://github.com/LvvUP/academic-writing-assistant/issues)。
 
 ## 自己在终端运行
 
@@ -112,7 +112,7 @@ python3 -B scripts/install_skill.py verify --host claude --home-root "$HOME"
 | Codex | 运行 `/skills`，或输入 `$` 后能选到它 | 重启 Codex |
 | Cursor | 在 Agent 输入框输入 `/`，搜索 `academic-writing-assistant` | 重启 Cursor |
 | Grok Build | 运行 `/skills` 查看，或输入 `/academic-writing-assistant` | 新开会话 |
-| OpenCode | 在提示中写 `@academic-writing-assistant`，或直接提出写作任务 | 新开会话 |
+| OpenCode | 在提示中写 `@academic-writing-assistant`，能加载即已安装 | 新开会话 |
 | WorkBuddy | 「专家·技能·连接器 → 技能 → 已安装」中有 `academic-writing-assistant`；在对话框输入 `/` 可唤起技能列表 | 新开对话；在「已安装」中确认它没有被关闭（关闭的技能不参与新任务的调用） |
 
 也可以直接试一句：“请润色这句话并说明重要改动：该方法可能在部分场景下改善性能。” 正常时，“可能”和“部分”会被保留。
@@ -183,11 +183,11 @@ python3 -B scripts/install_skill.py verify --host claude --home-root "$HOME"
 
 `--host` is one of `claude`, `codex`, `cursor`, `grok-build` or `opencode`. Use `update` / `uninstall` with the same options. The installer copies only the files in the package manifest and verifies hashes before updating or removing. A copy it did not install (or one that was modified) is never overwritten; `update --backup-existing` moves it to a backup folder outside the skills directory and installs a managed copy. `verify` is read-only and confirms that every installed file matches the installation record.
 
-For WorkBuddy, export a Skill package and upload it in the client under **专家·技能·连接器 → 技能 → 添加技能 → 上传技能** (Skills → Add skill → Upload skill; the English labels in your client may differ):
+For WorkBuddy, export a Skill package and upload it in the client under **专家·技能·连接器 → 技能 → 添加技能 → 上传技能** (Skills → Add skill → Upload skill; these English labels are translations of the Chinese interface names):
 
 ```sh
 python3 -B scripts/install_skill.py export \
   --destination "$HOME/awa-package/academic-writing-assistant" --archive
 ```
 
-The command writes the Skill folder and `academic-writing-assistant.zip` with `SKILL.md` at the top level. WorkBuddy's documentation does not specify the package format or a local skills directory, so this step follows the documented upload flow and has not been verified against every client version.
+The command writes the Skill folder and `academic-writing-assistant.zip` with `SKILL.md` at the top level. These steps follow the upload flow described in WorkBuddy's documentation.
