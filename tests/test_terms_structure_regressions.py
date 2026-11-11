@@ -103,6 +103,60 @@ def test_research_specific_method_clues(study, text, expected):
     assert result['coverage'] == 'keyword_clues_only'
 
 
+@pytest.mark.parametrize('study,text,expected', [
+    ('observational', 'Survey data from a cohort sample; variables were measured with a validated scale and analysed by regression with robustness checks.',
+     ['Data source and sample', 'Variables and measures', 'Analysis and identification', 'Robustness or sensitivity']),
+    ('interpretive', '本文的问题是该条款的适用范围；依据法条与判例，采用体系解释的视角，并回应学界既有研究。',
+     ['Question and thesis', 'Sources and materials', 'Approach or framework', 'Existing scholarship']),
+    ('case_study', 'The case selection followed theoretical sampling; interviews and archival documents were analysed by coding and cross-case comparison, with triangulation.',
+     ['Case selection', 'Data sources', 'Analysis approach', 'Validity and limits']),
+    ('design', '根据需求确定设计方案与架构，完成原型实现，并通过仿真与试验进行验证。',
+     ['Requirements or problem', 'Design and rationale', 'Implementation', 'Validation plan']),
+])
+def test_method_clues_for_research_types_beyond_experiments(study, text, expected):
+    result = structure.audit('method', text, research_type=study)
+    assert result['present'] == expected
+    assert result['missing'] == []
+    assert result['research_type'] == study
+
+
+@pytest.mark.parametrize('study,text', [
+    ('interpretive', '本文考察某地方志的编纂问题。既有研究对史料来源的不足讨论较少。本文比对两种刻本与相关档案，认为其编纂可能受到地方士绅的影响。'),
+    ('observational', '本文研究阅读时长与成绩的关系问题。现有方法的不足在于样本单一。本文基于问卷调查数据进行回归分析，表明二者呈正相关。'),
+    ('case_study', 'This study addresses a problem in supply-chain recovery. However, prior work is limited. This paper presents a case study drawing on interviews and indicates two recovery routines.'),
+    ('design', '针对设备振动问题，现有方法存在不足。本文提出一种减振装置，并通过原型试验说明其可行性。'),
+])
+def test_abstract_evidence_follows_the_research_type(study, text):
+    assert 'Evidence' not in structure.audit('abstract', text, research_type=study)['missing']
+
+
+def test_an_archival_abstract_is_not_asked_for_experiments_under_its_own_type():
+    text = '本文考察某地方志的编纂问题。既有研究对史料来源的不足讨论较少。本文比对两种刻本与相关档案，认为其编纂可能受到地方士绅的影响。'
+    assert structure.audit('abstract', text, research_type='interpretive')['missing'] == []
+    # The default type still expects experimental or data evidence; the type is the author's choice.
+    assert 'Evidence' in structure.audit('abstract', text)['missing']
+
+
+@pytest.mark.parametrize('alias,section', [('results', 'experiment'), ('literature_review', 'related_work')])
+@pytest.mark.parametrize('study', structure.RESEARCH_TYPES)
+def test_neutral_section_names_share_the_original_checklists(alias, section, study):
+    assert structure.rules_for(alias, study) == structure.rules_for(section, study)
+
+
+def test_every_research_type_has_method_result_and_abstract_rules():
+    for study in structure.RESEARCH_TYPES:
+        for section in structure.SECTION_RULES:
+            rules = structure.rules_for(section, study)
+            assert rules and all(keywords for keywords in rules.values()), (section, study)
+    assert set(structure.ABSTRACT_EVIDENCE) == set(structure.RESEARCH_TYPES)
+    assert set(structure.RESEARCH_METHODS) == set(structure.RESEARCH_RESULTS) == set(structure.RESEARCH_TYPES) - {'empirical'}
+
+
+def test_original_research_types_and_sections_remain_available():
+    assert structure.RESEARCH_TYPES[:4] == ('empirical', 'theoretical', 'review', 'qualitative')
+    assert {'abstract', 'introduction', 'related_work', 'method', 'experiment', 'discussion', 'conclusion'} <= set(structure.SECTION_RULES)
+
+
 def test_default_empirical_does_not_require_ablation_or_neural_networks():
     result = structure.audit('experiment', 'We collected observations and reported outcomes.')
     assert 'Ablation' not in result['missing']
