@@ -10,13 +10,14 @@
 
 同一概念存在表达变体时，可建议使用作者主用形式；真正改变概念则为 L3，需材料支持。尤其保留这些可能有意义的区别：
 
-- feature fusion / feature aggregation / feature merging；
-- 泛化能力 / 泛化性能；
-- 外部验证 / 外部测试；
-- gold standard / reference standard / ground truth；
-- spatial resolution / ground sample distance；
-- 优化目标 / 目标函数；
-- 预训练模型 / 预训练语言模型。
+- 发病率 / 患病率，不良事件 / 不良反应；
+- 信度 / 可靠性，效度 / 有效性；
+- 标准差 / 标准误，中介效应 / 调节效应；
+- 定金 / 订金，抵押 / 质押；
+- 准确度 / 精密度，试验 / 实验；
+- 预测 / 预估（prediction / projection）；
+- 外部验证 / 外部测试，gold standard / reference standard / ground truth；
+- 泛化能力 / 泛化性能，feature fusion / feature aggregation。
 
 这些不是永久不能互译的禁用对；是否等义取决于实际定义与上下文。不要仅凭共现、使用频次或推荐字段自动替换。
 
@@ -26,4 +27,4 @@
 python3 -B <skill-root>/scripts/terminology_checker.py <稿件路径>
 ```
 
-脚本根据 `assets/terminology-map.zh-en.json` 报告配置词项的共现。它不判断两词是否同义，也不完整检测一词多义。自定义词表可通过 `--map` 提供，仍须结合材料复核。输入路径在用户任务上下文中解析，默认资源随安装包定位。
+脚本根据 `assets/terminology-map.zh-en.json` 报告配置词项的共现；词表按学科分组（统计、医学与公共卫生、心理与教育、经济与管理、法学、人文、社会科学、化学与材料、生命科学、地球与环境、工程、计算机相关领域等），只收录少量常见词组，不是完整的学科术语库。它不判断两词是否同义，也不完整检测一词多义。自定义词表可通过 `--map` 提供，仍须结合材料复核。输入路径在用户任务上下文中解析，默认资源随安装包定位。

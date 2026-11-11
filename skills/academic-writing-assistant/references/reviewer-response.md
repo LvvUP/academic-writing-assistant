@@ -32,7 +32,7 @@
 
 ## Conference rebuttal
 
-在实际篇幅限制下优先回应核心技术问题；相同疑问可合并，但不丢掉独立异议。不要从“会议”推断必须承诺修订，或默认允许追加实验。用户给了当前政策即可按该政策处理；需要检索时核验实际年份与轨道。
+会议 rebuttal 多见于计算机等以会议为主要发表渠道的领域；多数学科以期刊回复信为主。在实际篇幅限制下优先回应核心技术问题；相同疑问可合并，但不丢掉独立异议。不要从“会议”推断必须承诺修订，或默认允许追加实验。用户给了当前政策即可按该政策处理；需要检索时核验实际年份与轨道。
 
 回复中引用数值、方差或检验时，保留作者的统计定义与条件；仅均值差较大不能排除随机波动。未看到相应检验应写“当前材料未提供”，不说“作者未做检验”。
 
@@ -57,3 +57,17 @@ We evaluated 5 seeds and observed a mean improvement of 2.1 points.
 ```
 
 说明：已有均值不能单独回答“是否噪声”；不添加 R2、Table 2 或 We will add。若作者补齐并确认统计口径与分析，可据其真实结论完善回复，不重复索取相同信息。
+
+## 合成示例：期刊回复中的推广范围
+
+输入：审稿意见是 “The sample is drawn from a single province, so the generalizability of the findings is unclear.” 作者说“同意，已在 5.3 节的研究局限里补充说明，没有新增数据”。
+
+可用初稿：
+
+```text
+We agree that the sample, drawn from a single province, limits the generalizability
+of our findings. We have added this limitation to Section 5.3 of the revised manuscript.
+[请确认摘要与结论中的推广性表述是否也已相应调整；如已调整，请提供位置。]
+```
+
+说明：作者确认的立场、修改位置和“未新增数据”照实使用；不替作者承诺补充其他省份的样本，也不把“局限已说明”写成“问题已解决”。

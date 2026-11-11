@@ -19,25 +19,25 @@ These patterns are common across disciplines. Fix the language; keep the claim.
 | Pattern | Synthetic example | Revision | Note |
 |---|---|---|---|
 | Uncountable nouns pluralized | many researches / informations / evidences | much research / information / evidence; many studies | Free surface |
-| Missing or extra articles | We propose method to solve the problem of the noise. | We propose a method to address noise. | Free surface |
+| Missing or extra articles | We conducted survey to study the problem of the turnover. | We conducted a survey to study turnover. | Free surface |
 | Empty background opener | With the rapid development of society, X has attracted more and more attention. | State the specific problem the author supplied. | Removing it is L2; replacing it with new facts needs material |
 | "play an important role" | X plays an important role in Y. | Name the role if the author stated it; otherwise keep or flag | Do not invent the mechanism |
 | Sentence-initial numerals and symbols | 25 participants were recruited. | Twenty-five participants were recruited. | Number value unchanged |
 | "respectively" without parallel lists | A and B are 0.8 and 0.9, respectively. ✔ / A is 0.8 respectively. ✘ | Keep one-to-one mapping | Mapping is locked |
-| Run-on comma splices | The model is simple, it is efficient. | The model is simple and efficient. | Free surface |
-| Dangling modifiers | Using this method, the accuracy improved. | Using this method, we improved the accuracy. | Check who did what; do not add an action the author did not take |
+| Run-on comma splices | The procedure is simple, it is inexpensive. | The procedure is simple and inexpensive. | Free surface |
+| Dangling modifiers | Using this method, the yield improved. | Using this method, we improved the yield. | Check who did what; do not add an action the author did not take |
 | "etc." / "and so on" in formal lists | such as A, B, etc. | such as A and B | Do not drop list items that carry information |
-| Ambiguous 显著 | 性能显著提升 → The performance is significantly improved. | If 显著 reports a statistical test, keep "significantly" and the test; if it only means "noticeably", ask the author before choosing wording | Load-bearing; no test visible ≠ no test done |
+| Ambiguous 显著 | 得分显著提高 → The scores improved significantly. | If 显著 reports a statistical test, keep "significantly" and the test; if it only means "noticeably", ask the author before choosing wording | Load-bearing; no test visible ≠ no test done |
 | Direct translation of 证明 | Experiments prove that… | Experiments show / indicate that… | Load-bearing; only true proofs "prove" |
 | Overuse of "In this paper, we…" | Repeated at every paragraph opening | Vary the subject where reference is clear | Free surface |
 
 ## Synthetic example with no added facts
 
-Source: This paper carries out an analysis of noise in the images.
+Source: This paper carries out an analysis of the survey responses.
 
-Revision: This paper analyzes noise in the images.
+Revision: This paper analyzes the survey responses.
 
-The revision changes grammar and phrasing only. It cannot become “Noise reduces small-object detection accuracy below 0.5 m resolution” without evidence for those additional claims.
+The revision changes grammar and phrasing only. It cannot become “Respondents under 30 reported lower job satisfaction” without evidence for those additional claims.
 
 ## Hedging and precise vocabulary
 
@@ -47,10 +47,10 @@ Not automatic synonyms:
 
 | Source | Why the replacement needs review |
 |---|---|
-| better features → more discriminative features | Adds a particular property of the features |
+| better results → more accurate results | Adds a particular property of the results |
 | many experiments → extensive experiments | May add a claim about breadth of evaluation |
 | significant improvement → consistent improvement | Changes statistical/importance language into repeatability |
-| performs well → outperforms baselines | Adds a comparative result |
+| performs well → outperforms existing approaches | Adds a comparative result |
 | associated with → leads to | Adds causation |
 | suggests → demonstrates | Strengthens the evidential claim |
 | participants reported → participants experienced | Turns self-report into observed fact |

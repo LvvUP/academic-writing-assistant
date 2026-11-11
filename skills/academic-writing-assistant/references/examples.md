@@ -1,50 +1,49 @@
 # Examples
 
-以下均为合成任务及预期输出，用于展示规则；不是实测模型结果或脚本运行记录。数字仅属于对应输入，不能迁移到真实稿件。
+以下均为合成任务及预期输出，用于展示规则；不是实测模型结果或脚本运行记录。数字仅属于对应输入，不能迁移到真实稿件。示例来自不同学科，规则本身不随学科改变：语言可以改，事实、数值和主张强度不能悄悄变。
 
-## 中文润色：不增加对照对象
+## 中文润色：不增加对照对象（化学与材料）
 
-输入：请润色中文：我们的方法可以减少标注困难的问题，而且分割结果比较好，对小病灶也有帮助。
-
-输出：
-
-```text
-该方法可以缓解标注困难，分割表现较好，对小病灶分割也有帮助。
-
-调整了冗余表达与衔接。需确认两项定性评价对应的实际结果；未增加比较对象或数值。
-```
-
-## CN→EN translation
-
-输入：请译成英文：针对遥感图像中目标尺度变化大、背景复杂的问题，本文提出一种多尺度特征融合方法。
+输入：请润色中文：我们做的这个催化剂可以把反应温度降下来，而且产物收率比较高，重复用几次效果也还行。
 
 输出：
 
 ```text
-To address large variations in target scale and complex backgrounds in remote
-sensing images, this study proposes a multi-scale feature fusion method.
+该催化剂可以降低反应温度，产物收率较高，重复使用数次后仍保持一定的催化效果。
+
+调整了口语化表达与衔接。需确认三项定性评价分别对应的实验结果；未增加对照催化剂、温度或收率数值。
 ```
 
-术语按给定语境选择；不虚构 L1 语法修正数，不添加实验结果。
+## 中译英：关联不译成因果（医学）
 
-## Abstract with no results yet
-
-输入：写英文摘要：小目标特征弱、背景干扰大；方法包含上下文增强和多尺度特征融合；实验尚未完成。
+输入：请译成英文：在这项横断面研究中，睡眠时间不足 6 小时与高血压患病风险较高相关（OR = 1.42，95% CI 1.15–1.76）。
 
 输出：
 
 ```text
-Small object detection is challenging because small objects have weak features
-and are easily affected by complex backgrounds. This study uses a context
-enhancement module and a multi-scale feature fusion module.
-[Results and conclusions remain to be supplied after the experiments are completed.]
+In this cross-sectional study, a sleep duration of less than 6 hours was associated
+with a higher risk of hypertension (OR = 1.42, 95% CI 1.15–1.76).
 ```
 
-没有假设模块机制、比较结果或数据集。“实验表明”不能先写成事实再只把数字留空。
+“相关”译为 was associated with，不写成 caused 或 increased the risk；横断面设计不支持因果表述。数值与置信区间逐一对应；不虚构 L1 语法修正数。
 
-## Related work with no references
+## 结果尚未就绪的摘要（环境科学）
 
-输入：帮我写医学影像分割的相关工作，当前没有参考文献。
+输入：写英文摘要：研究城市湖泊沉积物中的微塑料；方法是分层采样和显微红外光谱鉴定；样品分析尚未完成。
+
+输出：
+
+```text
+This study investigates microplastics in urban lake sediments using stratified
+sampling and identification by infrared microspectroscopy.
+[Results and conclusions remain to be supplied after the sample analysis is completed.]
+```
+
+没有假设微塑料的丰度、类型或来源。“结果表明”不能先写成事实再只把数字留空。
+
+## 没有参考文献的文献综述（管理学）
+
+输入：帮我写远程办公与员工绩效的文献综述，当前没有参考文献。
 
 无检索能力时可给：
 
@@ -56,7 +55,7 @@ enhancement module and a multi-scale feature fusion module.
 
 有检索能力且任务授权时实际查证，记录读取范围和支持状态，而非按此例一概拒绝文献列表。
 
-## Conference rebuttal
+## 会议 rebuttal：统计量指代未知（计算机）
 
 输入：The improvement over baselines is marginal and may be within noise. 作者说跑了 5 个种子，均值提升 2.1 个点，标准差 0.3；未提供编号、检验和计划。
 
@@ -70,7 +69,7 @@ We evaluated 5 seeds and observed a mean improvement of 2.1 points.
 
 不添加 R2、Table 2 或修改承诺，不把标准差称为 variance，不声称差距超出随机波动。
 
-## LaTeX editing without execution tools
+## LaTeX 编辑：没有执行工具（数学）
 
 输入：仅润色，宿主不能运行程序：`The results shows that $x_i$ remains bounded under assumption A~\cite{synthetic-key}.`
 
@@ -82,31 +81,31 @@ The results show that $x_i$ remains bounded under assumption A~\cite{synthetic-k
 
 说明：只修主谓一致；可见公式、条件和引用保持原样。无执行工具，机械保真检查未运行。引用键是合成示例，未验证真实文献支持。
 
-## Stronger claim / only-body
+## 要求更强主张 / 只输出正文
 
-输入：只给正文，把“可能在部分场景改善性能”写得更强，没有补充数据。
-
-输出：
-
-```text
-该方法可能改善部分场景下的性能。
-```
-
-缺少新证据时保留原意；only-body 不允许悄悄删可能与部分。若原文语义冲突无法处理，最小必要说明或明显占位优先于无条件新主张。
-
-## A short task
-
-输入：The experiments shows that our method are effective. 只纠正语法。
+输入：只给正文，把“该疗法可能在部分患者中缓解症状”写得更强，没有补充数据。
 
 输出：
 
 ```text
-The experiments show that our method is effective.
+该疗法可能缓解部分患者的症状。
 ```
 
-只有两处可追踪主谓一致修正；不额外把 our method 改成“更符合期刊惯例”的其他表述。
+缺少新证据时保留原意；只输出正文不允许悄悄删掉“可能”与“部分”。若原文语义冲突无法处理，最小必要说明或明显占位优先于无条件新主张。
 
-## Detection-evasion request
+## 短任务
+
+输入：The results shows that the two groups is comparable. 只纠正语法。
+
+输出：
+
+```text
+The results show that the two groups are comparable.
+```
+
+只有两处可追踪的主谓一致修正；不额外改写其他措辞，也不附加报告。
+
+## 检测规避请求
 
 有原文时简短说明不针对检测分数优化，再处理原文实际存在的重复、逻辑或引用问题。不承诺分数，不断言被标记文本必然质量低，不擅自添加作者偏好的解释。
 
@@ -146,7 +145,7 @@ The employer shall conclude a written employment contract with the employee with
 
 说明：改为书面语，保留“推断”“或已”“难以确证”的限定；材料是两封书信，不补写离京原因或其他史料。
 
-## 开题报告：计划不写成成果
+## 教育学开题报告：计划不写成成果
 
 输入：帮我润色研究内容：我们会用问卷调查 300 名中学教师，然后分析他们的数字素养跟教学效果有什么关系，预计能发现数字素养高的老师教学效果更好。
 
@@ -157,3 +156,15 @@ The employer shall conclude a written employment contract with the employee with
 ```
 
 说明（L3）：原文“预计能发现……更好”是对结果方向的预设，开题阶段宜写为待检验的研究假设，例如“研究假设：教师数字素养与教学效果呈正相关”；是否采用由作者决定。300 为计划样本量，保持原值，不写成已完成调查。
+
+## 工程：仿真结果不写成工程验证
+
+输入：请润色：我们用有限元仿真算了一下，这个支架的最大应力是 182 MPa，比许用应力 235 MPa 小，所以这个结构是安全的，可以直接用到工程上。
+
+输出：
+
+```text
+有限元仿真结果显示，该支架的最大应力为 182 MPa，低于许用应力 235 MPa。
+```
+
+说明（L3）：原文“结构是安全的，可以直接用到工程上”超出了一次仿真所能支持的范围。若已完成试验验证或已按相应设计规范校核，请提供依据后再写；否则可写为“在所计算的工况下满足强度要求”，并说明载荷与边界条件。数值与单位保持不变。
