@@ -12,6 +12,8 @@
 An **academic writing Skill for every discipline**, in Chinese and English: polishing · CN↔EN translation · section drafting · theses and grant proposals · reviewer responses · submission materials<br>
 One Skill for Claude Code, Codex, Cursor, Grok Build, OpenCode and WorkBuddy.
 
+**12** discipline families · **8** research types · **6** platforms · **67** terminology groups · **4** local check scripts
+
 [![Version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FLvvUP%2Facademic-writing-assistant%2Fmain%2F.codex-plugin%2Fplugin.json&query=%24.version&label=version&color=2563EB)](CHANGELOG.md)
 [![License](https://img.shields.io/github/license/LvvUP/academic-writing-assistant?color=2563EB)](LICENSE)
 [![Verify Skill](https://github.com/LvvUP/academic-writing-assistant/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/LvvUP/academic-writing-assistant/actions/workflows/ci.yml)
@@ -25,12 +27,12 @@ One Skill for Claude Code, Codex, Cursor, Grok Build, OpenCode and WorkBuddy.
 </div>
 
 <p align="center">
-  <img src="assets/readme/fidelity-contract.en.svg" width="100%" alt="One sentence, two ways to edit it: unbounded polishing drops the hedges “may” and “in some settings” and turns 92.3% into 93.2%; with Academic Writing Assistant only the language is improved, while hedges, the number and the citation stay as written.">
+  <img src="assets/readme/fidelity-contract.en.svg" width="100%" alt="One informal manuscript passage, two ways to edit it. Unbounded polishing reads more professional but drops the hedges “may” and “in some settings”, turns 92.3% into 93.2% and widens the comparison to “existing methods”. With Academic Writing Assistant the language becomes just as professional while hedges, the number and the citation stay as written, and the edit explains what changed and what the author should confirm.">
 </p>
 
-Grammar and fluency are rarely the problem when AI edits a paper. The danger is edits that **read better but quietly change the facts**.
+Grammar and fluency are rarely the problem when AI edits a paper. The danger is edits that **read more professional but quietly change the facts**.
 
-Academic Writing Assistant gives your agent a **fidelity contract**: improve the language freely, but never move the facts or the evidence boundary, and list every change to claim strength so you decide whether to accept it.
+Academic Writing Assistant gives your agent a **fidelity contract**: improve the language freely, but never move the facts or the evidence boundary, and list every change to claim strength so you decide whether to accept it. You get academic prose you can use, plus a short account of what changed, why, and which evidence is still missing.
 
 ## Install
 
@@ -68,7 +70,7 @@ Please prepare a package of the academic writing Skill "academic-writing-assista
 Then, in WorkBuddy:
 
 1. Click **专家·技能·连接器** (Experts · Skills · Connectors) in the left sidebar and open the **技能** (Skills) tab.
-2. Click **添加技能 → 上传技能** (Add skill → Upload skill) and drop or select `academic-writing-assistant.zip`. The official documentation only says to select a local skill package and does not name a format; if the archive is not accepted, you can try the `academic-writing-assistant` folder next to it, which has the same content.
+2. Click **添加技能 → 上传技能** (Add skill → Upload skill) and drop or select `academic-writing-assistant.zip`. If the archive cannot be imported, use the `academic-writing-assistant` folder next to it, which has the same content.
 3. If an older version is listed, uninstall it under 已安装 (Installed) first, then upload the new package.
 
 If you prefer not to run commands, download `academic-writing-assistant.zip` from the latest release on the [Releases page](https://github.com/LvvUP/academic-writing-assistant/releases) and upload it directly.
@@ -138,26 +140,72 @@ Describe your writing task in plain language and the agent loads the Skill autom
 
 ## Examples
 
-> All examples are synthetic; data and citations are for demonstration only.
+> All examples are synthetic; data and citations are for demonstration only. “Unbounded polishing” is an illustration written for contrast, not the measured output of any model.
 
-### Polishing: informal wording and a causal overclaim (social science)
+### Humanities and social sciences: an informal survey draft (social science)
+
+**Original**
+
+> We find 412 university students to do a questionnaire, and ask them how long they watch short videos every day and how about their study engagement. The result shows students who watch more have lower study engagement (r = −0.29, p < 0.001). This shows short videos seriously affect students' study, so schools should do something quickly.
+
+**Unbounded polishing**
+
+> A survey of 412 university students showed that short-video use significantly reduced study engagement (r = −0.29, p < 0.001), seriously harming students' academic development, and universities urgently need to intervene.
+
+It now reads like a paper, but the correlation has become “significantly reduced”, “harming academic development” was never in the draft, and “should” has been raised to “urgently need to”.
+
+**With Academic Writing Assistant**
+
+> We surveyed 412 university students about their daily short-video use and their study engagement. Daily short-video use was negatively correlated with study engagement (r = −0.29, p < 0.001). [Recommendation on intervention: please supply evidence of a causal effect or of an intervention's effectiveness before this is written.]
+
+The language is just as polished, and the sample size and statistics are untouched. The two claims that go beyond the data are not silently rewritten; they are listed for you to decide:
+
+| Original | Handling | Tier | Reason |
+|---|---|---|---|
+| This shows short videos seriously affect students' study | Left out of the text, which states only the negative correlation | L3 claim | A survey correlation supports “associated”, not “affect” or “seriously” |
+| so schools should do something quickly | Replaced by a placeholder | L3 claim | The recommendation depends on a causal claim. With evidence it can return as a conditional suggestion, for example “if later studies confirm a causal link, schools could consider targeted guidance” |
+
+### Science and engineering: results distorted by “polishing” (chemistry and materials)
+
+**Original**
+
+> We calcined the catalyst at 500 °C for 2 hours and then tested it. Its activity is higher than the uncalcined one for about 37%, and after using 5 cycles the activity still has 91.5% (Table 3). So the stability of this catalyst is very good and it can be directly used in industrial production.
+
+**Unbounded polishing**
+
+> After calcination at 500 °C for 2 hours, the catalytic activity increased significantly by about 40%, and 95.1% of the activity was retained after 5 cycles (Table 3), demonstrating excellent long-term stability and great potential for industrial application.
+
+Here 37% has been “rounded” to 40% and 91.5% has become 95.1%; five cycles are now “long-term stability”, and the unsupported industrial claim has merely been given a more respectable wording.
+
+**With Academic Writing Assistant**
+
+> After calcination at 500 °C for 2 hours, the activity of the catalyst was about 37% higher than that of the uncalcined sample, and it remained at 91.5% after 5 cycles (Table 3). [Stability and industrial use: the data cover 5 cycles; please supply results from longer runs or realistic operating conditions before these claims are written.]
+
+The wording is now idiomatic, while the temperature, duration, percentages and table number are exactly as written, with no rounding:
+
+| Original | Handling | Tier | Reason |
+|---|---|---|---|
+| So the stability of this catalyst is very good | Replaced by a placeholder; a bounded alternative is “the catalyst remained stable over 5 cycles” | L3 claim | Data from 5 cycles cannot support a general “very good stability” |
+| it can be directly used in industrial production | Left out of the text | L3 claim | Industrial use needs data from longer runs or realistic operating conditions |
+
+### More tasks and disciplines
+
+<details>
+<summary><strong>Polishing: a conjecture does not become a conclusion (history)</strong></summary>
 
 **Original (Chinese)**
 
-> 我们对 412 名大学生做了问卷调查，结果发现每天刷短视频的时间越长，学习投入就越低（r = −0.29，p < 0.001）。这说明刷短视频会严重影响大学生的学习，学校应该采取措施进行干预。
+> 从这两封信看，他当时大概已经有了离开京城的想法，不过还说不准。这也说明他对朝廷的政策非常不满。
 
-*(We surveyed 412 students and found that the longer they spent on short videos each day, the lower their study engagement. This shows short videos seriously harm students' learning, and schools should intervene.)*
+*(Judging from these two letters, he had probably already thought of leaving the capital, though this is uncertain. It also shows he was deeply dissatisfied with the court's policies.)*
 
 **Polished**
 
-> 本研究对 412 名大学生开展问卷调查，发现每日短视频使用时长与学习投入呈负相关（r = −0.29，p < 0.001）。[干预建议：请补充支持因果关系或干预效果的依据后再写入。]
+> 从这两封书信推断，他当时或已有离京之意，但仍难以确证。
 
-**Important changes**
+**Important change (L3):** the sentence about his dissatisfaction with court policy is left out of the text: the two letters concern only his plan to leave, which cannot support a claim about his motives; it can be written once other sources are supplied. The colloquial hedges 大概 and 还说不准 become the written forms 或已 and 难以确证, so the tentative tone is fully preserved.
 
-| Original | Revised | Tier | Reason |
-|---|---|---|---|
-| seriously harm students' learning | negatively correlated with study engagement | L3 claim | A survey correlation supports "associated", not "harm" or "seriously" |
-| schools should intervene | placeholder | L3 claim | The recommendation depends on a causal claim; restore it as a conditional suggestion if causal or intervention evidence is supplied |
+</details>
 
 <details>
 <summary><strong>CN→EN translation: an observational study does not "reduce risk" (medicine)</strong></summary>
@@ -225,7 +273,7 @@ Describe your writing task in plain language and the agent loads the Skill autom
 
 </details>
 
-More examples from other disciplines are in [examples/](examples/) (Chinese), including history, economics, clinical medicine, materials chemistry, theses and research proposals.
+More examples are in [examples/](examples/) (Chinese), including economics, clinical medicine, theses, research proposals and grant applications, as well as checking claims against a table and terminology consistency.
 
 ## Features
 
