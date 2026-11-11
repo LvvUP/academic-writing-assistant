@@ -20,18 +20,18 @@
 
 | 组件 | 核对版本 | 上游许可与依据 |
 |---|---|---|
-| pytest | 8.4.2（Python 3.9）/ 9.1.1（Python 3.10+） | [MIT（8.4.2）](https://github.com/pytest-dev/pytest/blob/8.4.2/LICENSE) / [MIT（9.1.1）](https://github.com/pytest-dev/pytest/blob/9.1.1/LICENSE) |
+| pytest | 8.4.2（Python 3.9）/ 9.2.0（Python 3.10+） | [MIT（8.4.2）](https://github.com/pytest-dev/pytest/blob/8.4.2/LICENSE) / [MIT（9.2.0）](https://github.com/pytest-dev/pytest/blob/9.2.0/LICENSE) |
 | PyYAML | 6.0.3 | [MIT](https://github.com/yaml/pyyaml/blob/6.0.3/LICENSE) |
-| iniconfig | 2.1.0（Python 3.9）/ 2.3.0（Python 3.10+） | [MIT（2.1.0）](https://github.com/pytest-dev/iniconfig/blob/v2.1.0/LICENSE) / [MIT（2.3.0）](https://github.com/pytest-dev/iniconfig/blob/v2.3.0/LICENSE) |
+| iniconfig | 2.1.0（Python 3.9）/ 2.3.1（Python 3.10+） | [MIT（2.1.0）](https://github.com/pytest-dev/iniconfig/blob/v2.1.0/LICENSE) / [MIT（2.3.1）](https://github.com/pytest-dev/iniconfig/blob/v2.3.1/LICENSE) |
 | packaging | 26.3 | [Apache-2.0 OR BSD-2-Clause](https://github.com/pypa/packaging/blob/26.3/LICENSE)，可任选其一 |
-| pluggy | 1.6.0 | [MIT](https://github.com/pytest-dev/pluggy/blob/1.6.0/LICENSE) |
+| pluggy | 1.6.0（Python 3.9）/ 1.7.0（Python 3.10+） | [MIT（1.6.0）](https://github.com/pytest-dev/pluggy/blob/1.6.0/LICENSE) / [MIT（1.7.0）](https://github.com/pytest-dev/pluggy/blob/1.7.0/LICENSE) |
 | Pygments | 2.21.0 | [BSD-2-Clause](https://github.com/pygments/pygments/blob/2.21.0/LICENSE) |
 | exceptiongroup | 1.3.0；Python <3.11 | [MIT，另含受 PSF-2.0 许可的 CPython 部分](https://github.com/agronholm/exceptiongroup/blob/1.3.0/LICENSE) |
 | tomli | 2.2.1；Python <3.11 | [MIT](https://github.com/hukkin/tomli/blob/2.2.1/LICENSE) |
 | typing_extensions | 4.15.0；Python <3.11 | [PSF-2.0 及随附历史声明](https://github.com/python/typing_extensions/blob/4.15.0/LICENSE) |
 | colorama | 0.4.6；Windows | [BSD-3-Clause](https://github.com/tartley/colorama/blob/0.4.6/LICENSE.txt) |
 | actions/checkout | v7.0.1，CI 固定提交 | [MIT](https://github.com/actions/checkout/blob/3d3c42e5aac5ba805825da76410c181273ba90b1/LICENSE) |
-| actions/setup-python | v7.0.0，CI 固定提交 | [MIT](https://github.com/actions/setup-python/blob/5fda3b95a4ea91299a34e894583c3862153e4b97/LICENSE) |
+| actions/setup-python | v7.1.0，CI 固定提交 | [MIT](https://github.com/actions/setup-python/blob/6d4fd22b20465ccc0f7354476588e8df7c9ca0e0/LICENSE) |
 | Gitleaks | 8.30.1 | [MIT](https://github.com/gitleaks/gitleaks/blob/v8.30.1/LICENSE) |
 
 本表核对顶层许可及所列例外组成部分，不是 Actions 编译 bundle 或所有工具转依赖的完整 SBOM。若未来捆绑第三方源码、二进制或环境，须重新核对实际交付文件，保留相应上游版权与许可，不能仅放本项目 AGPL 全文。
