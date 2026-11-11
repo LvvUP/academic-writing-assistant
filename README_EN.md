@@ -14,7 +14,7 @@ One Skill for Claude Code, Codex, Cursor, Grok Build, OpenCode and WorkBuddy.
 
 **12** discipline families · **8** research types · **6** platforms · **67** terminology groups · **4** local check scripts
 
-[![Version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FLvvUP%2Facademic-writing-assistant%2Fmain%2F.codex-plugin%2Fplugin.json&query=%24.version&label=version&color=2563EB)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FLvvUP%2Facademic-writing-assistant%2Fmain%2F.codex-plugin%2Fplugin.json&query=%24.version&label=version&color=2563EB)](CHANGELOG_EN.md)
 [![License](https://img.shields.io/github/license/LvvUP/academic-writing-assistant?color=2563EB)](LICENSE)
 [![Verify Skill](https://github.com/LvvUP/academic-writing-assistant/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/LvvUP/academic-writing-assistant/actions/workflows/ci.yml)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-SKILL.md-111827)](https://agentskills.io)
@@ -27,12 +27,15 @@ One Skill for Claude Code, Codex, Cursor, Grok Build, OpenCode and WorkBuddy.
 </div>
 
 <p align="center">
-  <img src="assets/readme/fidelity-contract.en.svg" width="100%" alt="One informal manuscript passage, two ways to edit it. Unbounded polishing reads more professional but drops the hedges “may” and “in some settings”, turns 92.3% into 93.2% and widens the comparison to “existing methods”. With Academic Writing Assistant the language becomes just as professional while hedges, the number and the citation stay as written, and the edit explains what changed and what the author should confirm.">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/readme/fidelity-contract.en.dark.svg">
+    <img src="assets/readme/fidelity-contract.en.svg" width="100%" alt="One informal manuscript passage, two ways to edit it. Unbounded polishing sounds more professional but drops the hedges “may” and “in some settings”, turns 92.3% into 93.2% and widens the comparison to “existing methods”. With Academic Writing Assistant the language becomes just as professional while hedges, the number and the citation stay as written, and the edit explains what changed and what the author should confirm.">
+  </picture>
 </p>
 
-Grammar and fluency are rarely the problem when AI edits a paper. The danger is edits that **read more professional but quietly change the facts**.
+Grammar and fluency are rarely the problem when AI edits a paper. The danger is edits that **sound more professional but quietly change the facts**.
 
-Academic Writing Assistant gives your agent a **fidelity contract**: improve the language freely, but never move the facts or the evidence boundary, and list every change to claim strength so you decide whether to accept it. You get academic prose you can use, plus a short account of what changed, why, and which evidence is still missing.
+Academic Writing Assistant gives your agent a **fidelity contract**: improve the language freely, but never move the facts or the evidence boundary, and list every change to claim strength so you decide whether to accept it. You get the revised text, plus a short account of what changed, why, and which evidence is still missing.
 
 ## Install
 
@@ -43,7 +46,7 @@ Please install (or update, if already installed) the academic writing Skill "aca
 1. Work out which agent you are and pick --host: Claude Code → claude, Codex → codex, Cursor → cursor, Grok Build → grok-build, OpenCode → opencode. If you are none of these, tell me and stop.
 2. git clone --depth 1 https://github.com/LvvUP/academic-writing-assistant (main branch) into a temporary folder and run there (Python 3.9+; on Windows `py -3` can replace python3):
    python3 -B scripts/install_skill.py install --host <value above> --home-root "$HOME"
-3. If it says the Skill is already installed, run it again with update instead of install. If it asks for --backup-existing, add that flag and run again (the old copy is moved to a backup folder, not deleted). For any other error, show it to me and stop: don't copy or delete files by hand, don't bypass the checks, don't use sudo.
+3. If it says the Skill is already installed, run it again with update instead of install. If it asks for --backup-existing, do as it says: run update with that flag added (the old copy is moved to a backup folder, not deleted). For any other error, show it to me and stop: don't copy or delete files by hand, don't bypass the checks, don't use sudo.
 4. Verify: run the same command once more with verify instead of install. It should print "verified" and the version.
 5. Delete the temporary folder, then tell me the install path, the version, the backup location (if any) and any notes the script printed, plus how to invoke the Skill and whether I need a new session.
 ```
@@ -75,7 +78,7 @@ Then, in WorkBuddy:
 
 If you prefer not to run commands, download `academic-writing-assistant.zip` from the latest release on the [Releases page](https://github.com/LvvUP/academic-writing-assistant/releases) and upload it directly.
 
-> These steps follow the upload flow in WorkBuddy's [documentation](https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Skills-Market) (Chinese); the sources for each statement are listed in the [compatibility notes](docs/compatibility.md) (Chinese), and the English labels in your client may differ. Please [open an issue](https://github.com/LvvUP/academic-writing-assistant/issues) if the upload fails.
+> These steps follow the upload flow in WorkBuddy's [documentation](https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Skills-Market) (Chinese); the sources for each statement are listed in the [compatibility notes](docs/compatibility.md) (Chinese). The English labels in parentheses are translations of the Chinese interface names. Please [open an issue](https://github.com/LvvUP/academic-writing-assistant/issues) if the upload fails.
 
 </details>
 
@@ -121,10 +124,10 @@ The installer's `verify` action checks the installed files. To confirm that your
 | Codex | Run `/skills`, or type `$` and select it |
 | Cursor | Type `/` in the Agent input and search for `academic-writing-assistant` |
 | Grok Build | Run `/skills`, or type `/academic-writing-assistant` |
-| OpenCode | Write `@academic-writing-assistant` in your prompt, or simply ask for a writing task |
+| OpenCode | Write `@academic-writing-assistant` in your prompt; if it loads, the Skill is installed |
 | WorkBuddy | It appears under 专家·技能·连接器 → 技能 → 已安装 (Installed) |
 
-If it does not show up, open a new session or restart the agent.
+If it does not show up, open a new session or restart the agent; see the [installation guide](docs/installation.md#验证安装成功) (Chinese) for details.
 
 ### Usage
 
@@ -140,7 +143,7 @@ Describe your writing task in plain language and the agent loads the Skill autom
 
 ## Examples
 
-> All examples are synthetic; data and citations are for demonstration only. “Unbounded polishing” is an illustration written for contrast, not the measured output of any model.
+> All examples are synthetic; data and citations are for demonstration only. Both edits are illustrations: “Unbounded polishing” shows common distortions, and “With Academic Writing Assistant” is the output expected under the Skill's rules.
 
 ### Humanities and social sciences: an informal survey draft (social science)
 
@@ -150,9 +153,9 @@ Describe your writing task in plain language and the agent loads the Skill autom
 
 **Unbounded polishing**
 
-> A survey of 412 university students showed that short-video use significantly reduced study engagement (r = −0.29, p < 0.001), seriously harming students' academic development, and universities urgently need to intervene.
+> A survey of 412 university students showed that short-video use significantly reduced study engagement (r = −0.29, p < 0.001), which is consistent with previous studies [3], and universities urgently need to intervene.
 
-It now reads like a paper, but the correlation has become “significantly reduced”, “harming academic development” was never in the draft, and “should” has been raised to “urgently need to”.
+It now reads like a paper, but the correlation has become a causal claim (“significantly reduced”), and “consistent with previous studies [3]” appears from nowhere: the draft contains neither that sentence nor that reference. The recommendation that went beyond the data is kept as it was, and now sounds like a settled conclusion.
 
 **With Academic Writing Assistant**
 
@@ -163,7 +166,7 @@ The language is just as polished, and the sample size and statistics are untouch
 | Original | Handling | Tier | Reason |
 |---|---|---|---|
 | This shows short videos seriously affect students' study | Left out of the text, which states only the negative correlation | L3 claim | A survey correlation supports “associated”, not “affect” or “seriously” |
-| so schools should do something quickly | Replaced by a placeholder | L3 claim | The recommendation depends on a causal claim. With evidence it can return as a conditional suggestion, for example “if later studies confirm a causal link, schools could consider targeted guidance” |
+| so schools should do something quickly | Replaced by a placeholder | L3 claim | The recommendation depends on a causal claim and can be written once evidence is supplied. A conditional wording is also possible now, for example “if later studies confirm a causal link, schools could consider targeted guidance”; whether to use it is your decision |
 
 ### Science and engineering: results distorted by “polishing” (chemistry and materials)
 
@@ -173,9 +176,9 @@ The language is just as polished, and the sample size and statistics are untouch
 
 **Unbounded polishing**
 
-> After calcination at 500 °C for 2 hours, the catalytic activity increased significantly by about 40%, and 95.1% of the activity was retained after 5 cycles (Table 3), demonstrating excellent long-term stability and great potential for industrial application.
+> After calcination at 500 °C for 2 hours, the catalytic activity increased significantly by nearly 40%, and as much as 91.5% of the activity was retained after 5 cycles (Table 3), demonstrating excellent long-term stability and great potential for industrial application.
 
-Here 37% has been “rounded” to 40% and 91.5% has become 95.1%; five cycles are now “long-term stability”, and the unsupported industrial claim has merely been given a more respectable wording.
+Here “about 37%” has been rounded up to “nearly 40%” and given a “significantly” that no test supports; five cycles are now “long-term stability”; and the unsupported industrial claim has merely been given a more respectable wording.
 
 **With Academic Writing Assistant**
 
@@ -185,7 +188,7 @@ The wording is now idiomatic, while the temperature, duration, percentages and t
 
 | Original | Handling | Tier | Reason |
 |---|---|---|---|
-| So the stability of this catalyst is very good | Replaced by a placeholder; a bounded alternative is “the catalyst remained stable over 5 cycles” | L3 claim | Data from 5 cycles cannot support a general “very good stability” |
+| So the stability of this catalyst is very good | Replaced by a placeholder; the fact the data do support is already in the text: the activity remained at 91.5% after 5 cycles | L3 claim | Data from 5 cycles cannot support a general “very good stability” |
 | it can be directly used in industrial production | Left out of the text | L3 claim | Industrial use needs data from longer runs or realistic operating conditions |
 
 ### More tasks and disciplines
@@ -201,14 +204,16 @@ The wording is now idiomatic, while the temperature, duration, percentages and t
 
 **Polished**
 
-> 从这两封书信推断，他当时或已有离京之意，但仍难以确证。
+> 从这两封书信推断，他当时很可能已有离京之意，但尚难确证。
 
-**Important change (L3):** the sentence about his dissatisfaction with court policy is left out of the text: the two letters concern only his plan to leave, which cannot support a claim about his motives; it can be written once other sources are supplied. The colloquial hedges 大概 and 还说不准 become the written forms 或已 and 难以确证, so the tentative tone is fully preserved.
+**A common wrong edit:** 这两封书信表明，他因不满朝廷政策而决意离京。 *(These two letters show that he resolved to leave the capital out of dissatisfaction with court policy.)* The conjecture has become a conclusion and the motive a fact.
+
+**Important change (L3):** the sentence about his dissatisfaction with court policy is left out of the text: a plan to leave does not establish dissatisfaction with court policy, so that claim needs other sources and can be written once they are supplied. The colloquial hedges 大概 and 还说不准 become the written forms 很可能 and 尚难确证, which keeps the tentative tone.
 
 </details>
 
 <details>
-<summary><strong>CN→EN translation: an observational study does not "reduce risk" (medicine)</strong></summary>
+<summary><strong>CN→EN translation: "lower risk" does not become "reduced the risk" (medicine)</strong></summary>
 
 **Chinese source**
 
@@ -218,7 +223,9 @@ The wording is now idiomatic, while the temperature, duration, percentages and t
 
 > In this retrospective cohort study, we included 1,236 patients with type 2 diabetes who attended our hospital between 2018 and 2022. Compared with non-users, patients who used the drug had a lower risk of cardiovascular events (HR = 0.78, 95% CI 0.64–0.95), although this association was not evident in patients aged 65 years or older.
 
-**Translation notes:** 风险较低 becomes *had a lower risk*, not *reduced the risk*, because a cohort study supports an association; 不明显 becomes *not evident*, not *no effect*. Numbers, the confidence interval and the age threshold map one-to-one.
+**A common wrong edit:** *use of the drug reduced the risk of cardiovascular events … and had no effect in patients aged 65 years or older.* The association has become causation, and "not evident" has become "no effect".
+
+**Translation notes:** the source says 风险较低 (lower risk) and 关联不明显 (the association was not evident), and the translation keeps the same claim strength: *had a lower risk*, not *reduced the risk*; *not evident*, not *no effect*. Numbers, the confidence interval and the age threshold map one-to-one.
 
 </details>
 
@@ -232,6 +239,8 @@ The wording is now idiomatic, while the temperature, duration, percentages and t
 **English translation**
 
 > The employer shall conclude a written employment contract with the employee within one month from the date on which employment begins. Where no such contract has been concluded, the employer shall not refuse to pay remuneration on that ground.
+
+**A common wrong edit:** *The employer should conclude a written employment contract … and should not refuse to pay remuneration on that ground.* The obligation (*shall*) and the prohibition (*shall not*) have both been weakened into advice (*should*).
 
 **Translation notes:** 应当 is the obligatory *shall* and 不得 is *shall not*; neither becomes *should* or *may*. The time limit, its starting point and the condition are unchanged.
 
@@ -250,6 +259,8 @@ The wording is now idiomatic, while the temperature, duration, percentages and t
 
 > 有限元仿真结果显示，该支架的最大应力为 182 MPa，低于许用应力 235 MPa。
 
+**A common wrong edit:** 仿真结果证明该结构安全可靠，可直接应用于工程实践。 *(The simulation proves that the structure is safe and reliable and can be applied directly in engineering practice.)* One simulation has been written up as engineering validation.
+
 **Important change (L3):** "the structure is safe and can be used directly" goes beyond what one simulation supports. If tests or a code check have been completed, supply them and the claim can be written; otherwise a bounded alternative is "meets the strength requirement under the simulated load case", with loads and boundary conditions stated. Values and units are unchanged.
 
 </details>
@@ -263,11 +274,13 @@ The wording is now idiomatic, while the temperature, duration, percentages and t
 
 **Author notes (Chinese)**
 
-> 已在同一张 GPU、batch size = 1、相同输入分辨率下测量推理延迟：baseline 为 18 ms/图像，我们的方法为 21 ms/图像；准确率分别为 84.2% 和 86.1%。已将结果补入修订稿表 4，并在第 5.2 节补充权衡讨论。
+> 我们同意需要量化推理开销。已在同一张 GPU、batch size = 1、相同输入分辨率下测量推理延迟：baseline 为 18 ms/图像，我们的方法为 21 ms/图像；准确率分别为 84.2% 和 86.1%。已将这组结果补入修订稿表 4，并在第 5.2 节补充准确率与延迟的权衡。请写成英文期刊回复。
 
 **Draft response**
 
 > Thank you for raising this point. We have quantified the accuracy–latency trade-off on the same GPU, with a batch size of 1 and the same input resolution. Our method achieves an accuracy of 86.1% at 21 ms per image, compared with 84.2% at 18 ms per image for the baseline. The gain in accuracy comes with higher latency. We have added these results to Table 4 and a discussion of the trade-off to Section 5.2 of the revised manuscript.
+
+**A common wrong edit:** *We have conducted additional experiments on more devices and will release the code.* It commits the author to work that was never done or planned.
 
 **Structure:** answer the concern, give comparable results, then point to completed revisions. Table and section numbers and completion status all come from the author's notes; no new experiments are promised on the author's behalf.
 
@@ -301,7 +314,7 @@ Built-in writing guidance for 12 discipline families; anything else follows a ge
 
 **Research types are handled on their own terms too:** experimental · survey and econometric · qualitative · theoretical · review · humanities and legal interpretation · case study · design research
 
-The bundled examples, terminology map and section-structure checks cover these disciplines and research types. A history paper will not be asked for an "experimental setup", and interview themes will not become population percentages.
+The bundled examples and terminology map draw on many disciplines, and the section-structure checks distinguish these 8 research types. A history paper will not be asked for an "experimental setup", and interview themes will not become population percentages.
 
 ## Supported platforms
 
@@ -346,7 +359,7 @@ Version 0.5.0 keeps every file name, directory and install path, so existing usa
 | An older copy made by hand or by another tool | Send the install prompt as well; the old copy is moved to a backup folder (not deleted) and the new version is installed |
 | WorkBuddy | Prepare a new package, uninstall the old version under 已安装 (Installed), then upload |
 
-See the [changelog](CHANGELOG.md) for what changed and the [installation guide](docs/installation.md#升级) (Chinese) for other cases.
+See the [changelog](CHANGELOG_EN.md) for what changed and the [installation guide](docs/installation.md#升级) (Chinese) for other cases.
 
 ## Optional local checks
 
@@ -402,7 +415,7 @@ More in the [FAQ](docs/faq.md) (Chinese).
 
 ## Contributing
 
-Discipline conventions, terminology and synthetic examples are welcome, as are script fixes. Please read the [contributing guide](CONTRIBUTING.md); see the [roadmap](ROADMAP.md) and [changelog](CHANGELOG.md).
+Discipline conventions, terminology and synthetic examples are welcome, as are script fixes. Please read the [contributing guide](CONTRIBUTING.md); see the [roadmap](ROADMAP.md) and [changelog](CHANGELOG_EN.md).
 
 If this Skill helps your writing, please give it a ⭐ **star** so more researchers can find it.
 

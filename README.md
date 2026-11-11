@@ -27,12 +27,15 @@
 </div>
 
 <p align="center">
-  <img src="assets/readme/fidelity-contract.zh.svg" width="100%" alt="同一段口语化的论文原文，两种改法。没有约束的润色读起来更专业，却删掉了“可能”“部分场景”，把 92.3% 写成 93.2%，还把比较对象扩大成“现有方法”。使用 Academic Writing Assistant 时，语言同样变得专业，限定词、数值和引用原样保留，并说明改了什么、还需要作者确认什么。">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/readme/fidelity-contract.zh.dark.svg">
+    <img src="assets/readme/fidelity-contract.zh.svg" width="100%" alt="同一段口语化的论文原文，两种改法。没有约束的润色读起来更专业，却删掉了“可能”“部分场景”，把 92.3% 写成 93.2%，还把比较对象扩大成“现有方法”。使用 Academic Writing Assistant 时，语言同样变得专业，限定词、数值和引用原样保留，并说明改了什么、还需要作者确认什么。">
+  </picture>
 </p>
 
 用 AI 改论文，语法和流畅度往往不是问题。真正危险的是那些**读起来更专业、却悄悄改变了事实**的修改。
 
-Academic Writing Assistant 给 AI 一份**保真契约**：语言可以大胆改，事实与证据边界不能动；涉及主张强度的修改必须单独列出，由你决定是否采用。你拿到的是一段可以直接用的学术文字，外加一份说明“改了什么、为什么改、还缺什么依据”的清单。
+Academic Writing Assistant 给 AI 一份**保真契约**：语言可以大胆改，事实与证据边界不能动；涉及主张强度的修改必须单独列出，由你决定是否采用。你拿到的是一段改好的正文，外加一份说明“改了什么、为什么改、还缺什么依据”的清单。
 
 ## 快速安装
 
@@ -43,7 +46,7 @@ Academic Writing Assistant 给 AI 一份**保真契约**：语言可以大胆改
 1. 判断你是哪个 Agent，确定 --host：Claude Code → claude，Codex → codex，Cursor → cursor，Grok Build → grok-build，OpenCode → opencode。不是这五个就告诉我并停止。
 2. 把 https://github.com/LvvUP/academic-writing-assistant（main 分支）git clone --depth 1 到一个临时文件夹，在其中运行（需 Python 3.9+；Windows 可用 py -3 代替 python3）：
    python3 -B scripts/install_skill.py install --host <上面的值> --home-root "$HOME"
-3. 如果提示已安装，把 install 换成 update 再运行；如果提示需要 --backup-existing，加上它再运行（旧副本会移到备份文件夹，不会删除）。遇到其他错误就原样告诉我并停止：不要手动复制或删除文件、不要绕过检查、不要用 sudo。
+3. 如果提示已安装，把 install 换成 update 再运行；如果提示需要 --backup-existing，就按提示改用 update 并加上它再运行（旧副本会移到备份文件夹，不会删除）。遇到其他错误就原样告诉我并停止：不要手动复制或删除文件、不要绕过检查、不要用 sudo。
 4. 验证：把上面命令里的 install 换成 verify 再运行一次，应输出 verified 和版本号。
 5. 删除临时文件夹，把安装路径、版本、备份位置（如有）和脚本输出的 note 提示告诉我，并说明调用方式、是否需要新开会话。
 ```
@@ -121,7 +124,7 @@ python3 -B scripts/install_skill.py export --destination "$HOME/awa-package/acad
 | Codex | 运行 `/skills`，或输入 `$` 后能选到它 |
 | Cursor | 在 Agent 输入框输入 `/`，搜索 `academic-writing-assistant` |
 | Grok Build | 运行 `/skills` 查看，或输入 `/academic-writing-assistant` |
-| OpenCode | 在提示中写 `@academic-writing-assistant`，或直接提出写作任务 |
+| OpenCode | 在提示中写 `@academic-writing-assistant`，能加载即已安装 |
 | WorkBuddy | 「专家·技能·连接器 → 技能 → 已安装」中能看到它 |
 
 没有出现时新开会话或重启 Agent，详见 [安装指南](docs/installation.md#验证安装成功)。
@@ -140,7 +143,7 @@ python3 -B scripts/install_skill.py export --destination "$HOME/awa-package/acad
 
 ## 效果示例
 
-> 以下均为合成示例，数据与引用仅用于演示。“没有约束的润色”是为了对比而写的示意，不是某个模型的实测输出。
+> 以下均为合成示例，数据与引用仅用于演示。两种改法都是示意：“没有约束的润色”展示常见的失真，“使用 Academic Writing Assistant”是按 Skill 的规则写出的预期输出。
 
 ### 文科示例：口语化的问卷研究初稿（社会科学）
 
@@ -150,9 +153,9 @@ python3 -B scripts/install_skill.py export --destination "$HOME/awa-package/acad
 
 **没有约束的润色**
 
-> 本研究对 412 名大学生开展问卷调查，结果表明短视频使用显著降低了大学生的学习投入（r = −0.29，p < 0.001），严重损害其学业发展，高校亟需采取干预措施。
+> 本研究对 412 名大学生开展问卷调查，结果表明短视频使用显著降低了大学生的学习投入（r = −0.29，p < 0.001），这与已有研究的结论一致 [3]，高校亟需采取干预措施。
 
-语言像论文了，但相关关系被写成“显著降低”，多出一句原文没有的“损害学业发展”，建议也从“应该”升级成了“亟需”。
+语言像论文了，但相关关系被写成了因果（“显著降低”），还凭空多出一句“与已有研究的结论一致 [3]”：原文没有这句话，也没有这条文献。原文里超出数据的建议被原样保留，写得更像定论。
 
 **使用 Academic Writing Assistant**
 
@@ -163,7 +166,7 @@ python3 -B scripts/install_skill.py export --destination "$HOME/awa-package/acad
 | 原文 | 处理 | 层级 | 原因 |
 |---|---|---|---|
 | 这说明刷短视频会严重影响大学生的学习 | 不写入正文，正文只陈述“呈负相关” | L3 主张 | 问卷的相关分析支持“相关”，不足以支持“影响”和“严重” |
-| 学校应该赶紧管一管 | 改为待补充占位 | L3 主张 | 建议依赖因果判断。补充依据后可以写成条件化建议，例如“若后续研究证实二者存在因果关系，学校可考虑开展有针对性的引导” |
+| 学校应该赶紧管一管 | 改为待补充占位 | L3 主张 | 建议依赖因果判断，补充依据后再写入。也可以先采用条件化表述，例如“若后续研究证实二者存在因果关系，学校可考虑开展有针对性的引导”，是否采用由你决定 |
 
 ### 理工科示例：实验结果被“润色”走样（化学与材料）
 
@@ -173,9 +176,9 @@ python3 -B scripts/install_skill.py export --destination "$HOME/awa-package/acad
 
 **没有约束的润色**
 
-> 催化剂经 500 ℃ 焙烧 2 小时后，催化活性显著提高约 40%；循环使用 5 次后，活性保持率仍高达 95.1%（表 3），表现出优异的长期稳定性，具有广阔的工业应用前景。
+> 催化剂经 500 ℃ 焙烧 2 小时后，催化活性显著提高近 40%；循环使用 5 次后，活性保持率仍高达 91.5%（表 3），表现出优异的长期稳定性，具有广阔的工业应用前景。
 
-37% 被“取整”成 40%，91.5% 被写成 95.1%；5 次循环被说成“长期稳定性”，原文那句没有依据的工业应用也只是换了个更体面的说法。
+“差不多 37%”被取整成“近 40%”，还加上了没有检验依据的“显著”；5 次循环被说成“长期稳定性”；原文那句没有依据的工业应用，只是换了个更体面的说法。
 
 **使用 Academic Writing Assistant**
 
@@ -185,7 +188,7 @@ python3 -B scripts/install_skill.py export --destination "$HOME/awa-package/acad
 
 | 原文 | 处理 | 层级 | 原因 |
 |---|---|---|---|
-| 所以这个催化剂的稳定性特别好 | 改为待补充占位；可用的限定表述：“该催化剂在 5 次循环内保持了较好的稳定性” | L3 主张 | 5 次循环的数据支持不了笼统的“稳定性特别好” |
+| 所以这个催化剂的稳定性特别好 | 改为待补充占位；数据能支持的事实已写在正文里：循环 5 次后活性保持在 91.5% | L3 主张 | 5 次循环的数据支持不了笼统的“稳定性特别好” |
 | 完全可以直接用到工业生产上 | 不写入正文 | L3 主张 | 工业应用需要更长周期或实际工况下的数据 |
 
 ### 更多任务与学科
@@ -199,14 +202,16 @@ python3 -B scripts/install_skill.py export --destination "$HOME/awa-package/acad
 
 **润色后**
 
-> 从这两封书信推断，他当时或已有离京之意，但仍难以确证。
+> 从这两封书信推断，他当时很可能已有离京之意，但尚难确证。
 
-**重要改动（L3）：** “这也说明他对朝廷的政策非常不满”没有写入正文：两封书信只涉及离京的打算，不足以支持对其动机的判断；如有其他史料，请提供后再写。原文的“大概”“还说不准”改为书面语“或已”“难以确证”，推测的语气完整保留。
+**常见的错误改法：** “这两封书信表明，他因不满朝廷政策而决意离京。”推测变成了定论，动机也被坐实。
+
+**重要改动（L3）：** “这也说明他对朝廷的政策非常不满”没有写入正文：从离京的打算推不出他对朝廷政策不满，这一判断需要其他史料支持，请提供后再写。原文的“大概”“还说不准”改为书面语“很可能”“尚难确证”，保留了推测的语气。
 
 </details>
 
 <details>
-<summary><strong>中译英：观察性研究不写成“降低风险”（医学）</strong></summary>
+<summary><strong>中译英：“风险较低”不译成“降低了风险”（医学）</strong></summary>
 
 **中文原文**
 
@@ -216,7 +221,9 @@ python3 -B scripts/install_skill.py export --destination "$HOME/awa-package/acad
 
 > In this retrospective cohort study, we included 1,236 patients with type 2 diabetes who attended our hospital between 2018 and 2022. Compared with non-users, patients who used the drug had a lower risk of cardiovascular events (HR = 0.78, 95% CI 0.64–0.95), although this association was not evident in patients aged 65 years or older.
 
-**译法说明：** “风险较低”译为 *had a lower risk*，而不是 *reduced the risk*，因为队列研究只支持关联；“不明显”译为 *not evident*，不写成 *no effect*。数值、置信区间和年龄界值逐一对应。
+**常见的错误改法：** *use of the drug reduced the risk of cardiovascular events … and had no effect in patients aged 65 years or older.* 关联被写成了因果，“不明显”被写成了“无效”。
+
+**译法说明：** 原文说的是“风险较低”和“关联不明显”，译文保持同样的主张强度：*had a lower risk*，而不是 *reduced the risk*；*not evident*，而不是 *no effect*。数值、置信区间和年龄界值逐一对应。
 
 </details>
 
@@ -230,6 +237,8 @@ python3 -B scripts/install_skill.py export --destination "$HOME/awa-package/acad
 **英文译文**
 
 > The employer shall conclude a written employment contract with the employee within one month from the date on which employment begins. Where no such contract has been concluded, the employer shall not refuse to pay remuneration on that ground.
+
+**常见的错误改法：** *The employer should conclude a written employment contract … and should not refuse to pay remuneration on that ground.* 义务（shall）和禁止（shall not）都被弱化成了建议（should）。
 
 **译法说明：** “应当”对应义务性的 *shall*，“不得”对应 *shall not*，不改为 *should* 或 *may*；期限、起算点和条件关系保持不变。
 
@@ -245,6 +254,8 @@ python3 -B scripts/install_skill.py export --destination "$HOME/awa-package/acad
 **润色后**
 
 > 有限元仿真结果显示，该支架的最大应力为 182 MPa，低于许用应力 235 MPa。
+
+**常见的错误改法：** “仿真结果证明该结构安全可靠，可直接应用于工程实践。”一次仿真被写成了工程验证。
 
 **重要改动（L3）：** “结构是安全的，可以直接用到工程上”超出了一次仿真所能支持的范围。已完成试验验证或规范校核时，请提供依据后再写；否则可写为“在所计算的工况下满足强度要求”，并说明载荷与边界条件。数值与单位保持不变。
 
@@ -264,6 +275,8 @@ python3 -B scripts/install_skill.py export --destination "$HOME/awa-package/acad
 **回复草稿**
 
 > Thank you for raising this point. We have quantified the accuracy–latency trade-off on the same GPU, with a batch size of 1 and the same input resolution. Our method achieves an accuracy of 86.1% at 21 ms per image, compared with 84.2% at 18 ms per image for the baseline. The gain in accuracy comes with higher latency. We have added these results to Table 4 and a discussion of the trade-off to Section 5.2 of the revised manuscript.
+
+**常见的错误改法：** *We have conducted additional experiments on more devices and will release the code.* 替作者承诺了没有做过、也没有计划的事。
 
 **组织方式：** 直接回应问题，给出可比较的结果，再指向已完成的修改。表号、章节和完成状态均来自作者材料，不替作者承诺新实验。
 
@@ -292,12 +305,12 @@ python3 -B scripts/install_skill.py export --destination "$HOME/awa-package/acad
 |---|---|
 | 人文社科 | 人文学科 · 法学 · 经济学与管理学 · 社会科学 · 教育学与心理学 |
 | 医学与生命科学 | 医学与公共卫生 · 生命科学与农学 |
-| 理学 | 物理化学与材料 · 数学与统计 · 地球与环境科学 |
+| 理学 | 物理、化学与材料 · 数学与统计 · 地球与环境科学 |
 | 工程与计算机 | 工程技术 · 计算机与人工智能 |
 
 **研究类型同样被区分对待：** 实验 · 调查与计量 · 定性研究 · 理论证明 · 综述 · 人文与法学阐释 · 案例研究 · 设计研究
 
-内置示例、术语对照表和章节结构检查都覆盖这些学科与研究类型。它不会要求人文论文写“实验设置”，也不会把访谈主题写成总体比例。
+内置示例和术语对照表取自多个学科，章节结构检查按这 8 种研究类型区分。它不会要求人文论文写“实验设置”，也不会把访谈主题写成总体比例。
 
 ## 支持的平台
 
