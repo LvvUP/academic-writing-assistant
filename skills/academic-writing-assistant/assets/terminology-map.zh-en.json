@@ -343,6 +343,26 @@
       "en": "confidence interval",
       "note": "频率学派的置信区间与贝叶斯的可信区间（credible interval）含义不同；部分医学文献也用“可信区间”指 confidence interval。按作者实际统计方法确认，不自动统一。",
       "relation": "related_concepts"
+    },
+    {
+      "recommended_zh": "标准差",
+      "variants_zh": [
+        "标准差",
+        "标准误"
+      ],
+      "en": "standard deviation / standard error",
+      "note": "标准差描述数据的离散程度，标准误描述统计量（如均值）的抽样变异，二者数值与含义都不同，不能互换；误差线或“±”后的数值应写明是哪一种。",
+      "relation": "related_concepts"
+    },
+    {
+      "recommended_zh": "显著性水平",
+      "variants_zh": [
+        "显著性水平",
+        "置信水平"
+      ],
+      "en": "significance level / confidence level",
+      "note": "显著性水平（α）与置信水平（1−α）是互补但不同的量，如 0.05 与 95%；不要互相替换或混写。",
+      "relation": "related_concepts"
     }
   ],
   "medicine_public_health": [
@@ -374,6 +394,36 @@
       ],
       "en": "clinical trial",
       "note": "临床研究中的 trial 通常译作“试验”；“实验”多指实验室 experiment。确认作者所指的研究类型后再统一。",
+      "relation": "style_preference"
+    },
+    {
+      "recommended_zh": "灵敏度",
+      "variants_zh": [
+        "灵敏度",
+        "敏感度"
+      ],
+      "en": "sensitivity",
+      "note": "诊断试验评价中两种写法通常同指 sensitivity，可按目标期刊习惯全文统一；数值与参考标准保持不变。",
+      "relation": "style_preference"
+    },
+    {
+      "recommended_zh": "不良事件",
+      "variants_zh": [
+        "不良事件",
+        "不良反应"
+      ],
+      "en": "adverse event / adverse reaction",
+      "note": "不良事件指用药或干预后出现的不利医学事件，不要求与干预有因果关系；不良反应指与干预存在合理因果关系的反应。二者不能互换。",
+      "relation": "related_concepts"
+    },
+    {
+      "recommended_zh": "随机对照试验",
+      "variants_zh": [
+        "随机对照试验",
+        "随机对照研究"
+      ],
+      "en": "randomized controlled trial",
+      "note": "同指 randomized controlled trial 时可全文统一；是否随机、如何设盲等设计事实以作者材料为准。",
       "relation": "style_preference"
     }
   ],
@@ -420,6 +470,276 @@
       "en": "robustness check",
       "note": "经济学与管理学中文写作通常称“稳健性检验”；同指 robustness check 时可统一，不改变检验内容。",
       "relation": "style_preference"
+    },
+    {
+      "recommended_zh": "中介效应",
+      "variants_zh": [
+        "中介效应",
+        "调节效应"
+      ],
+      "en": "mediation effect / moderation effect",
+      "note": "中介效应说明自变量经由第三变量影响因变量，调节效应说明关系的强弱或方向随第三变量变化，是不同的模型与结论，不能互换。",
+      "relation": "related_concepts"
+    },
+    {
+      "recommended_zh": "面板数据",
+      "variants_zh": [
+        "面板数据",
+        "纵向数据",
+        "追踪数据"
+      ],
+      "en": "panel data / longitudinal data",
+      "note": "经济学与管理学多称“面板数据”，社会学、心理学和医学多称“纵向数据”或“追踪数据”；同指一类数据时可按学科习惯统一，数据结构以作者说明为准。",
+      "relation": "style_preference"
+    }
+  ],
+  "law": [
+    {
+      "recommended_zh": "定金",
+      "variants_zh": [
+        "定金",
+        "订金"
+      ],
+      "en": "earnest money (定金) / advance payment (订金)",
+      "note": "“定金”是法定的担保方式，适用定金罚则；“订金”通常只是预付款，法律后果不同。读音相同但不可互换，也不要为“统一用词”而改写。",
+      "relation": "related_concepts"
+    },
+    {
+      "recommended_zh": "抵押",
+      "variants_zh": [
+        "抵押",
+        "质押"
+      ],
+      "en": "mortgage / pledge",
+      "note": "抵押不转移财产的占有，质押需转移占有或交付权利凭证，是不同的担保物权；按作者原文和所涉法律关系保留区别。",
+      "relation": "related_concepts"
+    },
+    {
+      "recommended_zh": "被告",
+      "variants_zh": [
+        "被告",
+        "被告人"
+      ],
+      "en": "defendant",
+      "note": "民事、行政诉讼中通常称“被告”，刑事诉讼中称“被告人”；按案件类型使用，不要全文统一成一种。",
+      "relation": "related_concepts"
+    },
+    {
+      "recommended_zh": "法人",
+      "variants_zh": [
+        "法人",
+        "法定代表人"
+      ],
+      "en": "legal person / legal representative",
+      "note": "法人是依法独立享有权利、承担义务的组织，法定代表人是代表法人从事民事活动的负责人（自然人），二者不能互换。",
+      "relation": "related_concepts"
+    },
+    {
+      "recommended_zh": "诉讼时效",
+      "variants_zh": [
+        "诉讼时效",
+        "除斥期间"
+      ],
+      "en": "limitation of actions / scheduled (preclusive) period",
+      "note": "诉讼时效与除斥期间在适用对象、能否中止或中断、届满后果上都不同；不要互相替换。",
+      "relation": "related_concepts"
+    }
+  ],
+  "humanities": [
+    {
+      "recommended_zh": "口述史",
+      "variants_zh": [
+        "口述史",
+        "口述历史"
+      ],
+      "en": "oral history",
+      "note": "两种写法通常同指 oral history，可按作者或目标期刊习惯全文统一。",
+      "relation": "style_preference"
+    },
+    {
+      "recommended_zh": "一手资料",
+      "variants_zh": [
+        "一手资料",
+        "第一手资料",
+        "原始资料"
+      ],
+      "en": "primary sources",
+      "note": "同指研究者直接依据的原始材料时可统一写法；史料的种类、版本与出处属于事实，保持原样。",
+      "relation": "style_preference"
+    }
+  ],
+  "social_sciences": [
+    {
+      "recommended_zh": "田野调查",
+      "variants_zh": [
+        "田野调查",
+        "田野工作",
+        "实地调查"
+      ],
+      "en": "fieldwork",
+      "note": "人类学、社会学中三种写法常同指 fieldwork，可按作者习惯统一；调查的时间、地点与方式等事实保持不变。",
+      "relation": "style_preference"
+    },
+    {
+      "recommended_zh": "受访者",
+      "variants_zh": [
+        "受访者",
+        "被访者",
+        "访谈对象"
+      ],
+      "en": "interviewee / respondent",
+      "note": "同指接受访谈或调查的人时可全文统一；人数、抽样与招募方式等事实保持不变。",
+      "relation": "style_preference"
+    }
+  ],
+  "chemistry_materials": [
+    {
+      "recommended_zh": "收率",
+      "variants_zh": [
+        "收率",
+        "产率"
+      ],
+      "en": "yield",
+      "note": "有机合成多称“收率”，化工与材料领域也常称“产率”；同指 yield 时可全文统一。数值及其计算基准（如分离收率）保持不变。",
+      "relation": "style_preference"
+    },
+    {
+      "recommended_zh": "相对分子质量",
+      "variants_zh": [
+        "相对分子质量",
+        "分子量"
+      ],
+      "en": "relative molecular mass / molecular weight",
+      "note": "国家标准推荐“相对分子质量”，高分子等领域通行“分子量”；按目标期刊要求统一。摩尔质量是带单位的另一个量，不与二者混用。",
+      "relation": "style_preference"
+    },
+    {
+      "recommended_zh": "比表面积",
+      "variants_zh": [
+        "比表面积",
+        "表面积"
+      ],
+      "en": "specific surface area / surface area",
+      "note": "比表面积是单位质量（或体积）物质的表面积，与表面积是不同的量、单位也不同；不要省略“比”字。",
+      "relation": "related_concepts"
+    }
+  ],
+  "life_sciences": [
+    {
+      "recommended_zh": "转染",
+      "variants_zh": [
+        "转染",
+        "转化",
+        "转导"
+      ],
+      "en": "transfection / transformation / transduction",
+      "note": "三者分别指以非病毒方式将核酸导入真核细胞、细菌等摄取外源 DNA、借助病毒载体导入基因，是不同的实验操作；“转化”在非生物学语境另有含义。",
+      "relation": "related_concepts"
+    },
+    {
+      "recommended_zh": "敲除",
+      "variants_zh": [
+        "敲除",
+        "敲低"
+      ],
+      "en": "knockout / knockdown",
+      "note": "敲除指使基因功能完全丧失，敲低指降低其表达水平，对结果的解释不同，不能互换。",
+      "relation": "related_concepts"
+    },
+    {
+      "recommended_zh": "突变",
+      "variants_zh": [
+        "突变",
+        "变异"
+      ],
+      "en": "mutation / variation",
+      "note": "突变与变异在不同语境中的范围不同（如致病突变与序列变异）；按作者定义和所用数据库的术语保留区别。",
+      "relation": "related_concepts"
+    },
+    {
+      "recommended_zh": "物种丰富度",
+      "variants_zh": [
+        "物种丰富度",
+        "物种多样性"
+      ],
+      "en": "species richness / species diversity",
+      "note": "物种丰富度只计物种数目，物种多样性还考虑各物种的相对多度（如 Shannon、Simpson 指数），是不同的指标。",
+      "relation": "related_concepts"
+    }
+  ],
+  "earth_environment": [
+    {
+      "recommended_zh": "预测",
+      "variants_zh": [
+        "预测",
+        "预估"
+      ],
+      "en": "prediction (forecast) / projection",
+      "note": "气候与环境研究中，“预估”指给定排放或社会经济情景下的结果，“预测”指对实际未来状态的预报；二者不能随意互换。",
+      "relation": "related_concepts"
+    },
+    {
+      "recommended_zh": "气候变化",
+      "variants_zh": [
+        "气候变化",
+        "气候变率"
+      ],
+      "en": "climate change / climate variability",
+      "note": "气候变化指气候状态的长期变化，气候变率指围绕平均状态的波动，是不同的概念。",
+      "relation": "related_concepts"
+    },
+    {
+      "recommended_zh": "降水",
+      "variants_zh": [
+        "降水",
+        "降雨"
+      ],
+      "en": "precipitation / rainfall",
+      "note": "降水包括雨、雪、冰雹等各种形式，降雨只指液态降水；数据产品与指标名称按原文保留。",
+      "relation": "related_concepts"
+    }
+  ],
+  "engineering": [
+    {
+      "recommended_zh": "准确度",
+      "variants_zh": [
+        "准确度",
+        "精密度",
+        "精度"
+      ],
+      "en": "accuracy / precision",
+      "note": "准确度指测量结果与真值的接近程度，精密度指重复测量结果之间的一致程度；“精度”在不同语境可指其中之一或分辨力，使用时应明确所指，不自动统一。",
+      "relation": "related_concepts"
+    },
+    {
+      "recommended_zh": "误差",
+      "variants_zh": [
+        "误差",
+        "不确定度"
+      ],
+      "en": "error / uncertainty",
+      "note": "误差是测量值与真值之差，不确定度表征测量结果的分散性，是不同的概念，报告方式也不同。",
+      "relation": "related_concepts"
+    },
+    {
+      "recommended_zh": "强度",
+      "variants_zh": [
+        "强度",
+        "刚度"
+      ],
+      "en": "strength / stiffness",
+      "note": "强度指材料或构件抵抗破坏的能力，刚度指抵抗变形的能力，是不同的力学性能指标。",
+      "relation": "related_concepts"
+    },
+    {
+      "recommended_zh": "试验",
+      "variants_zh": [
+        "试验",
+        "实验"
+      ],
+      "en": "test (trial) / experiment",
+      "note": "工程、农学和医学中“试验”多指按标准或方案进行的测试与验证，“实验”多指在受控条件下探究规律；许多稿件会有意区分，先确认作者用法再决定是否统一。",
+      "relation": "related_concepts"
     }
   ]
 }
