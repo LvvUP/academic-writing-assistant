@@ -35,7 +35,7 @@ python -B skills/academic-writing-assistant/scripts/skill_lint.py .
 
 ### 发布新版本（维护者）
 
-版本号写在 `SKILL.md` 的 `metadata.version`、`.codex-plugin/plugin.json`、`ROADMAP.md`、`docs/licensing.md` 和两份 `THIRD_PARTY_NOTICES.md` 中，发布前保持一致，并在 `CHANGELOG.md` 写明变化。合并到 main 后创建 `v<版本号>` 标签和 GitHub Release，并把下面命令生成的 `academic-writing-assistant.zip` 作为附件上传，供通过上传技能包安装的平台直接下载：
+版本号写在 `SKILL.md` 的 `metadata.version`、`.codex-plugin/plugin.json`、`ROADMAP.md`、`docs/licensing.md` 和两份 `THIRD_PARTY_NOTICES.md` 中，发布前保持一致，并在 `CHANGELOG.md` 和 `CHANGELOG_EN.md` 中写明变化。合并到 main 后创建 `v<版本号>` 标签和 GitHub Release，并把下面命令生成的 `academic-writing-assistant.zip` 作为附件上传，供通过上传技能包安装的平台直接下载：
 
 ```sh
 python -B scripts/install_skill.py export --destination /path/to/output/academic-writing-assistant --archive
@@ -47,7 +47,7 @@ python -B scripts/install_skill.py export --destination /path/to/output/academic
 - [ ] 新示例与资源是合成材料或有明确许可。
 - [ ] 测试与 lint 已通过。
 - [ ] `SKILL.md` 保持精简，详细规则放在 `references/`。
-- [ ] 中英文 README、CHANGELOG 已按需同步，保留原 Logo。
+- [ ] 中英文 README 与中英文 CHANGELOG 已按需同步，保留原 Logo。
 
 ## English
 
@@ -69,4 +69,4 @@ python -B skills/academic-writing-assistant/scripts/skill_lint.py .
 
 Keep `SKILL.md` lean, put detailed rules in `references/`, update the package manifest when adding distributed files, and keep both READMEs and the logo intact.
 
-Maintainers: when publishing a release, keep the version consistent across the files listed in the Chinese section, tag `v<version>`, and attach the `academic-writing-assistant.zip` produced by `scripts/install_skill.py export --archive` to the GitHub Release.
+Maintainers: when publishing a release, keep the version consistent across the files listed in the Chinese section, describe the changes in both `CHANGELOG.md` and `CHANGELOG_EN.md`, tag `v<version>`, and attach the `academic-writing-assistant.zip` produced by `scripts/install_skill.py export --archive` to the GitHub Release.

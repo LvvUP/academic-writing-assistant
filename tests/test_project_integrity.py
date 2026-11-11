@@ -165,3 +165,49 @@ def test_documentation_inventory_does_not_read_private_records():
     paths = lint.public_files(ROOT)
     assert ROOT / "docs/design.md" in paths
     assert all(".internal" not in path.relative_to(ROOT).parts for path in paths)
+
+
+def test_changelogs_list_the_same_versions_in_both_languages():
+    heading = re.compile(r"^## (\d+\.\d+\.\d+)\s*$", re.M)
+    chinese = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+    english = (ROOT / "CHANGELOG_EN.md").read_text(encoding="utf-8")
+    versions = heading.findall(chinese)
+    assert versions and versions == heading.findall(english)
+    assert "[English](CHANGELOG_EN.md)" in chinese
+    assert "[中文](CHANGELOG.md)" in english
+    released = re.search(r'version:\s*"([^"]+)"', (SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")).group(1)
+    assert versions[0] == released, "the newest changelog entry should describe the current Skill version"
+
+
+def test_readme_key_figures_match_the_repository():
+    """The figures under the tagline are facts about the repository; keep them true."""
+    import structure_checker
+
+    terms = json.loads((SKILL_DIR / "assets" / "terminology-map.zh-en.json").read_text(encoding="utf-8"))
+    groups = sum(len(entries) for field, entries in terms.items() if not field.startswith("_"))
+    adapter = (SKILL_DIR / "references" / "field-adapter.md").read_text(encoding="utf-8")
+    table = adapter[adapter.index("## 学科速查表"):adapter.index("## 人文学科")]
+    families = len([line for line in table.splitlines() if line.startswith("| ") and not line.startswith(("| 学科大类", "|---"))])
+    manuscript_checks = ["fidelity_check.py", "manuscript_audit.py", "terminology_checker.py", "structure_checker.py"]
+    assert all((SKILL_DIR / "scripts" / name).is_file() for name in manuscript_checks)
+    platforms = len(lint_installer_hosts()) + 1  # hosts installed into a directory, plus WorkBuddy by package upload
+    expected = {
+        "README.md": [f"**{families}** 个学科大类", f"**{len(structure_checker.RESEARCH_TYPES)}** 种研究类型",
+                      f"**{platforms}** 个平台", f"**{groups}** 组术语对照", f"**{len(manuscript_checks)}** 个本地核查脚本"],
+        "README_EN.md": [f"**{families}** discipline families", f"**{len(structure_checker.RESEARCH_TYPES)}** research types",
+                         f"**{platforms}** platforms", f"**{groups}** terminology groups",
+                         f"**{len(manuscript_checks)}** local check scripts"],
+    }
+    for name, figures in expected.items():
+        text = (ROOT / name).read_text(encoding="utf-8")
+        for figure in figures:
+            assert figure in text, f"{name} should state {figure}"
+
+
+def lint_installer_hosts():
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("install_skill_for_figures", ROOT / "scripts" / "install_skill.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.HOST_PATHS

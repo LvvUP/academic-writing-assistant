@@ -1,4 +1,6 @@
-# 变更日志 / Changelog
+# 变更日志
+
+**中文** · [English](CHANGELOG_EN.md)
 
 ## 0.5.0
 
@@ -22,7 +24,7 @@
 - **新增 WorkBuddy 支持**：`install_skill.py export --archive` 导出技能文件夹和压缩包，通过 WorkBuddy 的「上传技能」导入。
 - **新增 `verify`**：只读核对已安装的副本是否完整、未被改动，并报告版本；安装提示词增加了验证步骤。
 - 安装指南新增各平台“如何确认已加载”和升级说明；兼容说明覆盖六个平台，并注明所依据的官方文档与核对日期。
-- README 重写：新增保真契约示意图，示例覆盖社会科学、医学、法学、工程与计算机。
+- README 重写：新增保真契约示意图，示例覆盖文科与理工科的多个学科。
 - 新增医学、材料化学与工程的合成示例。
 - 更新开发与持续集成依赖（pytest 9.2.0、pluggy 1.7.0、iniconfig 2.3.1、actions/setup-python 7.1.0）。
 
@@ -69,20 +71,14 @@
 
 ## 0.2.0
 
-Reframes the Skill around fidelity: how far a revision may move a sentence
-before it changes what the author is claiming, and how the author audits that.
+围绕“保真”重新组织 Skill：一次修改可以把句子改到什么程度而不改变作者的主张，以及作者如何核对这一点。
 
-- **Fidelity contract** in `SKILL.md`: locked zone / load-bearing language /
-  free surface, with L1–L3 change tiers and a change ledger.
-- New references for fidelity examples, submission materials, LaTeX and
-  document formats, and whole-draft consistency.
-- `scripts/fidelity_check.py` and `scripts/manuscript_audit.py`.
-- Reviewer-response guidance separates journal response letters from
-  conference rebuttals; field adapter, writing workflows and style guides
-  rewritten.
+- `SKILL.md` 引入**保真契约**：锁定区、承重语言、自由表层，以及 L1–L3 改动分级和改动台账。
+- 新增参考文件：保真示例、投稿材料、LaTeX 与文档格式、全文一致性。
+- 新增 `scripts/fidelity_check.py` 与 `scripts/manuscript_audit.py`。
+- 审稿回复指南区分期刊回复信与会议 rebuttal；重写学科适配、写作工作流和写作指南。
 
 ## 0.1.0
 
-- Initial release: task routing, field adaptation, writing workflows, output
-  templates, quality checklist, citation safety rules and style guides.
-- Terminology, section-structure and repository lint helper scripts.
+- 首次发布：任务路由、学科适配、写作工作流、输出模板、质量清单、引用安全规则和写作指南。
+- 术语检查、章节结构检查和仓库 lint 辅助脚本。
