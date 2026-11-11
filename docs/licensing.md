@@ -1,6 +1,6 @@
 # 许可证与第三方声明
 
-当前 **0.4.0** 将项目整体及新增、修改的自有内容按 **AGPL-3.0-only** 提供。根目录 [LICENSE](../LICENSE) 与[独立 Skill 包许可证](../skills/academic-writing-assistant/LICENSE) 均为 GNU AGPL 第 3 版标准全文；项目的版本选择见 [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md)。标准全文附录中的通用示例不改变本项目仅选择第 3 版的授予。
+当前 **0.5.0** 将项目整体及新增、修改的自有内容按 **AGPL-3.0-only** 提供。根目录 [LICENSE](../LICENSE) 与[独立 Skill 包许可证](../skills/academic-writing-assistant/LICENSE) 均为 GNU AGPL 第 3 版标准全文；项目的版本选择见 [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md)。标准全文附录中的通用示例不改变本项目仅选择第 3 版的授予。
 
 此前版本已经授予的 MIT 权利继续有效。本次保留两条历史版权、完整 MIT 许可及免责声明，不追溯撤销旧许可，不改写 Git 历史。组合在本版本中的历史 MIT 材料继续保留其声明；本次新增内容不因此获得 MIT 授权。
 
@@ -38,6 +38,6 @@
 
 ## English summary
 
-The 0.4.0 project as a whole and its new changes use **AGPL-3.0-only**. The root and standalone package contain the unmodified GNU license text. Historical MIT notices and grants remain valid; this migration does not revoke earlier permissions or rewrite history. See [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md).
+The 0.5.0 project as a whole and its new changes use **AGPL-3.0-only**. The root and standalone package contain the unmodified GNU license text. Historical MIT notices and grants remain valid; this migration does not revoke earlier permissions or rewrite history. See [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md).
 
 Commercial use is allowed subject to applicable obligations, including corresponding-source requirements for covered distribution and the section 13 offer when users interact remotely with a modified program. Ordinary manuscript output is not automatically covered, and merely invoking this Skill does not automatically license an external model or entire system under AGPL. The separately installed dependencies above retain their own licenses and are not bundled into the minimal Skill package.

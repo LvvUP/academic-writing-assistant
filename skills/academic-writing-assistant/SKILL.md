@@ -3,7 +3,7 @@ name: academic-writing-assistant
 description: Academic writing assistant for Chinese and English manuscripts in any discipline. Use when the user asks to polish, edit, rewrite, shorten, expand or translate academic text, or shares a paper, thesis, proposal or grant application to revise or check (论文润色、修改、中译英、英译中、摘要、引言、文献综述、学位论文、开题报告、基金申请书、审稿回复). Also drafts sections from supplied material, reviewer responses and rebuttals, cover letters, highlights and AI-use statements; formats reference lists (GB/T 7714, APA, MLA, Chicago, IEEE, Vancouver); and checks terminology, consistency and LaTeX. Covers natural sciences, engineering, medicine, social sciences, economics and management, humanities and law. Keeps numbers, citations and the strength of each claim unchanged unless the change is flagged, and never fabricates references or data. Do not activate merely because a coding, installation or general knowledge question mentions a paper, a journal or research.
 license: AGPL-3.0-only
 metadata:
-  version: "0.4.0"
+  version: "0.5.0"
 ---
 
 # Academic Writing Assistant

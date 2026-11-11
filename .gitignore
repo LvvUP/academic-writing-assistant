@@ -32,7 +32,14 @@ drafts/private/
 /AGENTS.md
 /CLAUDE.md
 /evals/
-/docs/testing.md
+*.log
+
+# Local agent configuration and project-level Skill installs
 /.claude/
 /.codex/
-*.log
+/.agents/
+/.cursor/
+/.grok/
+/.opencode/
+/.codebuddy/
+/.workbuddy/
