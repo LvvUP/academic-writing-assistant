@@ -4,7 +4,7 @@
 
 ## Unreleased
 
-- README: the illustration now compares one passage three ways and has a dark variant; two examples (history, and chemistry and materials) are shown in full and the rest are folded, each set against a common wrong edit.
+- README: the illustration now sets one passage against two edits and has a dark variant; two examples (history, and chemistry and materials) are shown in full and the rest are folded, each set against a common wrong edit.
 - The changelog is now available in Chinese and in English.
 
 ## 0.5.0

@@ -33,6 +33,8 @@ One Skill for Claude Code, Codex, Cursor, Grok Build, OpenCode and WorkBuddy.
   </picture>
 </p>
 
+<p align="center"><sub>The same passage: unbounded polishing drops the hedges, turns 92.3% into 92% and replaces the method in [12] with “existing methods”; with the Skill the language is just as professional, all of these stay as written, and one question is raised for the author to confirm.</sub></p>
+
 Grammar and fluency are rarely the problem when AI edits a paper. The danger is edits that **sound more professional but quietly change the facts**.
 
 Academic Writing Assistant gives your agent a **fidelity contract**: improve the language freely, but never move the facts or the evidence boundary, and list every change to claim strength so you decide whether to accept it. You get the revised text, plus a short account of what changed, why, and which evidence is still missing.
@@ -151,22 +153,22 @@ There is no need to add “don't change my data”: keeping numbers, citations a
 
 **Original (a non-native English draft)**
 
-> I read two letters he wrote to his younger brother, and there is one sentence “Nothing can be done in the capital; I intend to return to the south”, so I think at that time he probably already had the idea to leave the capital, but it is not sure. This also shows he was very dissatisfied with the court's policies.
+> I read two letters he wrote to his younger brother, and there is one sentence “Of late I think often of the scenery of Jiangnan”, so I think at that time he probably already had the idea to leave the capital, but it is not sure. This also shows he was very dissatisfied with the court's policies.
 
 **Unbounded polishing**
 
-> In two letters to his younger brother, he stated plainly that “nothing more could be achieved in the capital, and I shall return to the south”, which shows that he resolved to leave the capital out of dissatisfaction with the court's policies.
+> In two letters to his younger brother, he wrote that he had “lately been longing for the landscapes of the south”, which shows that he resolved to leave the capital out of dissatisfaction with the court's policies.
 
-The prose is elegant now, but the quotation has been reworded (the letter says “Nothing can be done in the capital; I intend to return to the south”); the tentative “probably … not sure” has become “stated plainly” and “resolved”; and the claim about his motive is presented as established.
+The prose is elegant now, but the quotation has been reworded (the letter says “Of late I think often of the scenery of Jiangnan”); the tentative “probably … not sure” has become “resolved to leave”; and the claim about his motive is presented as established.
 
 **With Academic Writing Assistant**
 
-> Two letters to his younger brother contain the sentence “Nothing can be done in the capital; I intend to return to the south”. This suggests that he had probably already thought of leaving the capital, although this cannot be confirmed.
+> Two letters to his younger brother contain the sentence “Of late I think often of the scenery of Jiangnan”. This suggests that he had probably already thought of leaving the capital, although this cannot be confirmed.
 
 What comes with it:
 
 - **Language**: informal phrasing rewritten, for example “he probably already had the idea to leave the capital, but it is not sure” → “he had probably already thought of leaving the capital, although this cannot be confirmed”. The quotation is kept word for word, and the tentative tone is kept.
-- **Claim (L3), your decision**: “This also shows he was very dissatisfied with the court's policies” is left out of the text. The quoted sentence supports an intention to leave; it does not establish dissatisfaction with the court's policies, which needs other sources. A bounded wording you can use as it stands:
+- **Claim (L3), your decision**: “This also shows he was very dissatisfied with the court's policies” is left out of the text. A sentence about missing Jiangnan is not enough to support a claim of dissatisfaction with the court's policies, which needs other sources. A bounded wording you can use as it stands:
 
   > Whether he was dissatisfied with the court's policies cannot be determined from these two letters alone and awaits corroboration from other sources.
 
@@ -190,9 +192,9 @@ What comes with it:
 
 - **Language**: non-idiomatic wording rewritten, for example “Its activity is higher than the uncalcined one for about 37%” → “the activity of the catalyst was about 37% higher than that of the uncalcined sample”. The temperature, duration, both percentages and the table number are exactly as written, with no rounding.
 - **To confirm**: is “about 37%” a relative increase or 37 percentage points? Is 91.5% the activity retained relative to the first cycle? Once you confirm, both can be stated more precisely.
-- **Claims (L3), your decision**: the two conclusions in the last sentence go beyond data from 5 cycles and are left out of the text. A bounded wording you can add as it stands:
+- **Claims (L3), your decision**: “the stability … is very good” and “can be directly used in industrial production” go beyond data from 5 cycles and are not carried over as written. A bounded wording you can add as it stands:
 
-  > The stability of the catalyst over longer runs and its potential for industrial use remain to be verified under realistic operating conditions.
+  > This indicates a degree of cycling stability over the 5 cycles examined; stability over longer runs and the potential for industrial use remain to be verified under realistic operating conditions.
 
 ### More tasks and disciplines
 
@@ -209,7 +211,7 @@ What comes with it:
 
 **A common wrong edit:** *The results showed that short-video use significantly reduced study engagement (r = −0.29, p < 0.001), which is consistent with previous studies [3].* The correlation has become causation, and a reference appears that the draft never contained.
 
-**Important change (L3):** “This shows short videos seriously affect students' study” and “schools should do something quickly” are left out of the text: a survey correlation supports “associated”, not “affect” or “seriously”, nor a recommendation that depends on a causal claim. A bounded wording you can use: “This result suggests an association between the two; the direction of causality remains to be tested in longitudinal or intervention studies.”
+**Important change (L3):** “This shows short videos seriously affect students' study” and “schools should do something quickly” are left out of the text: a survey correlation supports “associated”, not “affect” or “seriously”, nor a recommendation that depends on a causal claim. A bounded wording you can use: “This result suggests an association between the two; whether the relationship is causal, and in which direction, remains to be tested in longitudinal or intervention studies.”
 
 </details>
 
@@ -263,6 +265,8 @@ What comes with it:
 **A common wrong edit:** 仿真结果证明该结构安全可靠，可直接应用于工程实践。 *(The simulation proves that the structure is safe and reliable and can be applied directly in engineering practice.)* One simulation has been written up as engineering validation.
 
 **Important change (L3):** “the structure is safe and can be used directly” goes beyond what one simulation supports. If tests or a code check have been completed, supply them and the claim can be written; otherwise a bounded alternative is “meets the strength requirement under the simulated load case”, with loads and boundary conditions stated. Values and units are unchanged.
+
+**To confirm:** is 235 MPa the allowable stress set by the design code, or the yield strength of the material? The two imply different safety margins.
 
 </details>
 
@@ -335,7 +339,7 @@ Built-in writing guidance for 12 discipline families; anything else follows a ge
 
 **Research types are handled on their own terms too:** experimental · survey and econometric · qualitative · theoretical · review · humanities and legal interpretation · case study · design research
 
-The bundled examples and terminology map draw on many disciplines, and the section-structure checks distinguish these 8 research types. A history paper is not asked for an “experimental setup”, and interview themes do not become population percentages.
+The bundled examples and terminology map draw on many disciplines. The section-structure checks follow these 8 research types, so a history paper is not asked for an “experimental setup”; the Skill's rules also require that interview themes are not turned into population percentages.
 
 ## Supported platforms
 
