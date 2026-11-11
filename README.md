@@ -22,14 +22,14 @@
 
 **中文** · [English](README_EN.md)
 
-[快速安装](#快速安装) · [效果示例](#效果示例) · [功能一览](#功能一览) · [适用学科](#适用学科) · [支持的平台](#支持的平台) · [升级](#升级) · [常见问题](#常见问题)
+[快速安装](#快速安装) · [效果示例](#效果示例) · [保真契约](#核心原则保真契约) · [功能一览](#功能一览) · [适用学科](#适用学科) · [支持的平台](#支持的平台) · [升级](#升级) · [常见问题](#常见问题)
 
 </div>
 
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/readme/fidelity-contract.zh.dark.svg">
-    <img src="assets/readme/fidelity-contract.zh.svg" width="100%" alt="同一段口语化的论文原文，两种改法。没有约束的润色读起来更专业，却删掉了“可能”“部分场景”，把 92.3% 写成 93.2%，还把比较对象扩大成“现有方法”。使用 Academic Writing Assistant 时，语言同样变得专业，限定词、数值和引用原样保留，并说明改了什么、还需要作者确认什么。">
+    <img src="assets/readme/fidelity-contract.zh.svg" width="100%" alt="同一段口语化的论文原文，两种改法。没有约束的润色读起来更专业，却删掉了“可能”“部分场景”，把 92.3% 写成 92%，还把比较对象从文献 [12] 换成了“现有方法”。使用 Academic Writing Assistant 时，语言同样变得专业，限定词、数值和引用原样保留，并说明改了什么、还需要作者确认什么。">
   </picture>
 </p>
 
@@ -52,6 +52,38 @@ Academic Writing Assistant 给 AI 一份**保真契约**：语言可以大胆改
 ```
 
 以后想更新，再发送一次同样的话即可。
+
+<details>
+<summary><strong>备选：自己在终端运行同一个脚本</strong></summary>
+
+需要 Git 和 Python 3.9+：
+
+```sh
+git clone --depth 1 https://github.com/LvvUP/academic-writing-assistant.git
+cd academic-writing-assistant
+python3 -B scripts/install_skill.py install --host claude --home-root "$HOME"
+python3 -B scripts/install_skill.py verify --host claude --home-root "$HOME"
+```
+
+把 `claude` 换成你使用的 Agent：
+
+| Agent | `--host` | 安装位置 |
+|---|---|---|
+| Claude Code | `claude` | `~/.claude/skills/academic-writing-assistant` |
+| Codex | `codex` | `~/.agents/skills/academic-writing-assistant` |
+| Cursor | `cursor` | `~/.cursor/skills/academic-writing-assistant` |
+| Grok Build | `grok-build` | `~/.grok/skills/academic-writing-assistant` |
+| OpenCode | `opencode` | `~/.config/opencode/skills/academic-writing-assistant` |
+
+为 WorkBuddy 导出技能包：
+
+```sh
+python3 -B scripts/install_skill.py export --destination "$HOME/awa-package/academic-writing-assistant" --archive
+```
+
+更新时先 `git pull --ff-only`（或重新 clone 一份），再把 `install` 换成 `update`；卸载用 `uninstall`。Windows 可用 `py -3` 代替 `python3`。提示词安装和终端安装用的是同一个脚本，装出来的副本可以互相更新。更多说明见 [安装指南](docs/installation.md)。
+
+</details>
 
 ### WorkBuddy
 
@@ -82,38 +114,6 @@ WorkBuddy 通过「上传技能」导入自备的技能包：先让它准备技�
 
 </details>
 
-<details>
-<summary><strong>备选：自己在终端运行同一个脚本</strong></summary>
-
-需要 Git 和 Python 3.9+：
-
-```sh
-git clone --depth 1 https://github.com/LvvUP/academic-writing-assistant.git
-cd academic-writing-assistant
-python3 -B scripts/install_skill.py install --host claude --home-root "$HOME"
-python3 -B scripts/install_skill.py verify --host claude --home-root "$HOME"
-```
-
-把 `claude` 换成你使用的 Agent：
-
-| Agent | `--host` | 安装位置 |
-|---|---|---|
-| Claude Code | `claude` | `~/.claude/skills/academic-writing-assistant` |
-| Codex | `codex` | `~/.agents/skills/academic-writing-assistant` |
-| Cursor | `cursor` | `~/.cursor/skills/academic-writing-assistant` |
-| Grok Build | `grok-build` | `~/.grok/skills/academic-writing-assistant` |
-| OpenCode | `opencode` | `~/.config/opencode/skills/academic-writing-assistant` |
-
-为 WorkBuddy 导出技能包：
-
-```sh
-python3 -B scripts/install_skill.py export --destination "$HOME/awa-package/academic-writing-assistant" --archive
-```
-
-更新时把 `install` 换成 `update`，卸载用 `uninstall`。Windows 可用 `py -3` 代替 `python3`。提示词安装和终端安装用的是同一个脚本，装出来的副本可以互相更新。更多说明见 [安装指南](docs/installation.md)。
-
-</details>
-
 ### 确认安装成功
 
 安装脚本的 `verify` 会核对已安装的文件。要确认 Agent 已经加载：
@@ -134,41 +134,43 @@ python3 -B scripts/install_skill.py export --destination "$HOME/awa-package/acad
 直接用自然语言提出写作任务，Agent 会自动调用；也可以显式指定：
 
 ```text
-/academic-writing-assistant 请润色下面这段摘要，保留数值、引用和结论范围，并说明重要改动。
+/academic-writing-assistant 请润色下面这段摘要。
 
 [粘贴你的文本]
 ```
+
+不需要额外叮嘱“不要改数据”：保留数值、引用和结论强度，并说明重要改动，是 Skill 的默认规则。
 
 > Claude Code、Grok Build 使用 `/academic-writing-assistant`；Codex 使用 `$academic-writing-assistant`；Cursor 在 Agent 输入框输入 `/` 后选择；OpenCode 使用 `@academic-writing-assistant`；WorkBuddy 直接描述任务，或输入 `/` 从技能列表中选择。
 
 ## 效果示例
 
-> 以下均为合成示例，数据与引用仅用于演示。两种改法都是示意：“没有约束的润色”展示常见的失真，“使用 Academic Writing Assistant”是按 Skill 的规则写出的预期输出。
+> 以下均为合成示例，人物、数据与引用仅用于演示。两种改法都是示意：“没有约束的润色”展示常见的失真，“使用 Academic Writing Assistant”是按 Skill 的规则写出的预期输出。
 
-### 文科示例：口语化的问卷研究初稿（社会科学）
+### 文科示例：书信里的一句话和一个推测（历史学）
 
 **原文**
 
-> 我们找了 412 个大学生做问卷，问了他们每天刷短视频刷多久，还有学习投入怎么样。结果发现刷得越久的人学习投入越低（r = −0.29，p < 0.001）。这说明刷短视频会严重影响大学生的学习，学校应该赶紧管一管。
+> 我看了他写给弟弟的两封信，里面有一句“京中事不可为，吾意欲南归”，所以我觉得他当时大概已经有了离开京城的想法，不过还说不准。这也说明他对朝廷的政策非常不满。
 
 **没有约束的润色**
 
-> 本研究对 412 名大学生开展问卷调查，结果表明短视频使用显著降低了大学生的学习投入（r = −0.29，p < 0.001），这与已有研究的结论一致 [3]，高校亟需采取干预措施。
+> 在致其弟的两封书信中，他明确表示“京中之事已不可为，吾欲南归”，可见其因不满朝廷政策而决意离京。
 
-语言像论文了，但相关关系被写成了因果（“显著降低”），还凭空多出一句“与已有研究的结论一致 [3]”：原文没有这句话，也没有这条文献。原文里超出数据的建议被原样保留，写得更像定论。
+文字典雅了，但引文被改了字（原信是“京中事不可为，吾意欲南归”）；“大概……还说不准”的推测变成了“明确表示”“决意离京”；对动机的判断也被写成了定论。
 
 **使用 Academic Writing Assistant**
 
-> 本研究以 412 名大学生为对象开展问卷调查，了解其每日短视频使用时长与学习投入情况。结果显示，短视频使用时长与学习投入呈负相关（r = −0.29，p < 0.001）。[干预建议：请补充支持因果关系或干预效果的依据后再写入。]
+> 他在致其弟的两封书信中有“京中事不可为，吾意欲南归”之语。据此推断，他当时或已有离京之意，但仍难以确证。
 
-语言同样规范，人数和统计量原样保留。两处超出数据的主张没有被悄悄改写，而是单独列出，由你决定怎么写：
+同时给出的说明：
 
-| 原文 | 处理 | 层级 | 原因 |
-|---|---|---|---|
-| 这说明刷短视频会严重影响大学生的学习 | 不写入正文，正文只陈述“呈负相关” | L3 主张 | 问卷的相关分析支持“相关”，不足以支持“影响”和“严重” |
-| 学校应该赶紧管一管 | 改为待补充占位 | L3 主张 | 建议依赖因果判断，补充依据后再写入。也可以先采用条件化表述，例如“若后续研究证实二者存在因果关系，学校可考虑开展有针对性的引导”，是否采用由你决定 |
+- **语言**：口语改为书面表达，如“大概已经有了离开京城的想法，不过还说不准”改为“或已有离京之意，但仍难以确证”。引文一字未动，推测的语气保留。
+- **主张（L3），由你决定**：“这也说明他对朝廷的政策非常不满”没有写入正文。信中这句话可以支持他有意离京，但推不出他对朝廷政策不满，这一判断需要其他史料。可以直接采用的限定表述：
 
-### 理工科示例：实验结果被“润色”走样（化学与材料）
+  > 至于他是否对朝廷政策不满，仅凭这两封书信尚难判断，有待其他史料印证。
+
+### 理工科示例：口语化的实验结果（化学与材料）
 
 **原文**
 
@@ -178,35 +180,36 @@ python3 -B scripts/install_skill.py export --destination "$HOME/awa-package/acad
 
 > 催化剂经 500 ℃ 焙烧 2 小时后，催化活性显著提高近 40%；循环使用 5 次后，活性保持率仍高达 91.5%（表 3），表现出优异的长期稳定性，具有广阔的工业应用前景。
 
-“差不多 37%”被取整成“近 40%”，还加上了没有检验依据的“显著”；5 次循环被说成“长期稳定性”；原文那句没有依据的工业应用，只是换了个更体面的说法。
+“差不多 37%”被取整成“近 40%”，还加上了没有检验依据的“显著”；“活性还有 91.5%”被直接当成了“保持率”；5 次循环被说成“长期稳定性”；原文那句没有依据的工业应用，只是换了个更体面的说法。
 
 **使用 Academic Writing Assistant**
 
-> 催化剂经 500 ℃ 焙烧 2 小时后，活性较未焙烧样品提高约 37%；循环使用 5 次后，活性仍保持在 91.5%（表 3）。[稳定性与工业应用：现有数据为 5 次循环的结果，请补充更长周期或实际工况下的数据后再写入。]
+> 催化剂经 500 ℃ 焙烧 2 小时后，活性较未焙烧样品提高约 37%；循环使用 5 次后，活性仍保持在 91.5%（表 3）。
 
-口语改成了专业表达，温度、时间、百分比和表号一个都没动，也没有取整：
+同时给出的说明：
 
-| 原文 | 处理 | 层级 | 原因 |
-|---|---|---|---|
-| 所以这个催化剂的稳定性特别好 | 改为待补充占位；数据能支持的事实已写在正文里：循环 5 次后活性保持在 91.5% | L3 主张 | 5 次循环的数据支持不了笼统的“稳定性特别好” |
-| 完全可以直接用到工业生产上 | 不写入正文 | L3 主张 | 工业应用需要更长周期或实际工况下的数据 |
+- **语言**：口语改为学术表达，如“拿去测了一下，发现它的活性比没焙烧的高了差不多 37%”改为“活性较未焙烧样品提高约 37%”。温度、时间、两个百分比和表号原样保留，没有取整。
+- **待确认**：“高了差不多 37%”是相对提高，还是提高了 37 个百分点？“活性还有 91.5%”是相对于首次循环的保持率吗？确认后可以写得更准确。
+- **主张（L3），由你决定**：最后一句的两个结论超出了 5 次循环的数据，没有写入正文。可以接在正文后面的限定表述：
+
+  > 该催化剂在更长周期下的稳定性及其工业应用潜力，有待在实际工况下进一步验证。
 
 ### 更多任务与学科
 
 <details>
-<summary><strong>论文润色：推测不写成定论（历史学）</strong></summary>
+<summary><strong>论文润色：相关不写成因果（社会科学）</strong></summary>
 
 **原文**
 
-> 从这两封信看，他当时大概已经有了离开京城的想法，不过还说不准。这也说明他对朝廷的政策非常不满。
+> 我们找了 412 个大学生做问卷，问了他们每天刷短视频刷多久，还有学习投入怎么样。结果发现刷得越久的人学习投入越低（r = −0.29，p < 0.001）。这说明刷短视频会严重影响大学生的学习，学校应该赶紧管一管。
 
 **润色后**
 
-> 从这两封书信推断，他当时很可能已有离京之意，但尚难确证。
+> 本研究以 412 名大学生为对象开展问卷调查，了解其每日短视频使用时长与学习投入情况。结果显示，短视频使用时长与学习投入呈负相关（r = −0.29，p < 0.001）。
 
-**常见的错误改法：** “这两封书信表明，他因不满朝廷政策而决意离京。”推测变成了定论，动机也被坐实。
+**常见的错误改法：** “结果表明，短视频使用显著降低了大学生的学习投入（r = −0.29，p < 0.001），这与已有研究的结论一致 [3]。”相关被写成了因果，还多出一条原文没有的文献。
 
-**重要改动（L3）：** “这也说明他对朝廷的政策非常不满”没有写入正文：从离京的打算推不出他对朝廷政策不满，这一判断需要其他史料支持，请提供后再写。原文的“大概”“还说不准”改为书面语“很可能”“尚难确证”，保留了推测的语气。
+**重要改动（L3）：** “这说明刷短视频会严重影响大学生的学习”和“学校应该赶紧管一管”没有写入正文：问卷的相关分析支持“相关”，不足以支持“影响”“严重”，以及依赖因果判断的建议。可以采用的限定表述：“这一结果提示二者存在关联，其因果方向有待纵向研究或干预研究检验。”
 
 </details>
 
@@ -228,7 +231,7 @@ python3 -B scripts/install_skill.py export --destination "$HOME/awa-package/acad
 </details>
 
 <details>
-<summary><strong>中译英：“应当”不能变成“可以”（法学）</strong></summary>
+<summary><strong>中译英：“应当”译为 shall，不弱化为 should（法学）</strong></summary>
 
 **中文原文（合成条文，非现行法律）**
 
@@ -240,7 +243,7 @@ python3 -B scripts/install_skill.py export --destination "$HOME/awa-package/acad
 
 **常见的错误改法：** *The employer should conclude a written employment contract … and should not refuse to pay remuneration on that ground.* 义务（shall）和禁止（shall not）都被弱化成了建议（should）。
 
-**译法说明：** “应当”对应义务性的 *shall*，“不得”对应 *shall not*，不改为 *should* 或 *may*；期限、起算点和条件关系保持不变。
+**译法说明：** “应当”对应义务性的 *shall*，“不得”对应 *shall not*，都不弱化为 *should*；期限、起算点和条件关系保持不变。
 
 </details>
 
@@ -284,6 +287,26 @@ python3 -B scripts/install_skill.py export --destination "$HOME/awa-package/acad
 
 更多示例见 [examples/](examples/)，包括经济学、临床医学、学位论文与开题报告、基金申请，以及从表格核对主张、术语一致性检查等任务。
 
+## 核心原则：保真契约
+
+| 区域 | 包括什么 | 怎么处理 |
+|---|---|---|
+| **锁定区** | 数值、单位、p 值、引用、公式、法条、直接引语、伦理批号…… | 原样保留；发现疑似错误只标出，不擅自“更正” |
+| **承重语言** | 可能、部分、相关、导致、显著、首次、应当…… | 增强或削弱都要有依据，并单独列出 |
+| **自由表层** | 语法、拼写、标点、语序、冗余 | 直接改进 |
+
+所有修改按 **L1 表层 / L2 结构 / L3 主张** 分级：短句纠错直接给结果，较长修订附上重要改动台账；涉及主张的修改，Skill 要求 Agent 单独列出，不静默应用。这份契约针对的是这类改动：
+
+| 你写的 | 不该出现的“润色” | 问题 |
+|---|---|---|
+| 该方法**可能**在**部分场景**下改善性能 | 该方法显著提升了性能 | 删掉限定，主张被夸大 |
+| A 与 B **相关** | A **导致** B | 相关变成因果 |
+| 提高了 2.1 **个百分点** | 提高了 2.1% | 百分点被写成百分比，数值的含义变了 |
+| （没有引用） | ……（Smith et al., 2021） | 编造参考文献 |
+| 我们**拟**开展问卷调查 | 我们开展了问卷调查 | 计划写成成果 |
+
+**学术诚信：** 按照 Skill 的规则，Agent 不编造参考文献、数据、实验结果或作者行动，缺失信息用 `[请补充……]` 明确占位；也不提供“降低 AI 检测率”或绕过查重的服务。它还会提醒两件需要你自己完成的事：提交前逐条核实参考文献；核对目标期刊、学校或资助机构对使用 AI 工具的现行规定。完整规则见 [SKILL.md](skills/academic-writing-assistant/SKILL.md)。
+
 ## 功能一览
 
 | 你正在做什么 | 可以交给它的工作 |
@@ -325,38 +348,6 @@ python3 -B scripts/install_skill.py export --destination "$HOME/awa-package/acad
 
 六个平台使用同一份遵循 [Agent Skills 规范](https://agentskills.io/specification) 的 Skill。各平台的目录、依据的官方文档和同时使用多个 Agent 时的建议见 [兼容说明](docs/compatibility.md)。
 
-## 核心原则：保真契约
-
-| 区域 | 包括什么 | 怎么处理 |
-|---|---|---|
-| **锁定区** | 数值、单位、p 值、引用、公式、法条、直接引语、伦理批号…… | 原样保留；发现疑似错误只标出，不擅自“更正” |
-| **承重语言** | 可能、部分、相关、导致、显著、首次、应当…… | 增强或削弱都要有依据，并单独列出 |
-| **自由表层** | 语法、拼写、标点、语序、冗余 | 直接改进 |
-
-所有修改按 **L1 表层 / L2 结构 / L3 主张** 分级：短句纠错直接给结果，较长修订附上重要改动台账，涉及主张的修改不会静默发生。它要拦住的是这类改动：
-
-| 你写的 | 不该出现的“润色” | 问题 |
-|---|---|---|
-| 该方法**可能**在**部分场景**下改善性能 | 该方法显著提升了性能 | 删掉限定，主张被夸大 |
-| A 与 B **相关** | A **导致** B | 相关变成因果 |
-| 准确率 92.3% | 准确率 93.2% | 数字被改错 |
-| （没有引用） | ……（Smith et al., 2021） | 编造参考文献 |
-| 我们**拟**开展问卷调查 | 我们开展了问卷调查 | 计划写成成果 |
-
-**学术诚信：** 它不编造参考文献、数据、实验结果或作者行动，缺失信息用 `[请补充……]` 明确占位；不提供“降低 AI 检测率”或绕过查重的服务。它还会提醒两件需要你自己完成的事：提交前逐条核实参考文献；核对目标期刊、学校或资助机构对使用 AI 工具的现行规定。完整规则见 [SKILL.md](skills/academic-writing-assistant/SKILL.md)。
-
-## 升级
-
-0.5.0 没有改动文件名、目录和安装路径，升级后原有用法不变。
-
-| 你的情况 | 怎么升级 |
-|---|---|
-| 用安装提示词或安装脚本装的 | 再发送一次[安装提示词](#快速安装) |
-| 手动复制或用其他工具装的旧版本 | 同样发送安装提示词；旧副本会被移到备份文件夹（不删除），再装入新版本 |
-| WorkBuddy | 重新准备技能包，在「已安装」中卸载旧版本后上传 |
-
-各版本的变化见 [更新记录](CHANGELOG.md)，更多情形见 [安装指南](docs/installation.md#升级)。
-
 ## 本地核查工具（可选）
 
 核心写作不需要 Python。如果 Agent 可以运行 Python，还可以用内置脚本做机械核查：
@@ -370,12 +361,24 @@ python3 -B scripts/install_skill.py export --destination "$HOME/awa-package/acad
 
 脚本只使用 Python 标准库，在本地运行、不联网。用法见 [脚本说明](docs/scripts.md)。
 
+## 升级
+
+0.5.0 没有改动文件名、目录和安装路径，升级后原有用法不变。
+
+| 你的情况 | 怎么升级 |
+|---|---|
+| 用安装提示词或安装脚本装的 | 再发送一次[安装提示词](#快速安装) |
+| 手动复制或用其他工具装的旧版本 | 同样发送安装提示词；旧副本会被移到备份文件夹（不删除），再装入新版本 |
+| WorkBuddy | 重新准备技能包，在「已安装」中卸载旧版本后上传 |
+
+各版本的变化见 [更新记录](CHANGELOG.md)，更多情形见 [安装指南](docs/installation.md#升级)。
+
 ## 常见问题
 
 <details>
 <summary><strong>会改动我的数据或结论吗？</strong></summary>
 
-不会静默改动。数值、引用、公式属于锁定区；涉及结论强度的修改会在台账中列出并说明理由。发现正文与表格数值不一致时，它会指出冲突，而不是自行选一个。
+Skill 要求 Agent 不静默改动：数值、引用、公式属于锁定区，涉及结论强度的修改要在台账中列出并说明理由；发现正文与表格数值不一致时，指出冲突，而不是自行选一个。Agent 能运行 Python 时，还可以用 `fidelity_check.py` 机械比对修改前后的数值、引用和公式。
 
 </details>
 
@@ -396,7 +399,7 @@ python3 -B scripts/install_skill.py export --destination "$HOME/awa-package/acad
 <details>
 <summary><strong>没有提供参考文献，能写文献综述吗？</strong></summary>
 
-Agent 有检索能力时，可以实际检索并注明读到了什么；没有检索能力时，会给出结构、检索词和明确的引用占位，不会凭记忆编造文献。无论哪种情况，提交前都需要你自己逐条核实。
+Agent 有检索能力时，可以实际检索并注明读到了什么；没有检索能力时，给出结构、检索词和明确的引用占位，而不是凭记忆编造文献。无论哪种情况，提交前都需要你自己逐条核实。
 
 </details>
 
