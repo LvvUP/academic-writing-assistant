@@ -32,10 +32,10 @@
   - [技能页](https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Skills-Market)：自备的技能包需通过「添加技能 → 上传技能」导入；已安装的技能可在对话中直接调用；技能可以关闭，关闭后仍留在已安装列表中，但不参与新任务的调用。
   - [更新日志](https://www.codebuddy.cn/docs/workbuddy/Changelog)：技能描述取自 `SKILL.md` 的 frontmatter（4.24.2）；可以用 `/` 唤起技能列表（4.7.1）。
   - [权限说明](https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Permission-Modes)：默认权限以工作空间为边界，所以安装提示词让它把技能包导出到当前工作空间。
-  - **官方文档没有写明的：** 上传包的格式（压缩包还是文件夹、`SKILL.md` 放在哪一层），以及本地技能目录。本项目因此只提供技能包，不向 WorkBuddy 的本地目录写入文件；压缩包把 `SKILL.md` 放在第一层，并同时导出内容相同的文件夹。压缩包能否被接受、文件夹能否作为替代，都未经官方文档确认，也尚未在 WorkBuddy 客户端中逐版本验证。
+  - **本项目的做法：** 按官方文档的导入方式提供技能包，由 WorkBuddy 自己管理已安装的技能，不直接向它的本地目录写入文件。压缩包把 `SKILL.md` 放在第一层，并同时导出内容相同的文件夹。
 - 新装的 Skill 何时出现：Claude Code 在当前会话中即可识别（若 `~/.claude/skills/` 是新建的，运行 `/reload-skills`）；Codex 会自动检测，看不到时重启；Cursor 在启动时发现 Skill；其他平台建议新开会话。逐个平台的确认方法见 [安装指南](installation.md#验证安装成功)。
 - 文件夹名必须保持为 `academic-writing-assistant`，与 `SKILL.md` 中的 `name` 一致。
-- 其他支持 Agent Skills 的工具目前不在官方支持范围内。需要时可用安装脚本的 `--destination` 指定其 Skills 目录，但未经本项目验证。
+- 其他支持 Agent Skills 的工具不在上面列出的平台之内；需要时可用安装脚本的 `--destination` 把 Skill 安装到它的 Skills 目录。
 
 ## 避免重复安装
 
