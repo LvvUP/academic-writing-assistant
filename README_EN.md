@@ -192,7 +192,7 @@ What comes with it:
 
 - **Language**: non-idiomatic wording rewritten, for example “Its activity is higher than the uncalcined one for about 37%” → “the activity of the catalyst was about 37% higher than that of the uncalcined sample”. The temperature, duration, both percentages and the table number are exactly as written, with no rounding.
 - **To confirm**: is “about 37%” a relative increase or 37 percentage points? Is 91.5% the activity retained relative to the first cycle? Once you confirm, both can be stated more precisely.
-- **Claims (L3), your decision**: “the stability … is very good” and “can be directly used in industrial production” go beyond data from 5 cycles and are not carried over as written. A bounded wording you can add as it stands:
+- **Claims (L3), your decision**: “the stability … is very good” and “can be directly used in industrial production” go beyond data from 5 cycles and are left out of the text. A bounded wording you can add as it stands:
 
   > This indicates a degree of cycling stability over the 5 cycles examined; stability over longer runs and the potential for industrial use remain to be verified under realistic operating conditions.
 
@@ -264,9 +264,9 @@ What comes with it:
 
 **A common wrong edit:** 仿真结果证明该结构安全可靠，可直接应用于工程实践。 *(The simulation proves that the structure is safe and reliable and can be applied directly in engineering practice.)* One simulation has been written up as engineering validation.
 
-**Important change (L3):** “the structure is safe and can be used directly” goes beyond what one simulation supports. If tests or a code check have been completed, supply them and the claim can be written; otherwise a bounded alternative is “meets the strength requirement under the simulated load case”, with loads and boundary conditions stated. Values and units are unchanged.
+**To confirm:** is 235 MPa the allowable stress set by the design code, or the yield strength of the material? The strength check may come out differently in the two cases.
 
-**To confirm:** is 235 MPa the allowable stress set by the design code, or the yield strength of the material? The two imply different safety margins.
+**Important change (L3):** “the structure is safe and can be used directly” goes beyond what one simulation supports and is left out of the text. If 235 MPa is indeed the allowable stress set by the design code, a bounded alternative is “meets the strength requirement under the simulated load case”, with loads and boundary conditions stated; if it is the yield strength, the check has to be redone with the safety factor the code requires before any conclusion is drawn. Values and units are unchanged.
 
 </details>
 
