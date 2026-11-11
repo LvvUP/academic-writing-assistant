@@ -40,12 +40,12 @@ WorkBuddy 的官方文档要求自备的技能包通过「上传技能」导入�
 然后在 WorkBuddy 中上传：
 
 1. 左侧边栏点击 **专家·技能·连接器**，选中 **技能** 页签。
-2. 点击 **添加技能 → 上传技能**，拖入或选中 `academic-writing-assistant.zip`。如果上传窗口要求选择文件夹，就选 `academic-writing-assistant` 文件夹。
+2. 点击 **添加技能 → 上传技能**，拖入或选中 `academic-writing-assistant.zip`。官方文档只说“选中本地技能包”，没有说明格式；如果压缩包不被接受，可以改试同一目录下内容相同的 `academic-writing-assistant` 文件夹（这一做法未经官方文档确认）。
 3. 列表里已有旧版本时，先在「已安装」中卸载旧版本，再上传新包。
 
 不想运行命令时，也可以在 [Releases 页面](https://github.com/LvvUP/academic-writing-assistant/releases) 下载最新版本附带的 `academic-writing-assistant.zip`，直接上传。
 
-> WorkBuddy 的官方文档没有写明上传包的格式，也没有写明本地技能目录。本项目的压缩包把 `SKILL.md` 放在第一层，同时提供同内容的文件夹；这一步依据官方文档描述的上传流程编写，尚未在 WorkBuddy 客户端中逐版本验证。上传遇到问题请 [提交 Issue](https://github.com/LvvUP/academic-writing-assistant/issues)。
+> WorkBuddy 的官方文档没有写明上传包的格式，也没有写明本地技能目录。本项目的压缩包把 `SKILL.md` 放在第一层，同时提供同内容的文件夹；这一步依据官方文档描述的上传流程编写，尚未在 WorkBuddy 客户端中逐版本验证。各项说法的官方出处见 [兼容说明](compatibility.md#通过上传技能包安装的平台)。上传遇到问题请 [提交 Issue](https://github.com/LvvUP/academic-writing-assistant/issues)。
 
 ## 自己在终端运行
 
@@ -113,7 +113,7 @@ python3 -B scripts/install_skill.py verify --host claude --home-root "$HOME"
 | Cursor | 在 Agent 输入框输入 `/`，搜索 `academic-writing-assistant` | 重启 Cursor |
 | Grok Build | 运行 `/skills` 查看，或输入 `/academic-writing-assistant` | 新开会话 |
 | OpenCode | 在提示中写 `@academic-writing-assistant`，或直接提出写作任务 | 新开会话 |
-| WorkBuddy | 「专家·技能·连接器 → 技能 → 已安装」中有 Academic Writing Assistant；在对话框输入 `/` 可唤起技能列表 | 新开对话；确认技能开关已打开 |
+| WorkBuddy | 「专家·技能·连接器 → 技能 → 已安装」中有 `academic-writing-assistant`；在对话框输入 `/` 可唤起技能列表 | 新开对话；在「已安装」中确认它没有被关闭（关闭的技能不参与新任务的调用） |
 
 也可以直接试一句：“请润色这句话并说明重要改动：该方法可能在部分场景下改善性能。” 正常时，“可能”和“部分”会被保留。
 

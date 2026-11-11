@@ -68,12 +68,12 @@ Please prepare a package of the academic writing Skill "academic-writing-assista
 Then, in WorkBuddy:
 
 1. Click **专家·技能·连接器** (Experts · Skills · Connectors) in the left sidebar and open the **技能** (Skills) tab.
-2. Click **添加技能 → 上传技能** (Add skill → Upload skill) and drop or select `academic-writing-assistant.zip`. If the dialog asks for a folder, choose the `academic-writing-assistant` folder.
+2. Click **添加技能 → 上传技能** (Add skill → Upload skill) and drop or select `academic-writing-assistant.zip`. The official documentation only says to select a local skill package and does not name a format; if the archive is not accepted, you can try the `academic-writing-assistant` folder next to it, which has the same content (this fallback is not confirmed by the documentation).
 3. If an older version is listed, uninstall it under 已安装 (Installed) first, then upload the new package.
 
 If you prefer not to run commands, download `academic-writing-assistant.zip` from the latest release on the [Releases page](https://github.com/LvvUP/academic-writing-assistant/releases) and upload it directly.
 
-> WorkBuddy's documentation does not specify the package format or a local skills directory. These steps follow the upload flow it does document and have not been verified against every client version; the English labels in your client may also differ. Please [open an issue](https://github.com/LvvUP/academic-writing-assistant/issues) if the upload fails.
+> WorkBuddy's documentation does not specify the package format or a local skills directory. These steps follow the upload flow in its [documentation](https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Skills-Market) (Chinese) and have not been verified against every client version; the English labels in your client may also differ. Please [open an issue](https://github.com/LvvUP/academic-writing-assistant/issues) if the upload fails.
 
 </details>
 

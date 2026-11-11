@@ -68,12 +68,12 @@ WorkBuddy 通过「上传技能」导入自备的技能包：先让它准备技�
 然后在 WorkBuddy 中：
 
 1. 左侧边栏点击 **专家·技能·连接器**，选中 **技能** 页签。
-2. 点击 **添加技能 → 上传技能**，拖入或选中 `academic-writing-assistant.zip`。如果上传窗口要求选择文件夹，就选 `academic-writing-assistant` 文件夹。
+2. 点击 **添加技能 → 上传技能**，拖入或选中 `academic-writing-assistant.zip`。官方文档只说“选中本地技能包”，没有说明格式；如果压缩包不被接受，可以改试同一目录下内容相同的 `academic-writing-assistant` 文件夹（这一做法未经官方文档确认）。
 3. 列表里已有旧版本时，先在「已安装」中卸载旧版本，再上传新包。
 
 不想运行命令时，也可以在 [Releases 页面](https://github.com/LvvUP/academic-writing-assistant/releases) 下载最新版本附带的 `academic-writing-assistant.zip`，直接上传。
 
-> WorkBuddy 的官方文档没有写明上传包的格式和本地技能目录。这一流程依据官方文档描述的上传方式编写，尚未在 WorkBuddy 客户端中逐版本验证；遇到问题请 [提交 Issue](https://github.com/LvvUP/academic-writing-assistant/issues)。
+> WorkBuddy 的官方文档没有写明上传包的格式和本地技能目录。这一流程依据[官方文档](https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Skills-Market)描述的上传方式编写，尚未在 WorkBuddy 客户端中逐版本验证；遇到问题请 [提交 Issue](https://github.com/LvvUP/academic-writing-assistant/issues)。
 
 </details>
 
