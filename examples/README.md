@@ -4,8 +4,8 @@
 
 | 示例 | 主要展示 |
 |---|---|
-| [中文论文润色](polishing.zh.md) | 改善表达，不增加对照对象或数值 |
-| [中译英](translation.cn-en.md) | 术语表、无依据的“重要意义”用占位保留 |
+| [中文论文润色](polishing-zh.md) | 改善表达，不增加对照对象或数值 |
+| [中译英](translation-cn-en.md) | 术语表、无依据的“重要意义”用占位保留 |
 | [摘要写作](abstract-writing.md) | 实验尚未完成时如何起草摘要 |
 | [引言写作](introduction-writing.md) | 只有少量材料时的结构与占位 |
 | [审稿回复](reviewer-response.md) | 区分已完成修改、作者计划与建议 |
