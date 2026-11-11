@@ -28,7 +28,7 @@ drafts/private/
 /.internal/
 /.local/
 
-# Internal development material kept locally only
+# Local agent instructions, evaluation runs and logs
 /AGENTS.md
 /CLAUDE.md
 /evals/

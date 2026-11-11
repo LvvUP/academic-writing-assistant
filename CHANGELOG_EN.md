@@ -2,6 +2,11 @@
 
 [中文](CHANGELOG.md) · **English**
 
+## Unreleased
+
+- README: the illustration now compares one passage three ways and has a dark variant; two examples (history, and chemistry and materials) are shown in full and the rest are folded, each set against a common wrong edit.
+- The changelog is now available in Chinese and in English.
+
 ## 0.5.0
 
 Better balance across disciplines, WorkBuddy support, and installs that can be verified. No file names, directories, install paths or existing command-line options changed, so earlier versions can be updated directly.
@@ -24,7 +29,7 @@ Better balance across disciplines, WorkBuddy support, and installs that can be v
 - **WorkBuddy support**: `install_skill.py export --archive` exports the Skill folder and an archive, which is imported through WorkBuddy's 上传技能 (Upload skill).
 - **New `verify` action**: a read-only check that an installed copy is complete and unmodified, reporting its version. The install prompt now ends with a verification step.
 - The installation guide adds per-platform checks that the Skill is loaded and an upgrade section. The compatibility notes cover six platforms, with the official documentation they rely on and the date it was checked.
-- README rewritten: adds a fidelity-contract illustration, with examples from the humanities and social sciences and from science and engineering.
+- README rewritten: adds a fidelity-contract illustration, with examples from social science, medicine, law, engineering and computer science.
 - New synthetic examples for medicine, materials chemistry and engineering.
 - Updated development and CI dependencies (pytest 9.2.0, pluggy 1.7.0, iniconfig 2.3.1, actions/setup-python 7.1.0).
 
