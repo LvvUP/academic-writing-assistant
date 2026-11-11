@@ -66,9 +66,23 @@ python3 -B <skill-root>/scripts/terminology_checker.py draft.md --map custom-ter
 ```sh
 python3 -B <skill-root>/scripts/structure_checker.py --section abstract draft.md --json
 python3 -B <skill-root>/scripts/structure_checker.py --section method --research-type qualitative draft.md
+python3 -B <skill-root>/scripts/structure_checker.py --section abstract --research-type interpretive draft.md
 ```
 
-章节支持 `abstract`、`introduction`、`related_work`、`method`、`experiment`、`discussion`、`conclusion`。研究类型为 `empirical`（默认）、`theoretical`、`review`、`qualitative`。关键词仅提示可能遗漏的要素，不能判断论证是否充分；理论、综述与定性研究不强制提供网络、训练或消融。
+章节支持 `abstract`、`introduction`、`literature_review`（或 `related_work`）、`method`、`results`（或 `experiment`）、`discussion`、`conclusion`；括号中的原有名称继续可用，两种写法使用同一份检查清单。
+
+| `--research-type` | 适用的研究 |
+|---|---|
+| `empirical`（默认） | 实验、对照试验、基准测试 |
+| `observational` | 问卷调查、队列与横断面研究、二手数据与计量分析 |
+| `qualitative` | 访谈、观察、文本编码 |
+| `interpretive` | 以史料、文本、法条、判例为依据的人文与法学论证 |
+| `case_study` | 单案例或多案例研究 |
+| `design` | 系统、装置、软件、工程方案或教学方案的设计与实现 |
+| `theoretical` | 定义、定理与证明 |
+| `review` | 叙述性综述、范围综述、系统综述 |
+
+研究类型决定“方法”“结果”两类章节的检查清单，以及摘要中什么算作证据线索。默认类型会寻找实验、数据或结果，人文、法学、案例等研究请指定对应类型，否则摘要可能被提示缺少“Evidence”。关键词仅提示可能遗漏的要素，不能判断论证是否充分；任何类型都不强制提供网络、训练或消融。
 
 检查还识别待填写槽位。编号引文 `[12]` 等不是占位；占位检查不能保证全部缺失信息被找出。
 

@@ -753,3 +753,97 @@ def test_cli_reports_version_and_other_copies_read_by_the_same_hosts(tmp_path):
     assert 'Cursor, Grok Build, OpenCode may list the Skill twice' in result.stdout
     assert (other / 'SKILL.md').read_text(encoding='utf-8') == 'SYNTHETIC MANUAL COPY'
     assert run_cli(ENTRY, 'uninstall', *args, cwd=tmp_path).returncode == 0
+
+
+def test_verify_confirms_a_managed_copy_without_changing_it(source, tmp_path):
+    target = destination(tmp_path)
+    installer.install(source, target)
+    before = inventory(target)
+    result = installer.verify(target)
+    assert result['status'] == 'verified'
+    assert result['files'] == len(PACKAGE_FILES)
+    assert inventory(target) == before
+
+
+@pytest.mark.parametrize('change', ['edited', 'extra_file', 'missing', 'unmanaged', 'absent'])
+def test_verify_reports_copies_that_are_not_intact(source, tmp_path, change):
+    target = destination(tmp_path)
+    if change == 'unmanaged':
+        shutil.copytree(source, target)
+    elif change != 'absent':
+        installer.install(source, target)
+        if change == 'edited':
+            (target / 'SKILL.md').write_text('SYNTHETIC USER EDIT', encoding='utf-8')
+        elif change == 'extra_file':
+            (target / 'references/user-note.md').write_text('SYNTHETIC USER NOTE', encoding='utf-8')
+        else:
+            (target / 'LICENSE').unlink()
+    before = inventory(target) if target.exists() else None
+    with pytest.raises(installer.InstallError, match='Not verified'):
+        installer.verify(target)
+    assert (inventory(target) if target.exists() else None) == before
+
+
+def test_cli_verify_reports_version_and_exit_codes(tmp_path):
+    home = tmp_path.resolve() / 'verify home'
+
+    def run(*arguments):
+        return subprocess.run([sys.executable, '-B', str(ENTRY), *arguments, '--host', 'claude', '--home-root', str(home)],
+                              cwd=tmp_path, text=True, capture_output=True, encoding='utf-8')
+
+    missing = run('verify')
+    assert missing.returncode == 1 and 'Not verified' in missing.stderr
+    assert not home.exists()
+    assert run('install').returncode == 0
+    verified = run('verify', '--json')
+    assert verified.returncode == 0, verified.stderr
+    payload = json.loads(verified.stdout)
+    assert payload['status'] == 'verified'
+    assert payload['version'] == installer.skill_version((ROOT / 'skills' / installer.SKILL_NAME / 'SKILL.md').read_bytes())
+    assert 'other_copies' not in payload
+    assert 'every file matches the installation record' in run('verify').stdout
+
+
+def test_export_archive_holds_exactly_the_package_files_at_its_top_level(source, tmp_path):
+    import zipfile
+    target = tmp_path.resolve() / 'export' / installer.SKILL_NAME
+    result = installer.export(source, target, archive=True)
+    archive = target.parent / installer.ARCHIVE_NAME
+    assert result['status'] == 'exported' and result['archive'] == str(archive)
+    with zipfile.ZipFile(archive) as bundle:
+        assert sorted(bundle.namelist()) == sorted(PACKAGE_FILES)
+        assert 'SKILL.md' in bundle.namelist()
+        assert all(bundle.read(name) == (source / name).read_bytes() for name in PACKAGE_FILES)
+        assert bundle.testzip() is None
+    assert set(inventory(target)) == set(PACKAGE_FILES)
+    second = tmp_path.resolve() / 'export again' / installer.SKILL_NAME
+    installer.export(source, second, archive=True)
+    assert (second.parent / installer.ARCHIVE_NAME).read_bytes() == archive.read_bytes()
+
+
+def test_export_without_archive_writes_no_zip(source, tmp_path):
+    target = tmp_path.resolve() / 'plain export' / installer.SKILL_NAME
+    result = installer.export(source, target)
+    assert 'archive' not in result
+    assert [path.name for path in target.parent.iterdir()] == [installer.SKILL_NAME]
+
+
+def test_export_archive_never_overwrites_an_existing_zip(source, tmp_path):
+    target = tmp_path.resolve() / 'occupied' / installer.SKILL_NAME
+    target.parent.mkdir(parents=True)
+    existing = target.parent / installer.ARCHIVE_NAME
+    existing.write_bytes(b'SYNTHETIC USER ARCHIVE')
+    with pytest.raises(installer.InstallError, match='Archive already exists'):
+        installer.export(source, target, archive=True)
+    assert existing.read_bytes() == b'SYNTHETIC USER ARCHIVE'
+    assert not target.exists()
+
+
+@pytest.mark.parametrize('action', ['install', 'update', 'uninstall', 'verify'])
+def test_archive_option_is_only_accepted_by_export(tmp_path, action):
+    result = subprocess.run([sys.executable, '-B', str(ENTRY), action, '--destination',
+                             str(tmp_path.resolve() / installer.SKILL_NAME), '--archive'],
+                            cwd=tmp_path, text=True, capture_output=True, encoding='utf-8')
+    assert result.returncode == 2
+    assert 'only valid with export' in result.stderr
+    assert not (tmp_path / installer.SKILL_NAME).exists()
