@@ -9,41 +9,32 @@
 
 ### Let AI edit your paper without editing your data or conclusions
 
-A **discipline-agnostic academic writing Skill** for Chinese and English manuscripts: polishing · CN↔EN translation · section drafting · theses and grant proposals · reviewer responses · submission materials<br>
-Works across the sciences, engineering, medicine, economics, social sciences, humanities and law — one Skill for Claude Code, Codex, Cursor, Grok Build and OpenCode.
+An **academic writing Skill for every discipline**, in Chinese and English: polishing · CN↔EN translation · section drafting · theses and grant proposals · reviewer responses · submission materials<br>
+One Skill for Claude Code, Codex, Cursor, Grok Build, OpenCode and WorkBuddy.
 
-[![Version](https://img.shields.io/badge/version-0.4.0-2563EB)](CHANGELOG.md)
-[![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-2563EB)](LICENSE)
+[![Version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FLvvUP%2Facademic-writing-assistant%2Fmain%2F.codex-plugin%2Fplugin.json&query=%24.version&label=version&color=2563EB)](CHANGELOG.md)
+[![License](https://img.shields.io/github/license/LvvUP/academic-writing-assistant?color=2563EB)](LICENSE)
+[![Verify Skill](https://github.com/LvvUP/academic-writing-assistant/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/LvvUP/academic-writing-assistant/actions/workflows/ci.yml)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-SKILL.md-111827)](https://agentskills.io)
 [![GitHub stars](https://img.shields.io/github/stars/LvvUP/academic-writing-assistant?style=social)](https://github.com/LvvUP/academic-writing-assistant/stargazers)
 
 [中文](README.md) · **English**
 
-[Install](#-install) · [Examples](#-examples) · [Features](#-features) · [Disciplines](#-disciplines) · [FAQ](#-faq)
+[Install](#install) · [Examples](#examples) · [Features](#features) · [Disciplines](#disciplines) · [Supported platforms](#supported-platforms) · [Upgrading](#upgrading) · [FAQ](#faq)
 
 </div>
 
----
+<p align="center">
+  <img src="assets/readme/fidelity-contract.en.svg" width="100%" alt="One sentence, two ways to edit it: unbounded polishing drops the hedges “may” and “in some settings” and turns 92.3% into 93.2%; with Academic Writing Assistant only the language is improved, while hedges, the number and the citation stay as written.">
+</p>
 
-## 💡 Why
+Grammar and fluency are rarely the problem when AI edits a paper. The danger is edits that **read better but quietly change the facts**.
 
-Grammar and fluency are rarely the problem when AI edits a paper. The danger is edits that **read better but quietly change the facts**:
+Academic Writing Assistant gives your agent a **fidelity contract**: improve the language freely, but never move the facts or the evidence boundary, and list every change to claim strength so you decide whether to accept it.
 
-| You wrote | Typical AI "polish" | Problem |
-|---|---|---|
-| The method **may** improve performance **in some settings** | The method significantly improves performance | Hedges removed, claim inflated |
-| A is **associated with** B | A **causes** B | Correlation becomes causation |
-| Accuracy 92.3% | Accuracy 93.2% | Number changed |
-| (no citation) | …(Smith et al., 2021) | Fabricated reference |
-| We **plan to** run a survey | We ran a survey | Plan becomes result |
+## Install
 
-Academic Writing Assistant gives your agent a **fidelity contract**: improve the language freely, but never move the facts or the evidence boundary — and list every change to claim strength so you decide whether to accept it.
-
-## 🚀 Install
-
-Supports **Claude Code, Codex, Cursor, Grok Build and OpenCode**.
-
-### Option 1: send this to your AI agent (recommended)
+Send the message below to your AI agent; it downloads, installs and verifies the Skill. It works for **Claude Code, Codex, Cursor, Grok Build and OpenCode**. For WorkBuddy, use the [separate prompt below](#workbuddy).
 
 ```text
 Please install (or update, if already installed) the academic writing Skill "academic-writing-assistant", using only the repository's own installer:
@@ -51,13 +42,43 @@ Please install (or update, if already installed) the academic writing Skill "aca
 2. git clone --depth 1 https://github.com/LvvUP/academic-writing-assistant (main branch) into a temporary folder and run there (Python 3.9+; on Windows `py -3` can replace python3):
    python3 -B scripts/install_skill.py install --host <value above> --home-root "$HOME"
 3. If it says the Skill is already installed, run it again with update instead of install. If it asks for --backup-existing, add that flag and run again (the old copy is moved to a backup folder, not deleted). For any other error, show it to me and stop: don't copy or delete files by hand, don't bypass the checks, don't use sudo.
-4. Afterwards, delete the temporary folder, tell me the install path, version and any notes the script printed, and how to invoke the Skill and whether I need a new session.
+4. Verify: run the same command once more with verify instead of install. It should print "verified" and the version.
+5. Delete the temporary folder, then tell me the install path, the version, the backup location (if any) and any notes the script printed, plus how to invoke the Skill and whether I need a new session.
 ```
 
-The agent downloads the repository, runs the bundled installer and reports the result. To update later, send the same message again.
+To update later, send the same message again.
+
+### WorkBuddy
+
+WorkBuddy imports your own Skill packages through its upload dialog: let it prepare the package, then upload it yourself.
 
 <details>
-<summary><strong>Option 2: run the same installer yourself</strong></summary>
+<summary><strong>Prompt for WorkBuddy and upload steps</strong></summary>
+
+```text
+Please prepare a package of the academic writing Skill "academic-writing-assistant" so that I can add it to WorkBuddy through "Upload skill" (上传技能):
+1. git clone --depth 1 https://github.com/LvvUP/academic-writing-assistant (main branch) into a temporary folder inside the current workspace.
+2. In that folder, run (Python 3.9+; on Windows `py -3` can replace python3; replace <workspace> with the absolute path of the current workspace):
+   python3 -B scripts/install_skill.py export --destination "<workspace>/awa-package/academic-writing-assistant" --archive
+   It creates the Skill folder awa-package/academic-writing-assistant and the archive awa-package/academic-writing-assistant.zip. If it says they already exist, an earlier export is still there: tell me, and I will decide whether to delete the old awa-package folder and retry. For any other error, show it to me and stop; don't assemble the files by hand.
+3. Verify: confirm that SKILL.md is at the top level of the archive and read the version under metadata.
+4. Delete the temporary folder from step 1 (keep awa-package), tell me the full paths of the archive and the Skill folder and the version, and remind me to upload the archive under 专家·技能·连接器 → 技能 → 添加技能 → 上传技能.
+```
+
+Then, in WorkBuddy:
+
+1. Click **专家·技能·连接器** (Experts · Skills · Connectors) in the left sidebar and open the **技能** (Skills) tab.
+2. Click **添加技能 → 上传技能** (Add skill → Upload skill) and drop or select `academic-writing-assistant.zip`. If the dialog asks for a folder, choose the `academic-writing-assistant` folder.
+3. If an older version is listed, uninstall it under 已安装 (Installed) first, then upload the new package.
+
+If you prefer not to run commands, download `academic-writing-assistant.zip` from the latest release on the [Releases page](https://github.com/LvvUP/academic-writing-assistant/releases) and upload it directly.
+
+> WorkBuddy's documentation does not specify the package format or a local skills directory. These steps follow the upload flow it does document and have not been verified against every client version; the English labels in your client may also differ. Please [open an issue](https://github.com/LvvUP/academic-writing-assistant/issues) if the upload fails.
+
+</details>
+
+<details>
+<summary><strong>Alternative: run the same installer yourself</strong></summary>
 
 Requires Git and Python 3.9+:
 
@@ -65,6 +86,7 @@ Requires Git and Python 3.9+:
 git clone --depth 1 https://github.com/LvvUP/academic-writing-assistant.git
 cd academic-writing-assistant
 python3 -B scripts/install_skill.py install --host claude --home-root "$HOME"
+python3 -B scripts/install_skill.py verify --host claude --home-root "$HOME"
 ```
 
 Replace `claude` with your agent:
@@ -77,13 +99,34 @@ Replace `claude` with your agent:
 | Grok Build | `grok-build` | `~/.grok/skills/academic-writing-assistant` |
 | OpenCode | `opencode` | `~/.config/opencode/skills/academic-writing-assistant` |
 
-To update, use `update` instead of `install`; to remove, use `uninstall`. On Windows, `py -3` can replace `python3`. Both options use the same installer, so either one can update a copy installed by the other. See the [installation guide](docs/installation.md) for details.
+To export a package for WorkBuddy:
+
+```sh
+python3 -B scripts/install_skill.py export --destination "$HOME/awa-package/academic-writing-assistant" --archive
+```
+
+To update, use `update` instead of `install`; to remove, use `uninstall`. On Windows, `py -3` can replace `python3`. The prompt and the terminal use the same installer, so either one can update a copy installed by the other. See the [installation guide](docs/installation.md) (Chinese, with an English quick start) for details.
 
 </details>
 
+### Check that it works
+
+The installer's `verify` action checks the installed files. To confirm that your agent has loaded the Skill:
+
+| Platform | How to check |
+|---|---|
+| Claude Code | Type `/` and find `academic-writing-assistant` in the list |
+| Codex | Run `/skills`, or type `$` and select it |
+| Cursor | Type `/` in the Agent input and search for `academic-writing-assistant` |
+| Grok Build | Run `/skills`, or type `/academic-writing-assistant` |
+| OpenCode | Write `@academic-writing-assistant` in your prompt, or simply ask for a writing task |
+| WorkBuddy | It appears under 专家·技能·连接器 → 技能 → 已安装 (Installed) |
+
+If it does not show up, open a new session or restart the agent.
+
 ### Usage
 
-Open a new session and describe your writing task in plain language — the agent loads the Skill automatically. You can also invoke it explicitly:
+Describe your writing task in plain language and the agent loads the Skill automatically. You can also invoke it explicitly:
 
 ```text
 /academic-writing-assistant Please polish this abstract, keep all numbers, citations and the scope of conclusions, and list important changes.
@@ -91,9 +134,9 @@ Open a new session and describe your writing task in plain language — the agen
 [paste your text]
 ```
 
-> Claude Code and Grok Build use `/academic-writing-assistant`; Codex uses `$academic-writing-assistant`; in Cursor, type `/` in the Agent input and pick the Skill; in OpenCode, just describe the task and it loads automatically.
+> Claude Code and Grok Build use `/academic-writing-assistant`; Codex uses `$academic-writing-assistant`; in Cursor, type `/` in the Agent input and pick the Skill; OpenCode uses `@academic-writing-assistant`; in WorkBuddy, describe the task or type `/` to pick it from the skill list.
 
-## ✨ Examples
+## Examples
 
 > All examples are synthetic; data and citations are for demonstration only.
 
@@ -132,6 +175,38 @@ Open a new session and describe your writing task in plain language — the agen
 </details>
 
 <details>
+<summary><strong>CN→EN translation: "shall" must not become "may" (law)</strong></summary>
+
+**Chinese source (synthetic provision, not current law)**
+
+> 用人单位应当在用工之日起一个月内与劳动者订立书面劳动合同；未订立的，不得以此为由拒绝支付劳动报酬。
+
+**English translation**
+
+> The employer shall conclude a written employment contract with the employee within one month from the date on which employment begins. Where no such contract has been concluded, the employer shall not refuse to pay remuneration on that ground.
+
+**Translation notes:** 应当 is the obligatory *shall* and 不得 is *shall not*; neither becomes *should* or *may*. The time limit, its starting point and the condition are unchanged.
+
+</details>
+
+<details>
+<summary><strong>Polishing: a simulation is not "ready for engineering use" (engineering)</strong></summary>
+
+**Original (Chinese)**
+
+> 我们用有限元仿真算了一下，这个支架的最大应力是 182 MPa，比许用应力 235 MPa 小，所以这个结构是安全的，可以直接用到工程上。
+
+*(Our finite element simulation gives a maximum stress of 182 MPa in the bracket, below the allowable stress of 235 MPa, so the structure is safe and can be used in engineering directly.)*
+
+**Polished**
+
+> 有限元仿真结果显示，该支架的最大应力为 182 MPa，低于许用应力 235 MPa。
+
+**Important change (L3):** "the structure is safe and can be used directly" goes beyond what one simulation supports. If tests or a code check have been completed, supply them and the claim can be written; otherwise a bounded alternative is "meets the strength requirement under the simulated load case", with loads and boundary conditions stated. Values and units are unchanged.
+
+</details>
+
+<details>
 <summary><strong>Reviewer response: only state revisions the author has completed (computer science)</strong></summary>
 
 **Reviewer comment**
@@ -150,49 +225,82 @@ Open a new session and describe your writing task in plain language — the agen
 
 </details>
 
-[More examples →](examples/)
+More examples from other disciplines are in [examples/](examples/) (Chinese), including history, economics, clinical medicine, materials chemistry, theses and research proposals.
 
-## 📋 Features
+## Features
 
 | What you're doing | What the Skill handles |
 |---|---|
-| ✍️ Revising | Chinese and English polishing, expansion, merging, compression to a limit, titles and contributions |
-| 🌐 Translating | CN→EN and EN→CN with terminology notes; LaTeX and citations preserved |
-| 📄 Drafting | Abstract, introduction, related work, methods, results, discussion and conclusion from your material |
-| 🎓 Theses and proposals | Thesis chapters, bilingual abstracts, research proposals and grant applications |
-| 💬 Responding to reviewers | Journal response letters and conference rebuttals that separate completed revisions from plans |
-| 📮 Submitting | Cover letters, highlights, AI-use statements, CRediT statements |
-| 📚 References and formats | Reference lists in GB/T 7714, APA and other styles; LaTeX citations, math and cross-references kept intact |
-| 🔍 Whole-draft checks | Consistency of terms, abbreviations, symbols, numbers and claims across sections |
+| Revising | Chinese and English polishing, expansion, merging, compression to a limit, titles and contributions |
+| Translating | CN→EN and EN→CN with terminology notes; LaTeX and citations preserved |
+| Drafting | Abstract, introduction, literature review, methods, results, discussion and conclusion from your material |
+| Theses and proposals | Thesis chapters, bilingual abstracts, research proposals and grant applications |
+| Responding to reviewers | Journal response letters and conference rebuttals that separate completed revisions from plans |
+| Submitting | Cover letters, highlights, AI-use statements, CRediT statements |
+| References and formats | Reference lists in GB/T 7714, APA, MLA, Chicago, IEEE, Vancouver and other styles; LaTeX citations, math and cross-references kept intact |
+| Whole-draft checks | Consistency of terms, abbreviations, symbols, numbers and claims across sections |
 
-## 🧭 Disciplines
+## Disciplines
 
 Built-in writing guidance for 12 discipline families; anything else follows a general procedure that respects your field's conventions and structure.
 
 | Area | Discipline families |
 |---|---|
-| 📚 Humanities & social sciences | Humanities · Law · Economics & management · Social sciences · Education & psychology |
-| 🩺 Medicine & life sciences | Medicine & public health · Life sciences & agriculture |
-| 🔬 Natural sciences & mathematics | Physics, chemistry & materials · Mathematics & statistics · Earth & environmental sciences |
-| ⚙️ Engineering & computing | Engineering · Computer science & AI |
+| Humanities & social sciences | Humanities · Law · Economics & management · Social sciences · Education & psychology |
+| Medicine & life sciences | Medicine & public health · Life sciences & agriculture |
+| Natural sciences & mathematics | Physics, chemistry & materials · Mathematics & statistics · Earth & environmental sciences |
+| Engineering & computing | Engineering · Computer science & AI |
 
 **Research types are handled on their own terms too:** experimental · survey and econometric · qualitative · theoretical · review · humanities and legal interpretation · case study · design research
 
-> A history paper will not be asked for an "experimental setup", and interview themes will not become population percentages.
+The bundled examples, terminology map and section-structure checks cover these disciplines and research types. A history paper will not be asked for an "experimental setup", and interview themes will not become population percentages.
 
-## 🛡️ The fidelity contract
+## Supported platforms
+
+| Platform | Installation | Invocation |
+|---|---|---|
+| Claude Code | Prompt install to `~/.claude/skills/` | `/academic-writing-assistant` or automatic |
+| Codex | Prompt install to `~/.agents/skills/` | `$academic-writing-assistant` or automatic |
+| Cursor | Prompt install to `~/.cursor/skills/` | Type `/` and pick it, or automatic |
+| Grok Build | Prompt install to `~/.grok/skills/` | `/academic-writing-assistant` or automatic |
+| OpenCode | Prompt install to `~/.config/opencode/skills/` | `@academic-writing-assistant` or automatic |
+| WorkBuddy | Export a package, then import it through its upload dialog | Describe the task, or type `/` and pick it |
+
+All six use the same Skill, which follows the [Agent Skills specification](https://agentskills.io/specification). Directories, the official documentation they are based on, and advice for using several agents side by side are in the [compatibility notes](docs/compatibility.md) (Chinese).
+
+## The fidelity contract
 
 | Zone | Includes | Handling |
 |---|---|---|
-| 🔒 **Locked** | Numbers, units, p-values, citations, formulas, statutes, direct quotations, ethics IDs… | Kept verbatim; suspected errors are flagged, never silently "fixed" |
-| ⚖️ **Load-bearing** | may, some, associated, causes, significant, first, shall… | Strengthening or weakening needs evidence and is listed separately |
-| ✏️ **Free surface** | Grammar, spelling, punctuation, word order, redundancy | Improved directly |
+| **Locked** | Numbers, units, p-values, citations, formulas, statutes, direct quotations, ethics IDs… | Kept verbatim; suspected errors are flagged, never silently "fixed" |
+| **Load-bearing** | may, some, associated, causes, significant, first, shall… | Strengthening or weakening needs evidence and is listed separately |
+| **Free surface** | Grammar, spelling, punctuation, word order, redundancy | Improved directly |
 
-Every change is tiered **L1 surface / L2 structure / L3 claim**. One-line fixes come back as plain text; longer revisions include a ledger of important changes; claim changes are never silent.
+Every change is tiered **L1 surface / L2 structure / L3 claim**. One-line fixes come back as plain text; longer revisions include a ledger of important changes; claim changes are never silent. These are the edits it is built to stop:
 
-On academic integrity: it **never fabricates** references, data, results or author actions, and marks missing information with explicit placeholders such as `[please supply…]`. It does not optimize for AI-detection or plagiarism scores. Full rules: [SKILL.md](skills/academic-writing-assistant/SKILL.md).
+| You wrote | The "polish" that should not happen | Problem |
+|---|---|---|
+| The method **may** improve performance **in some settings** | The method significantly improves performance | Hedges removed, claim inflated |
+| A is **associated with** B | A **causes** B | Correlation becomes causation |
+| Accuracy 92.3% | Accuracy 93.2% | Number changed |
+| (no citation) | …(Smith et al., 2021) | Fabricated reference |
+| We **plan to** run a survey | We ran a survey | Plan becomes result |
 
-## 🔧 Optional local checks
+**Academic integrity:** it never fabricates references, data, results or author actions, and marks missing information with explicit placeholders such as `[please supply…]`. It does not optimize for AI-detection or plagiarism scores. It also reminds you of two things only you can do: verify every reference before you submit, and check your journal's, school's or funder's current rules on using AI tools. Full rules: [SKILL.md](skills/academic-writing-assistant/SKILL.md).
+
+## Upgrading
+
+Version 0.5.0 keeps every file name, directory and install path, so existing usage is unaffected.
+
+| Your situation | How to upgrade |
+|---|---|
+| Installed with the prompt or the installer | Send the [install prompt](#install) again |
+| An older copy made by hand or by another tool | Send the install prompt as well; the old copy is moved to a backup folder (not deleted) and the new version is installed |
+| WorkBuddy | Prepare a new package, uninstall the old version under 已安装 (Installed), then upload |
+
+See the [changelog](CHANGELOG.md) for what changed and the [installation guide](docs/installation.md#升级) (Chinese) for other cases.
+
+## Optional local checks
 
 Core writing needs no Python. If your agent can run Python, the bundled scripts add mechanical checks:
 
@@ -200,12 +308,12 @@ Core writing needs no Python. If your agent can run Python, the bundled scripts 
 |---|---|
 | `fidelity_check.py` | Compares numbers, citations, formulas and statute numbers before and after a revision |
 | `manuscript_audit.py` | Abbreviation definitions, "significant" without a test, word and character limits |
-| `terminology_checker.py` | Variant translations of one concept and easily confused related concepts |
-| `structure_checker.py` | Elements a section such as an abstract may be missing |
+| `terminology_checker.py` | Variant wordings of one concept, and concepts that must stay distinct such as incidence vs prevalence |
+| `structure_checker.py` | Elements a section such as an abstract, methods or results may be missing, by research type |
 
-The scripts use only the Python standard library, run locally and make no network requests. See [script docs](docs/scripts.md).
+The scripts use only the Python standard library, run locally and make no network requests. See the [script docs](docs/scripts.md) (Chinese).
 
-## ❓ FAQ
+## FAQ
 
 <details>
 <summary><strong>Will it change my data or conclusions?</strong></summary>
@@ -228,9 +336,23 @@ The bundled scripts run locally, make no network requests and collect no data. Y
 
 </details>
 
+<details>
+<summary><strong>Can it write a literature review if I have no references?</strong></summary>
+
+If your agent can search, it searches and reports what it actually read. If it cannot, it gives a structure, search terms and explicit citation placeholders rather than inventing references from memory. Either way, verify every reference yourself before submitting.
+
+</details>
+
+<details>
+<summary><strong>Do I need to disclose that I used AI?</strong></summary>
+
+That depends on the current rules of your journal, school or funder, which differ. The Skill reminds you to check and can draft a statement from the use you confirm, but it does not decide compliance for you.
+
+</details>
+
 More in the [FAQ](docs/faq.md) (Chinese).
 
-## 🤝 Contributing
+## Contributing
 
 Discipline conventions, terminology and synthetic examples are welcome, as are script fixes. Please read the [contributing guide](CONTRIBUTING.md); see the [roadmap](ROADMAP.md) and [changelog](CHANGELOG.md).
 
@@ -238,6 +360,6 @@ If this Skill helps your writing, please give it a ⭐ **star** so more research
 
 [![Star History Chart](https://api.star-history.com/svg?repos=LvvUP/academic-writing-assistant&type=Date)](https://star-history.com/#LvvUP/academic-writing-assistant&Date)
 
-## 📄 License
+## License
 
 **AGPL-3.0-only** — see [LICENSE](LICENSE) and the [licensing notes](docs/licensing.md).

@@ -14,6 +14,7 @@
 | [三种修改力度](writing-modes.md) | 快速润色、标准修订、深度结构审阅 |
 | [不同研究类型](research-types.md) | 理论证明、定性研究、综述的证据边界 |
 | [人文、法学与经管](humanities-law-economics.md) | 史学阐释、法律规范效力、回归结果的因果表述 |
+| [医学、理化与工程](medicine-chemistry-engineering.md) | 回顾性临床比较、间接表征与机理、“满足工程要求”的判据 |
 | [学位论文与开题报告](thesis-and-proposals.md) | 计划与成果、中英文摘要一致性、基金研究基础 |
 | [检索范围与隐私](source-bounded-retrieval.md) | 检索授权的边界，不上传私人稿件 |
 | [能力缺失时](capability-fallback.md) | 没有 Python 或检索能力时如何继续 |

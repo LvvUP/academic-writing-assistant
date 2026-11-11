@@ -174,7 +174,7 @@ note: another copy exists at ~/.agents/skills/academic-writing-assistant (keep i
 
 ## English quick start
 
-All six supported hosts use the bundled `scripts/install_skill.py`, run either by your agent (paste the prompt from the [README](../README_EN.md#-install)) or by you:
+All six supported hosts use the bundled `scripts/install_skill.py`, run either by your agent (paste the prompt from the [README](../README_EN.md#install)) or by you:
 
 ```sh
 python3 -B scripts/install_skill.py install --host claude --home-root "$HOME"
