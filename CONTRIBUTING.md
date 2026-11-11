@@ -33,6 +33,14 @@ python -B skills/academic-writing-assistant/scripts/skill_lint.py .
 
 新增随 Skill 分发的文件时，同步更新 [package-manifest.json](skills/academic-writing-assistant/package-manifest.json)。
 
+### 发布新版本（维护者）
+
+版本号写在 `SKILL.md` 的 `metadata.version`、`.codex-plugin/plugin.json`、`ROADMAP.md`、`docs/licensing.md` 和两份 `THIRD_PARTY_NOTICES.md` 中，发布前保持一致，并在 `CHANGELOG.md` 写明变化。合并到 main 后创建 `v<版本号>` 标签和 GitHub Release，并把下面命令生成的 `academic-writing-assistant.zip` 作为附件上传，供通过上传技能包安装的平台直接下载：
+
+```sh
+python -B scripts/install_skill.py export --destination /path/to/output/academic-writing-assistant --archive
+```
+
 ### 提交 PR 前
 
 - [ ] 保真契约（三区域、L1/L2/L3）与诚信边界没有被削弱。
@@ -60,3 +68,5 @@ python -B skills/academic-writing-assistant/scripts/skill_lint.py .
 ```
 
 Keep `SKILL.md` lean, put detailed rules in `references/`, update the package manifest when adding distributed files, and keep both READMEs and the logo intact.
+
+Maintainers: when publishing a release, keep the version consistent across the files listed in the Chinese section, tag `v<version>`, and attach the `academic-writing-assistant.zip` produced by `scripts/install_skill.py export --archive` to the GitHub Release.

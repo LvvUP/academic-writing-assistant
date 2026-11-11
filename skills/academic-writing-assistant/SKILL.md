@@ -1,9 +1,9 @@
 ---
 name: academic-writing-assistant
-description: Discipline-agnostic academic writing assistant for Chinese and English manuscripts in any field, including natural sciences, engineering, medicine, computing, social sciences, economics, education, humanities and law. Polishes and edits prose (论文润色/修改), translates CN↔EN (中译英/英译中), drafts sections from supplied material, supports theses, proposals and grant applications (学位论文/开题报告/基金申请书), literature reviews, reviewer responses and rebuttals (审稿回复), cover letters and AI-use statements, reference formatting (GB/T 7714, APA and others), and terminology, consistency and LaTeX checks, without changing numbers, citations or how strongly the evidence supports each claim. Use when the user asks for academic writing help or shares manuscript, thesis or proposal text to revise. Do not activate merely because a coding, installation or general knowledge question mentions a paper, IEEE or research.
+description: Academic writing assistant for Chinese and English manuscripts in any discipline. Use when the user asks to polish, edit, rewrite, shorten, expand or translate academic text, or shares a paper, thesis, proposal or grant application to revise or check (论文润色、修改、中译英、英译中、摘要、引言、文献综述、学位论文、开题报告、基金申请书、审稿回复). Also drafts sections from supplied material, reviewer responses and rebuttals, cover letters, highlights and AI-use statements; formats reference lists (GB/T 7714, APA, MLA, Chicago, IEEE, Vancouver); and checks terminology, consistency and LaTeX. Covers natural sciences, engineering, medicine, social sciences, economics and management, humanities and law. Keeps numbers, citations and the strength of each claim unchanged unless the change is flagged, and never fabricates references or data. Do not activate merely because a coding, installation or general knowledge question mentions a paper, a journal or research.
 license: AGPL-3.0-only
 metadata:
-  version: "0.4.0"
+  version: "0.5.0"
 ---
 
 # Academic Writing Assistant
@@ -50,12 +50,12 @@ metadata:
 
 | 任务 | 按需读取 |
 |---|---|
-| 润色、扩写、合并、压缩、摘要/引言/相关工作/方法/结果/讨论、标题与贡献 | [references/writing-workflows.md](references/writing-workflows.md) |
+| 润色、扩写、合并、压缩、摘要/引言/文献综述或相关工作/方法/结果/讨论、标题与贡献 | [references/writing-workflows.md](references/writing-workflows.md) |
 | 中译英、英译中 | writing-workflows 的 Translation；目标语 [英文指南](references/style-guide-en.md) / [中文指南](references/style-guide-zh.md)，必要时 [术语指南](references/terminology.md) |
 | 学位论文、开题报告、基金/项目申请书、课程论文 | [references/thesis-and-proposals.md](references/thesis-and-proposals.md) |
 | 审稿回复 / rebuttal | [references/reviewer-response.md](references/reviewer-response.md) |
 | Cover letter、Highlights、AI 声明、CRediT | [references/submission-package.md](references/submission-package.md) |
-| 参考文献整理与引用格式（GB/T 7714、APA、脚注等） | [references/citation-formats.md](references/citation-formats.md)；来源真实性见 [references/citation-safety.md](references/citation-safety.md) |
+| 参考文献整理与引用格式（GB/T 7714、APA、MLA、Chicago、IEEE、Vancouver、脚注等） | [references/citation-formats.md](references/citation-formats.md)；来源真实性见 [references/citation-safety.md](references/citation-safety.md) |
 | LaTeX、Word、Markdown | [references/latex-and-formats.md](references/latex-and-formats.md) |
 | 长文术语、缩写、符号、时态、主张一致性 | [references/consistency-pass.md](references/consistency-pass.md) |
 | 任务模糊或多任务 | [references/task-router.md](references/task-router.md) |
@@ -94,3 +94,4 @@ python3 -B <skill-root>/scripts/structure_checker.py --section abstract <稿件�
 - 本地脚本的网络行为和宿主 AI 平台的数据处理是不同问题。不得由“脚本本地运行”推断云模型不会接收稿件。
 - 对降低 AI 检测率或绕过查重的请求，简短说明不针对检测分数优化，再帮助改善可见写作问题、准确转述与引用。不要承诺分数、录用、基金获批或科学真实性。
 - 投稿、学位与基金政策按具体机构、年份、轨道核查；没有当前来源时只提示核对官方指南，不宣称普遍豁免或必须采用某一声明。声明只能描述已确认实际使用与复核情况。
+- 两件事由作者负责，适时提醒，不替作者完成：交付含参考文献、引文或文献综述的内容时，提醒作者在提交前逐条核对文献是否真实、著录信息是否准确、是否支持对应论断；稿件用于投稿、学位论文、开题、基金申请或课程作业时，提醒作者核对目标期刊、学校或资助机构对使用 AI 工具及其披露的现行规定，见 [references/policy-sources.md](references/policy-sources.md)。同一对话提醒一次即可，一句话纠错等短任务不必附加。

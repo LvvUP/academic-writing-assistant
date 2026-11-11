@@ -14,8 +14,12 @@ to miss when re-reading your own draft.
 Usage::
 
     python structure_checker.py --section abstract draft.md
-    python structure_checker.py --section experiment draft.tex --json
+    python structure_checker.py --section results draft.tex --json
+    python structure_checker.py --section method --research-type interpretive draft.md
     cat draft.md | python structure_checker.py --section introduction
+
+``results`` and ``literature_review`` are discipline-neutral names for the
+``experiment`` and ``related_work`` checklists; both spellings are accepted.
 """
 
 from __future__ import annotations
@@ -69,10 +73,14 @@ SECTION_RULES = OrderedDict([('abstract',
                             ('表明',
                              '说明',
                              '结果显示',
+                             '认为',
+                             '结论',
                              'suggest',
                              'indicate',
                              'demonstrate',
-                             'show that'))])),
+                             'show that',
+                             'conclude',
+                             'argue'))])),
              ('introduction',
               OrderedDict([('Research background',
                             ('背景', '近年来', '研究', 'background', 'recent', 'widely')),
@@ -169,11 +177,19 @@ SECTION_RULES = OrderedDict([('abstract',
                             ('未来', '后续', '下一步', 'future', 'further work', 'plan to'))])),
              ('conclusion',
               OrderedDict([('What was done', ('本文', '提出', 'we propose', 'this paper', 'presented')),
-                           ('What was found', ('实验', '结果', '表明', 'results', 'show', 'demonstrate')),
-                           ('Bounded scope', ('在所', '数据集上', 'evaluated', 'on the', 'under')),
+                           ('What was found', ('实验', '结果', '表明', '发现', '认为', 'results', 'show', 'demonstrate', 'find', 'argue')),
+                           ('Bounded scope', ('在所', '数据集上', '范围内', '条件下', '限于', 'evaluated', 'on the', 'under', 'within', 'limited to')),
                            ('Outlook', ('未来', '后续', 'future', 'further'))]))])
 
-RESEARCH_TYPES = ('empirical', 'theoretical', 'review', 'qualitative')
+# Discipline-neutral section names share the checklist of the original name.
+SECTION_ALIASES = {'literature_review': 'related_work', 'results': 'experiment'}
+for _alias, _section in SECTION_ALIASES.items():
+    SECTION_RULES[_alias] = SECTION_RULES[_section]
+
+# The first four names predate the others and stay valid. Together the list
+# mirrors the research types described in references/research-types.md.
+RESEARCH_TYPES = ('empirical', 'theoretical', 'review', 'qualitative',
+                  'observational', 'interpretive', 'case_study', 'design')
 RESEARCH_METHODS = {
     'theoretical': OrderedDict([
         ('Assumptions and definitions', ('假设', '定义', 'assumptions', 'define', 'definitions')),
@@ -193,6 +209,33 @@ RESEARCH_METHODS = {
         ('Analysis approach', ('编码', '主题分析', '分析', 'coding', 'thematic', 'analysis')),
         ('Reflexivity and ethics', ('反思', '研究者立场', '伦理', 'reflexivity', 'positionality', 'ethics')),
     ]),
+    # Surveys, cohorts, secondary data and econometric analysis.
+    'observational': OrderedDict([
+        ('Data source and sample', ('数据来源', '样本', '问卷', '调查', '队列', 'data source', 'sample', 'survey', 'cohort', 'respondents')),
+        ('Variables and measures', ('变量', '测量', '量表', '指标', 'variables', 'measures', 'scale', 'instrument')),
+        ('Analysis and identification', ('回归', '模型', '识别', '分析', 'regression', 'model', 'identification', 'analysis')),
+        ('Robustness or sensitivity', ('稳健性', '敏感性', 'robustness', 'sensitivity')),
+    ]),
+    # Humanities and legal argument from sources, texts, statutes and cases.
+    'interpretive': OrderedDict([
+        ('Question and thesis', ('问题', '论点', '主张', 'question', 'thesis', 'argument')),
+        ('Sources and materials', ('史料', '文本', '文献', '法条', '判例', '档案', 'sources', 'texts', 'archival', 'statutes', 'cases')),
+        ('Approach or framework', ('方法', '视角', '框架', '解释', 'approach', 'framework', 'perspective', 'interpretation')),
+        ('Existing scholarship', ('既有研究', '已有研究', '学界', 'scholarship', 'literature', 'debate')),
+    ]),
+    'case_study': OrderedDict([
+        ('Case selection', ('案例选择', '选取', '典型', 'case selection', 'selected', 'sampling')),
+        ('Data sources', ('访谈', '档案', '文件', '观察', '二手资料', 'interviews', 'archival', 'documents', 'observation')),
+        ('Analysis approach', ('编码', '分析', '比较', 'coding', 'analysis', 'comparison', 'pattern')),
+        ('Validity and limits', ('三角', '信度', '效度', '局限', 'triangulation', 'validity', 'limitations')),
+    ]),
+    # Systems, devices, software, engineering solutions and teaching designs.
+    'design': OrderedDict([
+        ('Requirements or problem', ('需求', '问题', '目标', 'requirements', 'problem', 'objective')),
+        ('Design and rationale', ('设计', '方案', '架构', '依据', 'design', 'architecture', 'rationale')),
+        ('Implementation', ('实现', '开发', '原型', 'implementation', 'prototype', 'developed')),
+        ('Validation plan', ('验证', '测试', '试验', '仿真', '评估', 'validation', 'testing', 'simulation', 'evaluation')),
+    ]),
 }
 RESEARCH_RESULTS = {
     'theoretical': OrderedDict([
@@ -210,6 +253,37 @@ RESEARCH_RESULTS = {
         ('Material support', ('引语', '访谈', '材料', 'quotes', 'interviews', 'excerpts')),
         ('Context and limits', ('情境', '边界', '可迁移', 'context', 'limits', 'transferability')),
     ]),
+    'observational': OrderedDict([
+        ('Estimates or associations', ('系数', '相关', '效应', '估计', 'coefficient', 'association', 'correlation', 'effect', 'estimate')),
+        ('Uncertainty', ('置信区间', '标准误', '显著', 'confidence interval', 'standard error', 'p value', 'significan*')),
+        ('Scope and limitations', ('局限', '样本', '范围', 'limitations', 'sample', 'scope', 'generaliz*')),
+    ]),
+    'interpretive': OrderedDict([
+        ('Claims and argument', ('论证', '认为', '主张', 'argue', 'claim', 'contend')),
+        ('Supporting material', ('史料', '引文', '条文', '判例', '材料', 'sources', 'quotation', 'provision', 'cases', 'evidence')),
+        ('Qualifications and counterarguments', ('然而', '但', '可能', '或许', 'however', 'although', 'may', 'counterargument')),
+    ]),
+    'case_study': OrderedDict([
+        ('Case findings', ('发现', '案例', 'findings', 'case')),
+        ('Evidence from the case', ('访谈', '资料', '数据', '引语', 'interviews', 'documents', 'data', 'quotes')),
+        ('Scope of generalization', ('推广', '情境', '边界', 'generaliz*', 'context', 'boundary', 'transferab*')),
+    ]),
+    'design': OrderedDict([
+        ('Validation results', ('结果', '测试', '试验', '仿真', 'results', 'test', 'simulation', 'trial')),
+        ('Measures and conditions', ('指标', '条件', '工况', '性能', 'metrics', 'conditions', 'performance')),
+        ('Limitations', ('局限', '限制', '不足', 'limitations', 'constraints')),
+    ]),
+}
+# Evidence clues an abstract may use instead of experiments or datasets.
+ABSTRACT_EVIDENCE = {
+    'empirical': ('observations', 'outcomes', '观察', '测量'),
+    'theoretical': ('theorem', 'proof', '定理', '证明'),
+    'review': ('synthesis', 'reviewed studies', '综合', '纳入文献'),
+    'qualitative': ('themes', 'interviews', '主题', '访谈'),
+    'observational': ('survey', 'cohort', 'regression', 'association', '问卷', '调查', '队列', '回归', '相关'),
+    'interpretive': ('sources', 'texts', 'archival', 'statutes', 'cases', '史料', '文本', '文献', '档案', '法条', '判例'),
+    'case_study': ('case study', 'cases', 'interviews', 'documents', '案例', '访谈', '档案'),
+    'design': ('prototype', 'simulation', 'test', 'trial', 'validation', '原型', '仿真', '试验', '测试'),
 }
 SUGGESTIONS = {
     'Source scope': 'State the scope of the reviewed material. A narrative review need not claim an exhaustive systematic search.',
@@ -218,6 +292,12 @@ SUGGESTIONS = {
     'Contributions': 'State supported contributions and their scope.',
     'Uncertainty and limitations': 'Describe uncertainty and limits appropriate to the design. A standard deviation is not itself a significance test.',
     'Reflexivity and ethics': 'Report the researcher role and applicable ethics facts only when confirmed.',
+    'Robustness or sensitivity': 'Mention robustness or sensitivity analyses only if they were actually carried out.',
+    'Analysis and identification': 'State the analysis and any identification assumptions the author actually relied on; causal wording should match them.',
+    'Sources and materials': 'Name the sources, editions or legal materials the argument rests on; do not add sources the author did not use.',
+    'Qualifications and counterarguments': 'Interpretive qualifiers and counterarguments are part of the argument; keep those the author made.',
+    'Scope of generalization': 'A case supports analytic rather than statistical generalization; state the context the findings apply to.',
+    'Validation plan': 'An implemented design is not yet a validated one; describe only validation that was planned or performed.',
 }
 
 
@@ -245,17 +325,13 @@ def rules_for(section: str, research_type: str) -> OrderedDict:
     if research_type not in RESEARCH_TYPES:
         raise ValueError('Unknown research type: ' + research_type)
     rules = OrderedDict(SECTION_RULES[section])
+    section = SECTION_ALIASES.get(section, section)
     if section == 'method' and research_type != 'empirical':
         rules = OrderedDict(RESEARCH_METHODS[research_type])
     if section == 'experiment' and research_type != 'empirical':
         rules = OrderedDict(RESEARCH_RESULTS[research_type])
     if section == 'abstract':
-        rules['Evidence'] = tuple(rules['Evidence']) + {
-            'empirical': ('observations', 'outcomes', '观察', '测量'),
-            'theoretical': ('theorem', 'proof', '定理', '证明'),
-            'review': ('synthesis', 'reviewed studies', '综合', '纳入文献'),
-            'qualitative': ('themes', 'interviews', '主题', '访谈'),
-        }[research_type]
+        rules['Evidence'] = tuple(rules['Evidence']) + ABSTRACT_EVIDENCE[research_type]
     return rules
 
 

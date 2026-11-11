@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""Install, update, uninstall or export one local Skill; Python 3.9+, no network.
+"""Install, update, verify, uninstall or export one local Skill; Python 3.9+, no network.
 
 Only explicit package files are copied. Updates/removal require an unchanged
 installation receipt. The receipt records local ownership, not authenticity.
 An existing copy is replaced only on request, and then moved to a backup
-folder rather than deleted.
+folder rather than deleted. verify is read-only. export writes a standalone
+copy and, with --archive, a zip of the same files for hosts that import a
+Skill package through their own interface.
 """
 from __future__ import annotations
 
@@ -19,11 +21,13 @@ import stat
 import sys
 import tempfile
 import time
+import zipfile
 
 SKILL_NAME = 'academic-writing-assistant'
 TOOL_ID = 'academic-writing-assistant/install_skill'
 RECEIPT_NAME = '.academic-writing-assistant-install.json'
 BACKUP_DIR_NAME = '.academic-writing-assistant-backups'
+ARCHIVE_NAME = SKILL_NAME + '.zip'
 # User-level Skill directory of each supported host, relative to --home-root.
 HOST_PATHS = {'claude': '.claude/skills', 'codex': '.agents/skills',
               'cursor': '.cursor/skills', 'grok-build': '.grok/skills',
@@ -451,8 +455,48 @@ def install(source, destination):
     return create(source, destination, True)
 
 
-def export(source, destination):
-    return create(source, destination, False)
+def write_archive(path, payload):
+    """Write the package files at the top level of a new zip; never overwrite."""
+    safe_path(path)
+    try:
+        handle = path.open('xb')
+    except FileExistsError:
+        raise InstallError('Archive already exists; no files were overwritten: ' + str(path)) from None
+    try:
+        with handle, zipfile.ZipFile(handle, 'w', zipfile.ZIP_DEFLATED) as archive:
+            for name in sorted(payload):
+                # Fixed metadata keeps the archive identical for identical content.
+                info = zipfile.ZipInfo(name, date_time=(1980, 1, 1, 0, 0, 0))
+                info.compress_type = zipfile.ZIP_DEFLATED
+                info.external_attr = 0o644 << 16
+                archive.writestr(info, payload[name])
+    except BaseException:
+        # Only the file this call created exclusively is removed.
+        path.unlink()
+        raise
+
+
+def export(source, destination, archive=False):
+    target = selected_target(destination)
+    archive_path = target.with_name(ARCHIVE_NAME)
+    if archive and os.path.lexists(str(archive_path)):
+        raise InstallError('Archive already exists; no files were overwritten: ' + str(archive_path))
+    result = create(source, destination, False)
+    if archive:
+        write_archive(archive_path, package_payload(source))
+        result['archive'] = str(archive_path)
+    return result
+
+
+def verify(destination):
+    """Read-only check that a managed copy is complete and unmodified."""
+    target = selected_target(destination)
+    try:
+        receipt = verify_installation(target)
+    except InstallError as exc:
+        raise InstallError('Not verified: ' + str(exc)) from None
+    return {'status': 'verified', 'destination': str(target), 'files': len(receipt['files']),
+            'version': installed_version(target)}
 
 
 def remove_verified(target, expected):
@@ -595,6 +639,10 @@ def describe(result):
         details.append('version ' + result['version'])
     details.append(str(result['files']) + ' package files')
     lines = [result['status'] + ': ' + result['destination'] + ' (' + ', '.join(details) + ')']
+    if result['status'] == 'verified':
+        lines.append('every file matches the installation record.')
+    if result.get('archive'):
+        lines.append('archive: ' + result['archive'])
     if result.get('backup'):
         lines.append('previous copy moved to: ' + result['backup'])
     for copy in result.get('other_copies', ()):
@@ -612,7 +660,7 @@ def describe(result):
 def main(argv=None):
     configure_utf8_output()
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=('install', 'update', 'uninstall', 'export'))
+    parser.add_argument('action', choices=('install', 'update', 'verify', 'uninstall', 'export'))
     parser.add_argument('--destination', type=Path, help='Exact Skill directory, relative to your current working directory if not absolute.')
     parser.add_argument('--host', choices=tuple(HOST_PATHS),
                         help='Install into this host\'s user-level directory below --home-root: '
@@ -621,6 +669,9 @@ def main(argv=None):
     parser.add_argument('--backup-existing', action='store_true',
                         help='update only: if the existing copy was not installed by this tool or was modified, '
                              'move it to a backup folder (nothing is deleted) and install a managed copy.')
+    parser.add_argument('--archive', action='store_true',
+                        help='export only: also write ' + ARCHIVE_NAME + ' next to the exported folder, '
+                             'with SKILL.md at the top level of the archive.')
     parser.add_argument('--json', action='store_true', help='Print a structured result.')
     args = parser.parse_args(argv)
     if (args.destination is not None and (args.host is not None or args.home_root is not None)
@@ -630,15 +681,21 @@ def main(argv=None):
         parser.error('export requires an explicit --destination')
     if args.backup_existing and args.action != 'update':
         parser.error('--backup-existing is only valid with update')
+    if args.archive and args.action != 'export':
+        parser.error('--archive is only valid with export')
     try:
         target = select_destination(args.destination, args.host, args.home_root)
         source = installer_source(__file__)
         if args.action == 'uninstall':
             result = uninstall(target)
+        elif args.action == 'verify':
+            result = verify(target)
         elif args.action == 'update':
             result = update(source, target, args.backup_existing)
+        elif args.action == 'export':
+            result = export(source, target, args.archive)
         else:
-            result = {'install': install, 'export': export}[args.action](source, target)
+            result = install(source, target)
         if args.host is not None and args.action in ('install', 'update'):
             result['other_copies'] = other_copies(args.home_root, args.host, target)
     except (InstallError, OSError) as exc:

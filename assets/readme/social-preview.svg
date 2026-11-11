@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
+  <title id="title">Academic Writing Assistant</title>
+  <desc id="desc">让 AI 帮你改论文，但不改你的数据和结论。通用学术写作 Agent Skill，支持 Claude Code、Codex、Cursor、Grok Build、OpenCode 和 WorkBuddy。</desc>
+  <rect width="1280" height="640" fill="#F8FAFC"/>
+  <rect width="1280" height="12" fill="#2563EB"/>
+  <g transform="translate(52 150) scale(3.0)" fill="none" stroke="#111827" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M27 25H43C47 25 50 28 50 32V71C46 67 40 65 33 65H27V25Z" stroke-width="3.6"/>
+    <path d="M73 25H57C53 25 50 28 50 32V71C54 67 60 65 67 65H73V25Z" stroke-width="3.6"/>
+    <path d="M35 40H44" stroke-width="2.7"/>
+    <path d="M35 51H43" stroke-width="2.7"/>
+    <path d="M57 40H66" stroke-width="2.7"/>
+    <path d="M57 51H63" stroke-width="2.7"/>
+    <path d="M39 78H56" stroke-width="4"/>
+    <path d="M58 73L65 80L78 61" stroke-width="4"/>
+  </g>
+  <text x="390.0" y="200.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif" font-size="54" font-weight="700" fill="#111827" textLength="704.6" lengthAdjust="spacingAndGlyphs">Academic Writing Assistant</text>
+  <text x="390.0" y="277.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif" font-size="40" font-weight="400" fill="#111827" textLength="352.0" lengthAdjust="spacingAndGlyphs">让 AI 帮你改论文，</text>
+  <text x="390.0" y="333.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif" font-size="40" font-weight="400" fill="#2563EB" textLength="400.0" lengthAdjust="spacingAndGlyphs">但不改你的数据和结论</text>
+  <text x="390.0" y="414.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif" font-size="24" font-weight="400" fill="#4B5563" textLength="582.5" lengthAdjust="spacingAndGlyphs">论文润色 · 中英互译 · 学位论文与基金申请 · 审稿回复</text>
+  <text x="390.0" y="454.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif" font-size="24" font-weight="400" fill="#4B5563" textLength="682.6" lengthAdjust="spacingAndGlyphs">通用 Agent Skill · 适用于理工、医学、经管、社科、人文、法学</text>
+  <text x="390.0" y="494.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif" font-size="24" font-weight="400" fill="#4B5563" textLength="752.6" lengthAdjust="spacingAndGlyphs">Claude Code · Codex · Cursor · Grok Build · OpenCode · WorkBuddy</text>
+</svg>
