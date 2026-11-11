@@ -354,8 +354,6 @@ Agent 有检索能力时，可以实际检索并注明读到了什么；没有�
 
 如果这个 Skill 对你的论文写作有帮助，欢迎点一个 ⭐ **Star**，让更多科研作者发现它。
 
-[![Star History Chart](https://api.star-history.com/svg?repos=LvvUP/academic-writing-assistant&type=Date)](https://star-history.com/#LvvUP/academic-writing-assistant&Date)
-
 ## 许可
 
 本项目采用 **AGPL-3.0-only** 许可，见 [LICENSE](LICENSE) 与 [许可说明](docs/licensing.md)。

@@ -358,8 +358,6 @@ Discipline conventions, terminology and synthetic examples are welcome, as are s
 
 If this Skill helps your writing, please give it a ⭐ **star** so more researchers can find it.
 
-[![Star History Chart](https://api.star-history.com/svg?repos=LvvUP/academic-writing-assistant&type=Date)](https://star-history.com/#LvvUP/academic-writing-assistant&Date)
-
 ## License
 
 **AGPL-3.0-only** — see [LICENSE](LICENSE) and the [licensing notes](docs/licensing.md).
